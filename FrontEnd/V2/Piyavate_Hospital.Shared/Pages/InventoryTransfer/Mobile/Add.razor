@@ -1,0 +1,10 @@
+@page "/InventoryTransfer/Mobile/Add"
+@using Piyavate_Hospital.Shared.Views.InventoryTransfer.MobileAppScreen.Add
+@rendermode InteractiveWebAssembly
+<PageTitle>Create Inventory Transfer</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <AddInventoryTransferMobile Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

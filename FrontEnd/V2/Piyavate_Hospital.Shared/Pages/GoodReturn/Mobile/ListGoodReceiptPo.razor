@@ -1,0 +1,9 @@
+@page "/GoodReturn/Mobile/ListGoodReceiptPo"
+@using Piyavate_Hospital.Shared.Views.GoodReturn.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Good Receipt Po</PageTitle>
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearchGoodReceiptPo Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

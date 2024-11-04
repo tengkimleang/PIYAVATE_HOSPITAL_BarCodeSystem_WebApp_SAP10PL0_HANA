@@ -1,0 +1,23 @@
+@page "/ReturnRequest"
+@using Piyavate_Hospital.Shared.Views.ReturnRequest.MobileAppScreen
+@inherits MvvmComponentBase<ReturnRequestViewModel>
+@rendermode InteractiveWebAssembly
+@* @attribute [StreamRendering] *@
+<PageTitle>Return</PageTitle>
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <ReturnRequestDashboard/>
+            }
+            else
+            {
+                <ReturnRequestDefault Token="@(anotherName.User.FindFirst("token")?.Value)" ViewModel="ViewModel"/>
+            }
+        }
+    </Authorized>
+</AuthorizeView>

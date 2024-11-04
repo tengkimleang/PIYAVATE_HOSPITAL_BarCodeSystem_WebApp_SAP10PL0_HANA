@@ -1,0 +1,15 @@
+﻿@page "/GoodReceiptPo/Mobile/Add/{DocEntry:int?}"
+@using Piyavate_Hospital.Shared.Views.GoodReceptPo.MobileAppScreen.Add
+@rendermode InteractiveWebAssembly
+
+<PageTitle>Create Good Receipt Po</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <AddGoodsReceiptPoMobile DocEntry="DocEntry" Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>
+
+@code{
+    [Parameter] public int DocEntry { get; set; }
+}

@@ -1,0 +1,10 @@
+﻿@page "/DeliveryOrder/Mobile/ListSalesOrder"
+@using Piyavate_Hospital.Shared.Views.DeliveryOrder.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Sales Order</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearchSalesOrder Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

@@ -1,0 +1,10 @@
+﻿@page "/ReturnRequest/Mobile/ListReturnRequest"
+@using Piyavate_Hospital.Shared.Views.ReturnRequest.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Return Request</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearch Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

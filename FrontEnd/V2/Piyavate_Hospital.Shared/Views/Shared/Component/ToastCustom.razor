@@ -1,0 +1,48 @@
+﻿@implements IToastContentComponent<Dictionary<string, object>>
+<style>
+    .position-topright {
+        left: 12px;
+        top: 40% !important;
+    }
+
+    .fluent-toast {
+        background-color: --bs-gray-100 !important;
+    }
+
+    .mr-10 {
+        margin-right: 10px;
+    }
+</style>
+<div style="width: 100%">
+    <h5>@Content["Body"]</h5>
+    <div style="display: flex;justify-content: flex-end;">
+        <FluentButton Appearance="Appearance.Accent"
+                      BackgroundColor="@(!string.IsNullOrEmpty(Content["ButtonPrimaryColor"].ToString()) ? Content["ButtonPrimaryColor"].ToString() : "")"
+                      Class="mr-10"
+                      OnClick="@((e) => OnClickPrimaryButton(_data))">
+            @Content["PrimaryButtonText"]
+        </FluentButton>
+        <FluentButton Appearance="Appearance.Accent"
+                      BackgroundColor="@(!string.IsNullOrEmpty(Content["ButtonSecondaryColor"].ToString()) ? Content["ButtonSecondaryColor"].ToString() : "var(--bs-green)")"
+                      @onclick="Toast.Close">
+            Close
+        </FluentButton>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] private FluentToast Toast { get; set; } = default!;
+    [Parameter] public Dictionary<string, object> Content { get; set; } = default!;
+
+    private Func<Dictionary<string, object>, Task> OnClickPrimaryButton =>
+        Content["OnClickPrimaryButton"] as Func<Dictionary<string, object>, Task> ?? default!;
+
+    private readonly Dictionary<string, object> _data = new();
+
+    protected override void OnInitialized()
+    {
+        _data.Add("Index", Content["Index"]);
+        _data.Add("FluentToast", Toast);
+    }
+
+}

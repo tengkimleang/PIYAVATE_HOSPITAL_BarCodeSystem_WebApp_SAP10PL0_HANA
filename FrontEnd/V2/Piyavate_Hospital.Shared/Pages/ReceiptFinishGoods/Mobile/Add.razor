@@ -1,0 +1,10 @@
+﻿@page "/ReceiptFinishGoods/Mobile/Add"
+@using Piyavate_Hospital.Shared.Views.ReceiptFromProduction.MobileAppScreen.Add
+@rendermode InteractiveWebAssembly
+<PageTitle>Create Receipt Finished Good</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <AddReceiptFromProductionMobile Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

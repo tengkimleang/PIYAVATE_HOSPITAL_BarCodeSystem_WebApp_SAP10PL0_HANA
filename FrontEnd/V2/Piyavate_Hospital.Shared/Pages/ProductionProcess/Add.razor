@@ -1,0 +1,10 @@
+﻿@page "/ProductionProcess"
+@using Piyavate_Hospital.Shared.Views.ProductionProcess
+@rendermode InteractiveWebAssembly
+<PageTitle>Production Process</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ProductionProcess Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

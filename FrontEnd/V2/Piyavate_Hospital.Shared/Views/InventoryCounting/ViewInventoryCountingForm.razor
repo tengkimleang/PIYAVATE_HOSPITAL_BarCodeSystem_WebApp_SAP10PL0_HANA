@@ -1,0 +1,67 @@
+﻿@using Piyavate_Hospital.Shared.Models.Gets
+@rendermode InteractiveWebAssembly
+@attribute [StreamRendering]
+
+<FluentLayout Style="margin-top: 0;">
+    <FluentHeader Style="background-color: transparent;padding: 0;z-index: 0;margin-top:1rem;">
+        <FluentBreadcrumb>
+            <FluentBreadcrumbItem>
+                @Title
+                <FluentIcon Value="@(new Icons.Regular.Size16.Cart())" Color="@Color.Neutral" Slot="start" />
+            </FluentBreadcrumbItem>
+        </FluentBreadcrumb>
+        <FluentSpacer />
+        <FluentButton IconEnd="@(new Icons.Filled.Size24.Search())"
+                      OnClick="(e)=>Search()">
+            Search
+        </FluentButton>
+        &nbsp;&nbsp;
+        <FluentButton IconEnd="@(new Icons.Filled.Size24.Save())"
+                      OnClick="(e)=>AddNew()">
+            Add New
+        </FluentButton>
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content" Style="height:90% !important;">
+            <div class="content">
+                <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@GetDetailInventoryCountingHeaderByDocNums?.DocNum" Label="DocNum" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@GetDetailInventoryCountingHeaderByDocNums?.CreateDate" Label="Create Date" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@GetDetailInventoryCountingHeaderByDocNums?.CreateTime" Label="Create Time" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@GetDetailInventoryCountingHeaderByDocNums?.Ref2" Label="Ref 2" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentButton IconEnd="@(new Icons.Filled.Size24.ViewDesktop())"
+                                      OnClick="(e)=>OnViewBatchOrSerial()">
+                            View Batch Or Serail
+                        </FluentButton>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <div class="grid" style="width: 100%; overflow:auto;">
+                            <FluentDataGrid TGridItem=@GetDetailInventoryCountingLineByDocNum
+                                            ResizableColumns="true"
+                                            Items="@(GetDetailInventoryCountingLineByDocNums?.AsQueryable() ?? new List<GetDetailInventoryCountingLineByDocNum>().AsQueryable())"
+                                            GridTemplateColumns="0.25fr 1fr 1.5fr 1fr 0.5fr 0.5fr 0.5fr"
+                                            Style=@dataGrid>
+                                <PropertyColumn Title="No ." Property="@(c => c.LineNum)" Sortable="true" Tooltip="true" />
+                                <PropertyColumn Title="Item Code" Property="@(c => c.ItemCode)" Tooltip="true" />
+                                <PropertyColumn Title="Item Name" Property="@(c => c.ItemName)" Tooltip="true" />
+                                <PropertyColumn Title="Whs Name" Property="@(c => c.WarehouseCode)" Tooltip="true" />
+                                <PropertyColumn Title="Qty in Whs" Property="@(c => c.Qty)" Tooltip="true" />
+                                <PropertyColumn Title="Qty Counted" Property="@(c => c.QtyCounted)" Tooltip="true" />
+                                <PropertyColumn Title="ManageItem" Property="@(c => c.ManageItem)" Tooltip="true" />
+                            </FluentDataGrid>
+                        </div>
+                    </FluentGridItem>
+                </FluentGrid>
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>

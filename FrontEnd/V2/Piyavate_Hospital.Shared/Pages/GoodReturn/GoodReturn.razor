@@ -1,0 +1,26 @@
+﻿@page "/goodreturn"
+@rendermode InteractiveWebAssembly
+@using Piyavate_Hospital.Shared.Views.GoodReturn.MobileAppScreen
+@inherits MvvmComponentBase<GoodReturnViewModel>
+@* @attribute [StreamRendering] *@
+<PageTitle>Good Return</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <GoodReturnDashboard/>
+            }
+            else
+            {
+                <GoodReturnDefault Token="@anotherName.User.FindFirst("token")?.Value"
+                                   ViewModel="ViewModel"
+                                   Visible="_visible"/>
+            }
+        }
+    </Authorized>
+</AuthorizeView>

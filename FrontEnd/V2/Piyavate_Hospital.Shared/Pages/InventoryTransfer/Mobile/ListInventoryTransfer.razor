@@ -1,0 +1,10 @@
+@page "/InventoryTransfer/Mobile/ListInventoryTransfer"
+@using Piyavate_Hospital.Shared.Views.InventoryTransfer.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Inventory Transfer</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearch Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

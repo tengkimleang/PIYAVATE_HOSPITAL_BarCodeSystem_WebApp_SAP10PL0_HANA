@@ -1,0 +1,71 @@
+﻿@page "/"
+@using System.Text.Json
+@using Piyavate_Hospital.Shared.Models.User
+@layout EmptyLayout
+@rendermode InteractiveWebAssembly
+@attribute [StreamRendering]
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;background-color: #7F3612;">
+    <FluentCard class="card" style="width: 300px;height: 250px;padding: 0px;margin: 0px;">
+        <h4 class="card-header d-flex justify-content-center">
+            <img src="_content/Piyavate_Hospital.Shared/images/logo.png" width="42px" height="32px"/>
+
+        </h4>
+        <div class="card-body">
+            @* <FluentLabel Style="margin-bottom: 10px">Login</FluentLabel> *@
+            <FluentTextField @bind-Value="model.Username" Style="width: 100%" Label="User Name"/>
+            <FluentTextField @bind-Value="model.Password" Style="width: 100%" Label="Password" TextFieldType="TextFieldType.Password"/>
+        </div>
+        <div class="card-footer">
+            <FluentButton Appearance="Appearance.Accent" OnClick="OnValidSubmit" class="float-end">
+                Login
+            </FluentButton>
+        </div>
+    </FluentCard>
+</div>
+
+
+@code {
+    [Inject] CookieAuthenticationSateProvider CustomizeAuthenticationState { get; set; } = default!;
+
+    private LoginForm model = new LoginForm
+    {
+        Username = "admin",
+        Password = "1234"
+    };
+
+    private async Task OnValidSubmit()
+    {
+        try
+        {
+            var a = await CustomizeAuthenticationState.Login(model.Username, model.Password);
+            if (a.Content.ReadAsStringAsync().Result.Contains("errorCode"))
+            {
+                // var result = JsonSerializer.Deserialize<CheckUserResponse>(a.Content.ReadAsStringAsync().Result);
+                var result = await a.Content.ReadFromJsonAsync<CheckUserResponse>();
+                Console.WriteLine(JsonSerializer.Serialize(result));
+                if (!string.IsNullOrEmpty(result?.ErrorCode ?? ""))
+                {
+                    ToastService.ShowError(result?.ErrorMessage ?? "");
+                }
+            }
+            else
+            {
+                NavigationManager.NavigateTo("/Home");
+            }
+            // if (model is { Username: "admin", Password: "1234" } || model is { Username: "admin1", Password: "1234" })
+            // {
+            //     localStorage.SetItem("name", "3");
+            //     NavigationManager.NavigateTo("home");
+            // }
+            // else
+            //     ToastService.ShowError("Login Failed user: admin and password: 1234");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError(ex.Message);
+        }
+    }
+
+}

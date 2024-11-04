@@ -1,0 +1,163 @@
+﻿@using System.Globalization
+@implements IDialogContentComponent<Dictionary<string, object>>
+<style>
+    .fluent-toast-provider {
+        z-index: 10050 !important; /* Adjust this value as needed */
+    }
+
+    fluent-anchored-region {
+        position: fixed !important;
+    }
+</style>
+@* Header *@
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.AddCircle())"/>
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+@* Footer *@
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="SaveAsync">Save</FluentButton>
+</FluentDialogFooter>
+@* Body *@
+<FluentDialogBody Style="overflow-y:scroll;">
+    <FluentLayout Style="margin-top: 0;">
+        <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+            <FluentBodyContent Class="body-content" Style="overflow: auto">
+                <div class="content">
+                    <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+
+                        <FluentGridItem xs="12" sm="4" lg="6" xl="6">
+                            <FluentAutocomplete Required
+                                                TOption="GetProductionOrderLines"
+                                                AutoComplete="off"
+                                                Autofocus="true"
+                                                Width="100%"
+                                                Placeholder="Item Master Data"
+                                                OnOptionsSearch="OnSearch"
+                                                Multiple="true"
+                                                MaximumOptionsSearch="2"
+                                                Label="Item Code"
+                                                Virtualize="true"
+                                                Items="Items"
+                                                MaximumSelectedOptions="1"
+                                                OptionText="@(item => $"{item.ItemCode} - {item.ItemName}")"
+                                                @bind-SelectedOptions="@_selectedItem"
+                                                ValueChanged="@(e=>UpdateItemDetails())"/>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentTextField Value="@(DataResult.QtyPlan.ToString(CultureInfo.InvariantCulture))" ReadOnly Label="PlanQty" style="width: 100%;">
+                            </FluentTextField>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentSelect Width="100%"
+                                          TOption="string"
+                                          @bind-Value="@DataResult.TransactionType"
+                                          Required
+                                          Label="Status">
+                                <FluentOption Value="99" Selected></FluentOption>
+                                <FluentOption Value="0">Yes</FluentOption>
+                                <FluentOption Value="1">No</FluentOption>
+                            </FluentSelect>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentNumberField @bind-Value="@DataResult.Qty" Label="Qty" style="width: 100%;">
+                            </FluentNumberField>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentTextField Value="@(DataResult.WhsCode)" ReadOnly Label="Warehouse" style="width: 100%;">
+                            </FluentTextField>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentTextField Value="@(DataResult.UomName)" ReadOnly Label="Unit Of Measure" style="width: 100%;">
+                            </FluentTextField>
+                        </FluentGridItem>
+                    </FluentGrid>
+                    @if (_isItemBatch)
+                    {
+                        <FluentButton Style="margin-top:20px" OnClick="AddLineToBatchOrSerial"
+                                      IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))">
+                            Add Line
+                        </FluentButton>
+                        <FluentDataGrid TGridItem=@ReceiptFinishGoodBatch ResizableColumns="true"
+                                        GridTemplateColumns="1fr 1fr 0.5fr 1fr 1fr 1fr 1fr"
+                                        Items="_batchReceiptPOs.AsQueryable()"
+                                        Style=@_dataGrid>
+                            <TemplateColumn Tooltip="true" Title="Action">
+                                <FluentButton Style="color:#BC2F32" OnClick="(e) => DeleteLineFromBatchOrSerial(_batchReceiptPOs.IndexOf(context))"
+                                              IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Error))">
+                                    Delete
+                                </FluentButton>
+                                <FluentButton OnClick="@(e => OnClickGennerateBatchSerial(_batchReceiptPOs.IndexOf(context)))"
+                                              IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Info))">
+                                    Generate
+                                </FluentButton>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Batch Code">
+                                <FluentTextField @bind-Value=@context.BatchCode Placeholder="Batch Code"/>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Lot Code">
+                                <FluentTextField @bind-Value=@context.LotNo Placeholder="LotNo"></FluentTextField>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Qty">
+                                <FluentNumberField @bind-Value=@context.Qty Placeholder="Qty" TValue="double"/>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Expire Date">
+                                <FluentDatePicker @bind-Value="context.ExpDate" Placeholder="Expire Date">
+                                </FluentDatePicker>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Manufacture Date">
+                                <FluentDatePicker @bind-Value=@context.ManufactureDate Placeholder="Manufacture Date"/>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Admission Date">
+                                <FluentDatePicker @bind-Value=@context.AdmissionDate Placeholder="Admission Date"/>
+                            </TemplateColumn>
+                        </FluentDataGrid>
+                    }
+                    @if (_isItemSerial)
+                    {
+                        <FluentButton Style="margin-top:20px" OnClick="AddLineToBatchOrSerial" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))">
+                            Add Line
+                        </FluentButton>
+                        <FluentDataGrid TGridItem=@ReceiptFinishGoodSerial ResizableColumns="true"
+                                        GridTemplateColumns="1.5fr 1fr 0.5fr 1fr 1fr 1fr 1fr"
+                                        Items="_serialReceiptPo.AsQueryable()"
+                                        Style=@_dataGrid>
+                            <TemplateColumn Tooltip="true" Title="Action">
+                                <FluentButton Style="color:#BC2F32" OnClick="(e) => DeleteLineFromBatchOrSerial(_serialReceiptPo.IndexOf(context))"
+                                              IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Error))">
+                                    Delete
+                                </FluentButton>
+                                &nbsp;&nbsp;
+                                <FluentButton OnClick="@(e => OnClickGennerateBatchSerial(_serialReceiptPo.IndexOf(context)))"
+                                              IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Info))">
+                                    Generate
+                                </FluentButton>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Serial Code">
+                                <FluentTextField @bind-Value=@context.SerialCode Placeholder="Serial Code"/>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Qty">
+                                <FluentNumberField ReadOnly @bind-Value=@context.Qty Placeholder="Qty"/>
+
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Manufacture Code">
+                                <FluentTextField @bind-Value=@context.MfrNo Placeholder="MfrNo"></FluentTextField>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Expire Date">
+                                <FluentDatePicker @bind-Value="context.ExpDate" Placeholder="Expire Date">
+                                </FluentDatePicker>
+                            </TemplateColumn>
+                            <TemplateColumn Tooltip="true" Title="Manufacture Date">
+                                <FluentDatePicker @bind-Value=@context.MfrDate Placeholder="Manufacture Date"></FluentDatePicker>
+                            </TemplateColumn>
+                        </FluentDataGrid>
+                    }
+                </div>
+            </FluentBodyContent>
+        </FluentStack>
+    </FluentLayout>
+</FluentDialogBody>

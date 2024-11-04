@@ -1,0 +1,10 @@
+﻿@page "/ReturnComponent/Mobile/ListReturnComponent"
+@using Piyavate_Hospital.Shared.Views.ReturnComponent.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Return Component</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearch Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

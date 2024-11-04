@@ -1,0 +1,10 @@
+﻿@page "/GoodReceiptPo/Mobile/ListPurchaseOrder"
+@using Piyavate_Hospital.Shared.Views.GoodReceptPo.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Purchase Order</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearchPurchaseOrder Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

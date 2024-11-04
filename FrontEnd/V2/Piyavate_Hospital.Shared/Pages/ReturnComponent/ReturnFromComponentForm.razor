@@ -1,0 +1,23 @@
+﻿@page "/ReturnFromComponent"
+@using Piyavate_Hospital.Shared.Views.ReturnComponent.MobileAppScreen
+<PageTitle>Return From Component</PageTitle>
+@rendermode InteractiveWebAssembly
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <ReturnComponentDashboard/>
+            }
+            else
+            {
+                <ReturnComponentDefault Token="@(anotherName.User.FindFirst("token")?.Value)"/>
+            }
+            @* <ReturnComponentDefault /> *@
+        }
+    </Authorized>
+</AuthorizeView>

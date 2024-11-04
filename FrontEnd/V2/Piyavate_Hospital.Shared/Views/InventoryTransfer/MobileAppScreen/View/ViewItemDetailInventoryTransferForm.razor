@@ -1,0 +1,119 @@
+<SectionContent SectionName="Is-BackButton">
+    <FluentButton IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())"
+                  Title="Back"
+                  OnClick="@(e => IsViewDetailBack())"
+                  Class="margin-xs"/>
+    @(new MarkupString($@"&nbsp;&nbsp;Inventory Transfer"))
+</SectionContent>
+<FluentLayout Style="margin-top: 0;">
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content" Style="height:90% !important;">
+            <div class="content-xs" id="top-nav-1">
+                <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@(ItemDetail.ItemCode ?? "")"
+                                         Label="ItemCode"
+                                         style="width: 100%;"
+                                         ReadOnly/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@(ItemDetail.ItemName ?? "")"
+                                         Label="ItemName"
+                                         style="width: 100%;"
+                                         ReadOnly/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@(ItemDetail.Qty ?? "")"
+                                         ReadOnly
+                                         Label="Qty"
+                                         style="width: 100%;"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@(ItemDetail.ManageItem ?? "")"
+                                         ReadOnly
+                                         Label="Manage Item"
+                                         style="width: 100%;"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentLabel Typo="Typography.Subject">
+                            @(ItemDetail.ManageItem == "S" ? "Serial Information" : "Batch Information")
+                        </FluentLabel>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <div class="grid" style="width: 100%; overflow:auto;">
+                            <!-- #region For Each CardBox -->
+                            <div class="pull-up-demo">
+                                <FluentPullToRefresh Id="main-menu"
+                                                     Direction="@PullDirection.Up"
+                                                     ShowStaticTip="false"
+                                                     TipHeight="30"
+                                                     DragDistance="75">
+                                    <PullingTemplate>
+                                        Pull to refresh
+                                    </PullingTemplate>
+                                    <ReleaseTemplate>
+                                        Release to update
+                                    </ReleaseTemplate>
+                                    <CompletedTemplate>
+                                        Update completed
+                                    </CompletedTemplate>
+                                    <ChildContent>
+                                        <div class="pull-content">
+                                            @if (ItemDetail.ManageItem == "B")
+                                                @foreach (var obj in GetBatchOrSerials)
+                                            {
+                                                <FluentCard MinimalStyle="true"
+                                                            Style="width: 100%; margin-bottom: 10px;">
+                                                    <FluentGrid Spacing="2" AdaptiveRendering="true">
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.SerialBatch</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.Qty</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.MrfDate</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.ExpDate</FluentLabel>
+                                                        </FluentGridItem>
+                                                    </FluentGrid>
+                                                </FluentCard>
+                                            }
+                                            else
+                                                @foreach (var obj in GetBatchOrSerials)
+                                            {
+                                                <FluentCard MinimalStyle="true"
+                                                            Style="width: 100%; margin-bottom: 10px;">
+                                                    <FluentGrid Spacing="2" AdaptiveRendering="true">
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.SerialBatch</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.Qty</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.MrfDate</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel>@obj.ExpDate</FluentLabel>
+                                                        </FluentGridItem>
+                                                    </FluentGrid>
+                                                </FluentCard>
+                                            }
+                                        </div>
+                                    </ChildContent>
+                                    <LoadingTemplate>
+                                        <FluentProgress Width="150px;"/>
+                                    </LoadingTemplate>
+                                </FluentPullToRefresh>
+                            </div>
+                            <!-- #endregion -->
+                        </div>
+                    </FluentGridItem>
+                </FluentGrid>
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+    <AnchorNavigation Url="ListSearchInventoryTransfer/#top-nav-1"/>
+</FluentLayout>

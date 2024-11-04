@@ -1,0 +1,21 @@
+﻿@page "/ReceiptsFinishedGoods"
+@using Piyavate_Hospital.Shared.Views.ReceiptFromProduction.MobileAppScreen
+@rendermode InteractiveWebAssembly
+<PageTitle>Receipts Finished Goods</PageTitle>
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <ReceiptFromProductionDashboard/>
+            }
+            else
+            {
+                <ReceiptFromProductionDefault Token="@(anotherName.User.FindFirst("token")?.Value)" />
+            }
+        }
+    </Authorized>
+</AuthorizeView>

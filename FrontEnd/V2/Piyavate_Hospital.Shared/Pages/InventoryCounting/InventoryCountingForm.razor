@@ -1,0 +1,21 @@
+﻿@page "/inventorycounting"
+@using Piyavate_Hospital.Shared.Views.InventoryCounting.MobileAppScreen
+@rendermode InteractiveWebAssembly
+<PageTitle>Inventory Counting</PageTitle>
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <InventoryCountingDashboard/>
+            }
+            else
+            {
+                <InventoryCountingDefault Token="@(anotherName.User.FindFirst("token")?.Value)" />
+            }
+        }
+    </Authorized>
+</AuthorizeView>

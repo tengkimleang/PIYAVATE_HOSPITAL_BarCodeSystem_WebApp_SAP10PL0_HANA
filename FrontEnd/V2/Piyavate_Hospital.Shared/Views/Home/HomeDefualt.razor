@@ -1,0 +1,156 @@
+﻿@rendermode InteractiveWebAssembly
+@using Orientation = Microsoft.FluentUI.AspNetCore.Components.Orientation
+@using Color = Microsoft.FluentUI.AspNetCore.Components.Color
+@using ApexCharts
+@inject Blazored.LocalStorage.ISyncLocalStorageService localStorage
+<PageTitle>Home</PageTitle>
+@if (_isView is false)
+{
+    <p>Loading .......</p>
+}
+else
+{
+    <FluentLayout Style="margin-top: 0px;">
+
+        <FluentHeader Style="background-color: transparent;padding: 0px;z-index: 0;">
+            <FluentBreadcrumb>
+                <FluentBreadcrumbItem>
+                    Home
+                    <FluentIcon Value="@(new Icons.Regular.Size16.Home())" Color="@Color.Neutral" Slot="start" />
+                </FluentBreadcrumbItem>
+            </FluentBreadcrumb>
+            <FluentSpacer />
+        </FluentHeader>
+        <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+            <FluentBodyContent Class="body-content" Style="height:90% !important;">
+                <div class="content">
+                    <FluentGrid Spacing="2" AdaptiveRendering="true">
+                        <FluentGridItem xs="12" sm="12" md="6" lg="4" xl="4">
+                            <FluentCard Width="100%">
+                                <ApexChart TItem="MyData"
+                                           @rendermode="InteractiveWebAssembly"
+                                           Height="250"
+                                           Options="options"
+                                           Title="Top 10 Customer Delivery Order">
+
+                                    <ApexPointSeries TItem="MyData"
+                                                     Items="Customer"
+                                                     Name="Net Profit"
+                                                     SeriesType="SeriesType.Donut"
+                                                     XValue="e => e.Category"
+                                                     YValue="e => e.NetProfit" />
+                                </ApexChart>
+                            </FluentCard>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="12" md="6" lg="4" xl="4">
+                            <FluentCard Width="100%">
+                                <ApexChart TItem="MyData"
+                                           Height="250"
+                                           Options="options1"
+                                           Title="Top 10 Vendor Purchase Order">
+
+                                    <ApexPointSeries TItem="MyData"
+                                                     Items="Vendor"
+                                                     Name="Net Profit"
+                                                     SeriesType="SeriesType.Donut"
+                                                     XValue="e => e.Category"
+                                                     YValue="e => e.NetProfit" />
+                                </ApexChart>
+                            </FluentCard>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="12" md="12" lg="12" xl="12">
+                            <FluentCard Width="100%">
+                                <ApexChart TItem="MyData" Height="300"
+                                           Title="Compare Customer and Vendor">
+
+                                    <ApexPointSeries TItem="MyData"
+                                                     Items="Customer"
+                                                     Name="Customer"
+                                                     SeriesType="SeriesType.Bar"
+                                                     XValue="e => e.Category"
+                                                     YValue="e => e.NetProfit" />
+
+                                    <ApexPointSeries TItem="MyData"
+                                                     Items="Vendor"
+                                                     Name="Vendor"
+                                                     SeriesType="SeriesType.Bar"
+                                                     XValue="e => e.Category"
+                                                     YValue="e => e.Revenue" />
+                                </ApexChart>
+                            </FluentCard>
+
+                        </FluentGridItem>
+                    </FluentGrid>
+                </div>
+            </FluentBodyContent>
+        </FluentStack>
+    </FluentLayout>
+}
+
+@code {
+    private List<MyData> Customer { get; set; } = new();
+    private List<MyData> Vendor { get; set; } = new();
+    private ApexChartOptions<MyData> options { get; set; } = new();
+    private ApexChartOptions<MyData> options1 { get; set; } = new();
+    private Boolean _isView = false;
+    private string UserName = "";
+
+    protected override void OnInitialized()
+    {
+        Random random = new Random();
+        for (var i = 0; i < 9; i++)
+        {
+            Customer.Add(new MyData { Category = "C-000" + i, NetProfit = random.Next(1, 1001), Revenue = random.Next(1, 1001) });
+        }
+
+        for (var i = 0; i < 9; i++)
+        {
+            Vendor.Add(new MyData { Category = "V-000" + i, NetProfit = random.Next(1, 1001), Revenue = random.Next(1, 1001) });
+        }
+
+        options.PlotOptions = new PlotOptions
+            {
+                Pie = new PlotOptionsPie
+                {
+                    Donut = new PlotOptionsDonut
+                    {
+                        Labels = new DonutLabels
+                        {
+                            Total = new DonutLabelTotal { FontSize = "24px", Color = "#D807B8", Formatter = @"function (w) {return w.globals.seriesTotals.reduce((a, b) => { return (a + b) }, 0)}" }
+                        }
+                    }
+                }
+            };
+        options1.PlotOptions = new PlotOptions
+            {
+                Pie = new PlotOptionsPie
+                {
+                    Donut = new PlotOptionsDonut
+                    {
+                        Labels = new DonutLabels
+                        {
+                            Total = new DonutLabelTotal { FontSize = "24px", Color = "#D807B8", Formatter = @"function (w) {return w.globals.seriesTotals.reduce((a, b) => { return (a + b) }, 0)}" }
+                        }
+                    }
+                }
+            };
+        _isView = true;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            UserName = localStorage.GetItem<string>("name") ?? "";
+            StateHasChanged();
+        }
+    }
+
+    public class MyData
+    {
+        public string? Category { get; set; }
+        public int NetProfit { get; set; }
+        public int Revenue { get; set; }
+    }
+
+}

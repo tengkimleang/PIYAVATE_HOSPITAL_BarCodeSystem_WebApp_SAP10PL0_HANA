@@ -1,0 +1,192 @@
+﻿@inherits MvvmComponentBase<ProductionProcessViewModel>
+
+<FluentLayout Style="margin-top: 0;height: 100%">
+    @if (_isXs)
+    {
+    <SectionContent SectionName="Is-BackButton">
+        <BackButtonAction/>
+        @(new MarkupString($@"&nbsp;&nbsp;Production Process"))
+    </SectionContent>
+    }
+    <FluentHeader Style="background-color: transparent;padding: 0;z-index: 0;">
+        <FluentBreadcrumb>
+            <FluentBreadcrumbItem>
+                @_stringDisplay
+                <FluentIcon Value="@(new Icons.Regular.Size16.Archive())" Color="@Color.Neutral" Slot="start"/>
+            </FluentBreadcrumbItem>
+        </FluentBreadcrumb>
+        <FluentSpacer/>
+        <FluentButton OnClick="(e) => OnSaveTransaction()" IconEnd="@(new Icons.Filled.Size24.Save())">
+            Save
+        </FluentButton>
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content" Style="height:90% !important;">
+            <div class="content">
+                <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                    <FluentGridItem xs="12" sm="4" lg="6" xl="6">
+                        <FluentAutocomplete Required
+                                            TOption="GetProductionOrder"
+                                            Width="100%"
+                                            Placeholder="Production No"
+                                            OnOptionsSearch="OnSearch"
+                                            MaximumOptionsSearch="1"
+                                            Label="Production No"
+                                            Virtualize="true"
+                                            Items="ViewModel.GetProductionOrder"
+                                            MaximumSelectedOptions="1"
+                                            OptionText="@(item => $"{item.DocNum}")"
+                                            @bind-SelectedOptions="@_selectedProductionOrders"
+                                            ValueChanged="@(() => { ViewModel.ProcessProductionLine.ProductionNo = Convert.ToInt32(_selectedProductionOrders.FirstOrDefault()?.DocEntry); ViewModel.ProcessProductionLine.DocNum = _selectedProductionOrders.FirstOrDefault()?.DocNum ?? ""; })"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentAutocomplete Required
+                                            TOption="string"
+                                            Width="100%"
+                                            Placeholder="Process Type"
+                                            OnOptionsSearch="OnSearchProductionNo"
+                                            MaximumOptionsSearch="1"
+                                            Label="Process Type"
+                                            Virtualize="true"
+                                            Items="ViewModel.ProcessType"
+                                            MaximumSelectedOptions="1"
+                                            OptionText="@(item => $"{item}")"
+                                            @bind-SelectedOptions="@_selectProcessType"
+                                            ValueChanged="@(() => { ViewModel.ProcessProductionLine.ProcessStage = _selectProcessType.FirstOrDefault() ?? ""; })"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentAutocomplete Required
+                                            TOption="string"
+                                            Width="100%"
+                                            Placeholder="Status"
+                                            MaximumOptionsSearch="99"
+                                            Label="Status"
+                                            Virtualize="true"
+                                            Items="Status"
+                                            MaximumSelectedOptions="1"
+                                            OptionText="@(item => $"{item}")"
+                                            @bind-SelectedOptions="@StatusSelect"
+                                            ValueChanged="@(() => { ViewModel.ProcessProductionLine.Status = StatusSelect.FirstOrDefault() ?? ""; })"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="12" lg="12" xl="12" Justify="JustifyContent.FlexEnd">
+                        <FluentButton IconEnd="@(new Icons.Filled.Size24.Add())" OnClick="(e) => OnAddLine()">
+                            @_buttonAddName
+                        </FluentButton>
+                    </FluentGridItem>
+                    @if (!_isXs)
+                    {
+                    <FluentGridItem xs="12">
+                        <div class="grid" style="width: 100%; overflow:auto;">
+                            <FluentDataGrid TGridItem=@ProcessProductionLine
+                                            ResizableColumns="true"
+                                            GridTemplateColumns="1fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr"
+                                            Style=@_dataGrid
+                                            Items="ViewModel.ProductionProcessHeader.Data.AsQueryable()">
+                                <TemplateColumn Tooltip="true" Title="Action">
+                                    <FluentButton Style="color:#BC2F32" OnClick="(e) => OnDeleteLine(ViewModel.ProductionProcessHeader.Data!.IndexOf(context))"
+                                                  IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Error))">
+                                        Delete
+                                    </FluentButton>
+                                    <FluentButton OnClick="(e) => OpenEdit(context)" IconEnd="@(new Icons.Regular.Size24.Edit().WithColor(Color.Info))">
+                                        Edit
+                                    </FluentButton>
+                                </TemplateColumn>
+                                <PropertyColumn Title="Production No" Property="@(c => c.DocNum)" Tooltip="true"/>
+                                <PropertyColumn Title="Process Type" Property="@(c => c.ProcessStage)" Tooltip="true"/>
+                                <PropertyColumn Title="Status" Property="@(c => c.Status)" Tooltip="true"/>
+                            </FluentDataGrid>
+                        </div>
+                    </FluentGridItem>
+                    }
+                    else
+                    {
+                    <FluentGridItem xs="12">
+                        <div class="grid" style="width: 100%; overflow:auto;">
+                            <!-- #region For Each CardBox -->
+                            <div class="pull-up-demo">
+                                <FluentPullToRefresh Id="main-menu"
+                                                     Direction="@PullDirection.Up"
+                                                     ShowStaticTip="false"
+                                                     TipHeight="30"
+                                                     DragDistance="75">
+                                    <PullingTemplate>
+                                        Pull to refresh
+                                    </PullingTemplate>
+                                    <ReleaseTemplate>
+                                        Release to update
+                                    </ReleaseTemplate>
+                                    <CompletedTemplate>
+                                        Update completed
+                                    </CompletedTemplate>
+                                    <ChildContent>
+                                        <div class="pull-content">
+                                            @foreach (var obj in ViewModel.ProductionProcessHeader.Data)
+                                            {
+                                            <FluentCard MinimalStyle="true"
+                                                        Style="width: 100%; margin-bottom: 10px;">
+                                                <FluentGrid Spacing="1" AdaptiveRendering="true">
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Subject">Production No</FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Subject">Process Type</FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Body">@obj.ProductionNo</FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Body">@obj.ProcessStage</FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Subject">Status</FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Subject"></FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Body">
+                                                            @obj.Status
+                                                        </FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentLabel Typo="Typography.Body">
+                                                        </FluentLabel>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentButton OnClick="(e) => OpenEdit(obj)" IconEnd="@(new Icons.Regular.Size24.Edit().WithColor(Color.Info))">
+                                                            Edit
+                                                        </FluentButton>
+                                                    </FluentGridItem>
+                                                    <FluentGridItem xs="6" sm="6">
+                                                        <FluentButton Style="color:#BC2F32" OnClick="(e) => OnDeleteLine(ViewModel.ProductionProcessHeader.Data!.IndexOf(obj))"
+                                                                      IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Error))">
+                                                            Delete
+                                                        </FluentButton>
+                                                    </FluentGridItem>
+                                                </FluentGrid>
+                                            </FluentCard>
+                                            }
+                                        </div>
+                                    </ChildContent>
+                                    <LoadingTemplate>
+                                        <FluentProgress Width="150px;"/>
+                                    </LoadingTemplate>
+                                </FluentPullToRefresh>
+                            </div>
+                            <!-- #endregion -->
+                        </div>
+                    </FluentGridItem>
+                    }
+
+                </FluentGrid>
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>
+<FluentOverlay @bind-Visible=@_visible
+               Opacity="0.4"
+               FullScreen="true"
+               OnClose="OnCloseOverlay"
+               PreventScroll=true>
+    <FluentProgressRing/>
+</FluentOverlay>

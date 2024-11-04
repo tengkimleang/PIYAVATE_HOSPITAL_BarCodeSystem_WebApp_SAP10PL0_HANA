@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+    <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+    <RunAOTCompilation>true</RunAOTCompilation>
+<!--    <RootNamespace>Piyavate_Hospital.WebApp.Client</RootNamespace>-->
+<!--    <WasmEnableWebcil>false</WasmEnableWebcil>-->
+<!--    <WasmStripILAfterAOT>true</WasmStripILAfterAOT>-->
+<!--    <BlazorWebAssemblyEnableDebugging>false</BlazorWebAssemblyEnableDebugging>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Piyavate_Hospital.Shared\Piyavate_Hospital.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

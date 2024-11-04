@@ -1,0 +1,192 @@
+﻿@rendermode InteractiveAuto
+
+<div class="navmenu">
+    <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon"/>
+    <label for="navmenu-toggle" class="navmenu-icon">
+        <FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill"/>
+    </label>
+    <nav class="sitenav" aria-labelledby="main-menu" onclick="document.getElementById('navmenu-toggle').click();">
+        <FluentNavMenu Id="main-menu" Width="250" Collapsible="true" Title="Navigation menu" @bind-Expanded="expanded">
+            <FluentNavLink title="Home" Href="/home" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
+            @if (isXs == false)
+            {
+                <FluentNavGroup Title="A/R Sale"
+                                Icon="@(new Icons.Regular.Size20.CopyAdd())">
+                    <FluentNavLink title="Delivery Order"
+                                   Href="deliveryorder"
+                                   Icon="@(new Icons.Regular.Size20.Archive())"
+                                   IconColor="Color.Accent">
+                        Delivery Order
+                    </FluentNavLink>
+                    <FluentNavLink title="Return Request"
+                                   Href="ReturnRequest"
+                                   Icon="@(new Icons.Regular.Size20.ArchiveArrowBack())"
+                                   IconColor="Color.Accent">
+                        Return Request
+                    </FluentNavLink>
+                    @* <FluentNavLink title="A/R Credit Memo" *@
+                    @*                Href="arcreditmemo" *@
+                    @*                Icon="@(new Icons.Regular.Size20.WalletCreditCard())" *@
+                    @*                IconColor="Color.Accent"> *@
+                    @*     A/R Credit Memo *@
+                    @* </FluentNavLink> *@
+                </FluentNavGroup>
+                <FluentNavGroup Title="A/P Purchase"
+                                Icon="@(new Icons.Regular.Size20.CopyArrowRight())">
+                    <FluentNavLink title="Good Receipt PO"
+                                   Href="goodreceptpoform"
+                                   Icon="@(new Icons.Regular.Size20.BoxArrowUp())"
+                                   IconColor="Color.Accent">
+                        Good Receipt PO
+                    </FluentNavLink>
+                    <FluentNavLink title="Good Return"
+                                   Href="goodreturn"
+                                   Icon="@(new Icons.Regular.Size20.BoxArrowLeft())"
+                                   IconColor="Color.Accent">
+                        Good Return
+                    </FluentNavLink>
+                </FluentNavGroup>
+                <FluentNavGroup Title="Inventory Transaction"
+                                Icon="@(new Icons.Regular.Size20.CubeAdd())">
+                    <FluentNavLink title="Inventory Transfer"
+                                   Href="inventorytransfer"
+                                   Icon="@(new Icons.Regular.Size20.Cube())"
+                                   IconColor="Color.Accent">
+                        Inventory Transfer
+                    </FluentNavLink>
+                    <FluentNavLink title="Inventory Counting"
+                                   Href="inventorycounting"
+                                   Icon="@(new Icons.Regular.Size20.BookAdd())"
+                                   IconColor="Color.Accent">
+                        Inventory Counting
+                    </FluentNavLink>
+                </FluentNavGroup>
+                <FluentNavGroup Title="Production"
+                                Icon="@(new Icons.Regular.Size20.Production())">
+                    <FluentNavLink title="Issue For Production"
+                                   Href="issueforproduction"
+                                   Icon="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())"
+                                   IconColor="Color.Accent">
+                        Issue For Production
+                    </FluentNavLink>
+                    <FluentNavLink title="Return Component"
+                                   Href="ReturnFromComponent"
+                                   Icon="@(new Icons.Filled.Size20.GroupReturn())"
+                                   IconColor="Color.Accent">
+                        Return Component
+                    </FluentNavLink>
+                    <FluentNavLink title="Receipt Finished Goods"
+                                   Href="ReceiptsFinishedGoods"
+                                   Icon="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())"
+                                   IconColor="Color.Accent">
+                        Receipt FG
+                    </FluentNavLink>
+                    <FluentNavLink title="Production Process"
+                                   Href="ProductionProcess"
+                                   Icon="@(new Icons.Regular.Size20.Cart())"
+                                   IconColor="Color.Accent">
+                        Production Process
+                    </FluentNavLink>
+                </FluentNavGroup>
+            }
+            else
+            {
+                <FluentNavLink title="Delivery Order"
+                               Href="deliveryorder"
+                               Icon="@(new Icons.Regular.Size20.Archive())"
+                               IconColor="Color.Accent">
+                    Delivery Order
+                </FluentNavLink>
+                @* <FluentNavLink title="Return" *@
+                @*                Href="return" *@
+                @*                Icon="@(new Icons.Regular.Size20.ArchiveArrowBack())" *@
+                @*                IconColor="Color.Accent"> *@
+                @*     Return *@
+                @* </FluentNavLink> *@
+                <FluentNavLink title="Return Request"
+                               Href="ReturnRequest"
+                               Icon="@(new Icons.Regular.Size20.ArchiveArrowBack())"
+                               IconColor="Color.Accent">
+                    Return Request
+                </FluentNavLink>
+                @* <FluentNavLink title="A/R Credit Memo" *@
+                @*                Href="arcreditmemo" *@
+                @*                Icon="@(new Icons.Regular.Size20.WalletCreditCard())" *@
+                @*                IconColor="Color.Accent"> *@
+                @*     A/R Credit Memo *@
+                @* </FluentNavLink> *@
+                <FluentNavLink title="Good Receipt PO"
+                               Href="goodreceptpoform"
+                               Icon="@(new Icons.Regular.Size20.BoxArrowUp())"
+                               IconColor="Color.Accent">
+                    Good Receipt PO
+                </FluentNavLink>
+                <FluentNavLink title="Good Return"
+                               Href="goodreturn"
+                               Icon="@(new Icons.Regular.Size20.BoxArrowLeft())"
+                               IconColor="Color.Accent">
+                    Good Return
+                </FluentNavLink>
+                <FluentNavLink title="Inventory Transfer"
+                               Href="inventorytransfer"
+                               Icon="@(new Icons.Regular.Size20.Cube())"
+                               IconColor="Color.Accent">
+                    Inventory Transfer
+                </FluentNavLink>
+                <FluentNavLink title="Inventory Counting"
+                               Href="inventorycounting"
+                               Icon="@(new Icons.Regular.Size20.BookAdd())"
+                               IconColor="Color.Accent">
+                    Inventory Counting
+                </FluentNavLink>
+                <FluentNavLink title="Issue For Production"
+                               Href="issueforproduction"
+                               Icon="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())"
+                               IconColor="Color.Accent">
+                    Issue For Production
+                </FluentNavLink>
+                <FluentNavLink title="Return From Component"
+                               Href="ReturnFromComponent"
+                               Icon="@(new Icons.Filled.Size20.GroupReturn())"
+                               IconColor="Color.Accent">
+                    Return Component
+                </FluentNavLink>
+                <FluentNavLink title="Receipt Finished Goods"
+                               Href="ReceiptsFinishedGoods"
+                               Icon="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())"
+                               IconColor="Color.Accent">
+                    Receipt FG
+                </FluentNavLink>
+                <FluentNavLink title="Production Process"
+                               Href="ProductionProcess"
+                               Icon="@(new Icons.Regular.Size20.Cart())"
+                               IconColor="Color.Accent">
+                    Production Process
+                </FluentNavLink>
+            }
+            @*<FluentNavLink title="Return Component" Href="returncomponent" Icon="@(new Icons.Regular.Size20.Cart())" IconColor="Color.Accent">Return Component</FluentNavLink>
+            *@
+        </FluentNavMenu>
+    </nav>
+</div>
+<FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+</FluentGrid>
+
+@code {
+    private bool expanded = true;
+    private bool isXs = false;
+
+    private void UpdateGridSize(GridItemSize size)
+    {
+        // dataGrid = size == GridItemSize.Xs ? "width: 1200px;height:205px" : "width: 100%;height:405px";
+        if (size == GridItemSize.Xs)
+        {
+            isXs = true;
+        }
+        else
+        {
+            isXs = false;
+        }
+    }
+
+}

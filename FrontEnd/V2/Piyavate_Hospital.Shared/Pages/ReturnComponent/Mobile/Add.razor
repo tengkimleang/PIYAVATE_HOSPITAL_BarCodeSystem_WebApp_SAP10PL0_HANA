@@ -1,0 +1,10 @@
+﻿@page "/ReturnComponent/Mobile/Add"
+@using Piyavate_Hospital.Shared.Views.ReturnComponent.MobileAppScreen.Add
+@rendermode InteractiveWebAssembly
+<PageTitle>Create Issue For Production</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <AddReturnComponentMobile Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

@@ -1,0 +1,141 @@
+<style>
+    .fluent-menubutton-container {
+        float: right;
+    }
+</style>
+@if (_isShowBatchSerial is false)
+{
+    <SectionContent SectionName="Is-BackButton">
+        <FluentButton IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())"
+                      Title="Back"
+                      OnClick="@(e => IsViewDetail())"
+                      Class="margin-xs"/>
+        @(new MarkupString($@"&nbsp;&nbsp;View Detail Return"))
+    </SectionContent>
+    <FluentLayout Style="margin-top: 0;">
+        <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+            <FluentBodyContent Class="body-content" Style="height:90% !important;">
+                <div class="content-xs" id="top-nav-1">
+                    <FluentGrid Spacing="1" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                        <FluentGridItem xs="12">
+                            <FluentMenuButton Text="Print"
+                                              OnMenuChanged="HandleOnMenuChanged">
+                                <FluentMenuItem Id="0078D4">Raw Material</FluentMenuItem>
+                            </FluentMenuButton>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentTextField
+                                Value="@(GoodReceiptPoHeaderDetailByDocNum.FirstOrDefault()?.SeriesName ?? "")"
+                                Label="Series" style="width: 100%;" ReadOnly>
+                            </FluentTextField>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentTextField Value="@(GoodReceiptPoHeaderDetailByDocNum.FirstOrDefault()?.DocNum ?? "")"
+                                             Label="Document Number" style="width: 100%;" ReadOnly>
+                            </FluentTextField>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentDatePicker
+                                Value="@(DateTime.Parse(GoodReceiptPoHeaderDetailByDocNum.FirstOrDefault()?.DocDate ?? ""))"
+                                ReadOnly Label="DocDate" style="width: 100%;"/>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentDatePicker
+                                Value="@(DateTime.Parse(GoodReceiptPoHeaderDetailByDocNum.FirstOrDefault()?.TaxDate ?? ""))"
+                                ReadOnly Label="TaxDate" style="width: 100%;"/>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="6" xl="6">
+                            <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                                <FluentTextField
+                                    Value="@(GoodReceiptPoHeaderDetailByDocNum.FirstOrDefault()?.Vendor ?? "")"
+                                    Label="Vendor" style="width: 100%;" ReadOnly>
+                                </FluentTextField>
+                            </FluentGridItem>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                                <FluentTextField
+                                    Value="@(GoodReceiptPoHeaderDetailByDocNum.FirstOrDefault()?.ContactPerson ?? "")"
+                                    Label="Contact Person" style="width: 100%;" ReadOnly>
+                                </FluentTextField>
+                            </FluentGridItem>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentTextField ReadOnly
+                                             Value="@(GoodReceiptPoHeaderDetailByDocNum.FirstOrDefault()?.RefInv ?? "")"
+                                             Label="Ref Inv" style="width: 100%;">
+                            </FluentTextField>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12">
+                            <div class="grid" style="width: 100%; overflow:auto;">
+                                <!-- #region For Each CardBox -->
+                                <div class="pull-up-demo">
+                                    <FluentPullToRefresh Id="main-menu" Direction="@PullDirection.Up" ShowStaticTip="false"
+                                                         TipHeight="30" DragDistance="75">
+                                        <PullingTemplate>
+                                            Pull to refresh
+                                        </PullingTemplate>
+                                        <ReleaseTemplate>
+                                            Release to update
+                                        </ReleaseTemplate>
+                                        <CompletedTemplate>
+                                            Update completed
+                                        </CompletedTemplate>
+                                        <ChildContent>
+                                            <div class="pull-content">
+                                                @foreach (var obj in GoodReceiptPoLineByDocNum)
+                                                {
+                                                    <FluentCard MinimalStyle="true" Style="width: 100%; margin-bottom: 10px;"
+                                                                @onclick="@(e => ShowItemDetail(obj.ItemCode, obj.BaseLineNumber))">
+                                                        <FluentGrid Spacing="2" AdaptiveRendering="true">
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>Item Code</FluentLabel>
+                                                            </FluentGridItem>
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>Item Name</FluentLabel>
+                                                            </FluentGridItem>
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>@obj.ItemCode</FluentLabel>
+                                                            </FluentGridItem>
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>@obj.ItemName</FluentLabel>
+                                                            </FluentGridItem>
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>Qty</FluentLabel>
+                                                            </FluentGridItem>
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>Price</FluentLabel>
+                                                            </FluentGridItem>
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>@obj.Qty</FluentLabel>
+                                                            </FluentGridItem>
+                                                            <FluentGridItem xs="6" sm="6">
+                                                                <FluentLabel>@obj.Price</FluentLabel>
+                                                            </FluentGridItem>
+                                                        </FluentGrid>
+                                                    </FluentCard>
+                                                }
+                                            </div>
+                                        </ChildContent>
+                                        <LoadingTemplate>
+                                            <FluentProgress Width="150px;"/>
+                                        </LoadingTemplate>
+                                    </FluentPullToRefresh>
+                                </div>
+                                <!-- #endregion -->
+                            </div>
+                        </FluentGridItem>
+                    </FluentGrid>
+                </div>
+            </FluentBodyContent>
+        </FluentStack>
+        <AnchorNavigation Url="listdeliveryorder/#top-nav-1"/>
+    </FluentLayout>
+}
+else
+{
+    <ViewItemDetailReturn
+        ItemDetail="@GoodReceiptPoLineByDocNum.FirstOrDefault(x => x.ItemCode == _itemCode && x.BaseLineNumber == _lineNum)"
+        GetBatchOrSerials="@GetBatchOrSerials.Where(x => x.ItemCode == _itemCode).ToList()"
+        IsViewDetailBack="OnViewItemDetail"/>
+}

@@ -1,0 +1,56 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components.Extensions
+<style>
+    .@newCssId {
+        position: fixed;
+        bottom: 20px;
+        @if (Position == PositionEnum.Right)
+        {
+            @(new MarkupString("right: 20px;"))
+        }
+        @if (Position == PositionEnum.Left)
+        {
+            @(new MarkupString("left: 20px;"))
+        }
+        z-index: 1000;
+    }
+</style>
+
+<div class="@newCssId">
+    @if (!string.IsNullOrEmpty(@Title))
+    {
+        <FluentButton IconEnd="@Icon"
+                      Id="@buttonId"
+                      Class="fab-button"
+                      Appearance="Appearance.Accent"
+                      BackgroundColor="@ColorButton.GetDescription()"
+                      OnClick="Callback">
+            @Title
+        </FluentButton>
+    }
+    else
+    {
+        <FluentButton IconEnd="@Icon"
+                      Id="myBtn"
+                      Class="fab-button"
+                      OnClick="Callback"/>
+    }
+</div>
+
+@code
+{
+    [Parameter] public Icon? Icon { get; set; }
+    [Parameter] public Func<MouseEventArgs, Task> Callback { get; set; } = default!;
+
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    [Parameter] public PositionEnum Position { get; set; } = PositionEnum.Right;
+    [Parameter] public Color ColorButton { get; set; } = Color.Success;
+
+    private string newCssId = "fab-container-" + Guid.NewGuid().ToString();
+    private string buttonId = "btn-" + Guid.NewGuid().ToString();
+    public enum PositionEnum
+    {
+        Left,
+        Right
+    }
+}

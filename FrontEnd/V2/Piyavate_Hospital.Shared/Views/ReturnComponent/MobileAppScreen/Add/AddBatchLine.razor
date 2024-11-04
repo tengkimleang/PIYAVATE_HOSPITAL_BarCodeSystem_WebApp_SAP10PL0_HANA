@@ -1,0 +1,129 @@
+﻿<SectionContent SectionName="Is-BackButton">
+    <FluentButton IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())"
+                  Title="Back"
+                  OnClick="@(e => IsViewDetail())"
+                  Class="margin-xs"/>
+    @(new MarkupString($@"&nbsp;&nbsp;Add Batch"))
+</SectionContent>
+<FluentLayout Style="margin-top: 0;">
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content" Style="overflow: auto">
+            <div class="content">
+                <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+
+                    <FluentGridItem xs="12" sm="4" lg="6" xl="6">
+                        <FluentAutocomplete Required
+                                            TOption="GetBatchOrSerial"
+                                            Width="100%"
+                                            Placeholder="Batch Search"
+                                            OnOptionsSearch="OnSearchBatch"
+                                            MaximumOptionsSearch="1"
+                                            Label="Batch Code"
+                                            Virtualize="true"
+                                            Items="SerialBatchDeliveryOrders"
+                                            MaximumSelectedOptions="1"
+                                            OptionText="@(item => $"{item.SerialBatch}")"
+                                            @bind-SelectedOptions="@SelectedBatch"
+                                            ValueChanged="@(e => UpdateItemDetails(e ?? ""))"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentAutocomplete Required
+                                            TOption="ItemType"
+                                            Width="100%"
+                                            Placeholder="Serial Code"
+                                            OnOptionsSearch="OnSearchType"
+                                            MaximumOptionsSearch="1"
+                                            Virtualize="true"
+                                            Items="_type"
+                                            MaximumSelectedOptions="1"
+                                            OptionValue="@(item => item.Id.ToString())"
+                                            OptionText="@(item => $"{item.Name}")"
+                                            @bind-SelectedOptions="@BatchReturnComponentProduction.OnSelectedType"
+                                            ValueChanged="@(e => OnSelectedType(e))"/>
+                    </FluentGridItem>
+                    @if (DisplayNoneOrShow)
+                    {
+                        @if (BatchReturnComponentProduction.OnSelectedType.FirstOrDefault()?.Name == "Manual")
+                        {
+                            <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                                <FluentAutocomplete Required
+                                                    TOption="GetProductionOrder"
+                                                    Width="100%"
+                                                    Placeholder="Search DocNum"
+                                                    OnOptionsSearch="OnSearchDocNum"
+                                                    MaximumOptionsSearch="1"
+                                                    Virtualize="true"
+                                                    Items="SelectedProductionOrder"
+                                                    MaximumSelectedOptions="1"
+                                                    OptionText="@(item => $"{item.DocNum}")"
+                                                    @bind-SelectedOptions="@BatchReturnComponentProduction.OnSelectedProductionOrder"
+                                                    ValueChanged="@((e) => OnSelectedDocument(e))"/>
+                            </FluentGridItem>
+                            <FluentGridItem xs="12">
+                                <FluentNumberField @bind-Value=@BatchReturnComponentProduction.QtyLost 
+                                                   @onchange="@(e => OnChangeQtyManual(e, BatchReturnComponentProduction))"
+                                                   Label="Qty Lost"
+                                                   Placeholder="Qty" TValue="double"/>
+                            </FluentGridItem>
+                        }
+                    }
+                    @if (BatchReturnComponentProduction.OnSelectedType.FirstOrDefault()?.Name == "Manual")
+                    {
+                        <FluentGridItem xs="12">
+                            <FluentNumberField Label="Qty"
+                                               @bind-Value="@BatchReturnComponentProduction.QtyManual"
+                                               style="width: 100%;">
+                            </FluentNumberField>
+                        </FluentGridItem>
+                    }
+                    else
+                    {
+                        <FluentGridItem xs="12">
+                            <FluentNumberField Label="Qty"
+                                               @bind-Value="@BatchReturnComponentProduction.Qty"
+                                               style="width: 100%;">
+                            </FluentNumberField>
+                        </FluentGridItem>
+                    }
+                    
+                    <FluentGridItem xs="12">
+                        <FluentTextField Value="@SelectedBatch.FirstOrDefault()?.Qty"
+                                         Disabled="true"
+                                         Label="Qty Available"
+                                         style="width: 100%;"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentTextField Value="@($"{(BatchReturnComponentProduction.ExpDate.HasValue ? BatchReturnComponentProduction.ExpDate.Value.ToString("dd/MM/yyyy") : "")}")"
+                                         Disabled="true"
+                                         Label="Expire Date"
+                                         style="width: 100%;"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentTextField Value="@($"{(BatchReturnComponentProduction.ManfectureDate.HasValue ? BatchReturnComponentProduction.ManfectureDate.Value.ToShortDateString() : "")}")"
+                                         Disabled="true"
+                                         Label="Manufacturer Date"
+                                         style="width: 100%;"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <FluentTextField Value="@($"{(BatchReturnComponentProduction.AdmissionDate.HasValue ? BatchReturnComponentProduction.AdmissionDate.Value.ToString("dd/MM/yyyy") : "")}")"
+                                         Disabled="true"
+                                         Label="Admission Date"
+                                         style="width: 100%;"/>
+                    </FluentGridItem>
+                </FluentGrid>
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+    <FloatActionButton Icon="@(new Icons.Regular.Size20.Add())"
+                       Title="@(IsUpdate ? "Update" : "Add")"
+                       Callback="@(e => SaveBatch(BatchReturnComponentProduction))"/>
+    @if (IsUpdate)
+    {
+        <FloatActionButton Icon="@(new Icons.Regular.Size20.Delete())"
+                           Title="Delete"
+                           Callback="@(e => DeleteBatch(Index))"
+                           Position="FloatActionButton.PositionEnum.Left"
+                           ColorButton="Color.Error"/>
+    }
+
+</FluentLayout>

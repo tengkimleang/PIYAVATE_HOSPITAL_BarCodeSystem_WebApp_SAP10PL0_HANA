@@ -1,0 +1,105 @@
+﻿@* @inject IJSRuntime JSRuntime *@
+@* @inject NavigationManager NavigationManager *@
+@* @implements IDisposable *@
+@* @(new MarkupString("<script> function BlazorScrollToId(id) " + *@
+@*                    "{ const element = document.getElementById(id); " + *@
+@*                    "if (element instanceof HTMLElement) {" + *@
+@*                    " element.scrollIntoView(" + *@
+@*                    "{ behavior: \"smooth\", " + *@
+@*                    "block: \"start\", " + *@
+@*                    "inline: \"nearest\" " + *@
+@*                    "}" + *@
+@*                    "); " + *@
+@*                    "} " + *@
+@*                    "} </script>")) *@
+@* @code { *@
+@*     protected override void OnInitialized() *@
+@*     { *@
+@*         NavigationManager.LocationChanged += OnLocationChanged!; *@
+@*     } *@
+@* *@
+@*     protected override async Task OnAfterRenderAsync(bool firstRender) *@
+@*     { *@
+@*         await ScrollToFragment(); *@
+@*     } *@
+@* *@
+@*     public void Dispose() *@
+@*     { *@
+@*         NavigationManager.LocationChanged -= OnLocationChanged!; *@
+@*     } *@
+@* *@
+@*     private async void OnLocationChanged(object sender, LocationChangedEventArgs e) *@
+@*     { *@
+@*         await ScrollToFragment(); *@
+@*     } *@
+@* *@
+@*     private async Task ScrollToFragment() *@
+@*     { *@
+@*         var uri = new Uri(NavigationManager.Uri, UriKind.Absolute); *@
+@*         var fragment = uri.Fragment; *@
+@*         if (fragment.StartsWith('#')) *@
+@*         { *@
+@*             // Handle text fragment (https://example.org/#test:~:text=foo) *@
+@*             // https://github.com/WICG/scroll-to-text-fragment/ *@
+@*             var elementId = fragment.Substring(1); *@
+@*             var index = elementId.IndexOf(":~:", StringComparison.Ordinal); *@
+@*             if (index > 0) *@
+@*             { *@
+@*                 elementId = elementId.Substring(0, index); *@
+@*             } *@
+@* *@
+@*             if (!string.IsNullOrEmpty(elementId)) *@
+@*             { *@
+@*                 await JSRuntime.InvokeVoidAsync("BlazorScrollToId", elementId); *@
+@*             } *@
+@*         } *@
+@*     } *@
+@* } *@
+@* @(new MarkupString( *@
+@*     $@" *@
+@*         <script> *@
+@*             // When the user scrolls down 20px from the top of the document, show the button *@
+@*             window.onscroll = function() {{scrollFunction()}}; *@
+@* *@
+@*             function scrollFunction() {{ *@
+@*               console.log(document.body.scrollTop); *@
+@*               if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {{ *@
+@*                 document.getElementById(""myBtn"").style.display = ""block""; *@
+@*               }} else {{ *@
+@*                 document.getElementById(""myBtn"").style.display = ""none""; *@
+@*               }} *@
+@*             }} *@
+@*         </script> *@
+@*     " *@
+@*     )) *@
+<style>
+    .fab-container {
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 1000; /* Ensure the button is above other content */
+    }
+
+    .fab-button {
+        /*background-color: #0078D4;*/
+        color: white;
+        border-radius: 50%;
+        /*width: 56px;*/
+        /*height: 56px;*/
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);*/
+        cursor: pointer;
+    }
+</style>
+<div class="fab-container">
+    <FluentAnchor IconEnd="@(new Icons.Regular.Size32.ArrowCircleUp())"
+                  Id="myBtn"
+                  Class="fab-button"
+                  Href="@Url"/>
+</div>
+@code
+{
+    [Parameter] public string Url { get; set; } = string.Empty;
+}

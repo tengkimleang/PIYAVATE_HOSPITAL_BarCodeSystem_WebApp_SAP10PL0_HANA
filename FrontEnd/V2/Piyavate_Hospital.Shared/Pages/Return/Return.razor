@@ -1,0 +1,23 @@
+﻿@* @page "/return" *@
+@using Piyavate_Hospital.Shared.Views.Return.MobileAppScreen
+@inherits MvvmComponentBase<ReturnViewModel>
+@rendermode InteractiveWebAssembly
+@* @attribute [StreamRendering] *@
+<PageTitle>Return</PageTitle>
+<AuthorizeView Context="another_name">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <ReturnDashboard/>
+            }
+            else
+            {
+                <ReturnDefault ViewModel="ViewModel"/>
+            }
+        }
+    </Authorized>
+</AuthorizeView>

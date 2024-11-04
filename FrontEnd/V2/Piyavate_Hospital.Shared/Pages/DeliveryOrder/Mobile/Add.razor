@@ -1,0 +1,14 @@
+﻿@page "/DeliveryOrder/Mobile/Add/{DocEntry:int?}"
+@using Piyavate_Hospital.Shared.Views.DeliveryOrder.MobileAppScreen.Add
+@rendermode InteractiveWebAssembly
+<PageTitle>Create Delivery Order</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <AddDeliveryOrderMobile DocEntry="DocEntry" Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>
+
+@code{
+[Parameter] public int DocEntry { get; set; }
+}

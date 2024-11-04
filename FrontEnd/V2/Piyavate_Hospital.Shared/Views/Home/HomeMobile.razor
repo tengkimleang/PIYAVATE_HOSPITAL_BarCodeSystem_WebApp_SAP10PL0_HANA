@@ -1,0 +1,195 @@
+﻿@rendermode InteractiveWebAssembly
+<FluentLayout Style="margin-top: 0;">
+
+    @* <FluentHeader Style="background-color: transparent;padding: 0;z-index: 0;"> *@
+    @*     <FluentBreadcrumb> *@
+    @*         <FluentBreadcrumbItem> *@
+    @*             Home *@
+    @*             <FluentIcon Value="@(new Icons.Regular.Size16.Home())" Color="@Color.Neutral" Slot="start" /> *@
+    @*         </FluentBreadcrumbItem> *@
+    @*     </FluentBreadcrumb> *@
+    @*     <FluentSpacer /> *@
+    @* </FluentHeader> *@
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content" Style="height:90% !important;">
+            <div class="content-xs" style="margin-top:16px">
+                <!-- #region Search -->
+                <FluentGrid Spacing="2" AdaptiveRendering="true">
+                    <FluentGridItem xs="12" sm="12" md="6" lg="4" xl="4">
+                        <FluentSearch @bind-Value="_searchValue"
+                                      @bind-Value:after="OnSearch"
+                                      Immediate="true"
+                                      ImmediateDelay="500"
+                                      Placeholder="Search for name"
+                                      style="width: 100%;" />
+                    </FluentGridItem>
+                </FluentGrid>
+                <!-- #endregion -->
+                <!-- #region A/R Sales -->
+                <div style="margin-top:10px">
+                    <span>
+                        <FluentIcon Value="@(new Icons.Regular.Size20.CopyAdd())" />
+                        A/R Sale
+                    </span>
+                    <FluentDivider Style="height: 10px;border-width:1px;"
+                                   Role="@DividerRole.Presentation"
+                                   Orientation="Orientation.Horizontal"></FluentDivider>
+                </div>
+                <FluentGrid Spacing="2" AdaptiveRendering="true">
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("deliveryorder"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.Archive())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Delivery Order</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("ReturnRequest"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.ArchiveArrowBack())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Return Request</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    @if (1 == 2)
+                    {
+                        <FluentGridItem xs="4">
+                            <FluentCard @onclick="@(e => OnNavigate("return"))"
+                                        Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <FluentIcon Value="@(new Icons.Regular.Size20.ArchiveArrowBack())" />
+                                <FluentLabel Style="font-size:12px; text-align: center;">Return</FluentLabel>
+                            </FluentCard>
+                        </FluentGridItem>
+                        <FluentGridItem xs="4">
+                            <FluentCard @onclick="@(e => OnNavigate("arcreditmemo"))"
+                                        Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <FluentIcon Value="@(new Icons.Regular.Size20.WalletCreditCard())" />
+                                <FluentLabel Style="font-size:12px; text-align: center;">A/R Credit Memo</FluentLabel>
+                            </FluentCard>
+                        </FluentGridItem>
+                    }
+                    
+                </FluentGrid>
+                <!-- #endregion -->
+                <!-- #region A/P Purchase -->
+                <div style="margin-top:10px">
+                    <span>
+                        <FluentIcon Value="@(new Icons.Regular.Size20.CopyArrowRight())" />
+                        A/P Purchase
+                    </span>
+                    <FluentDivider Style="height: 10px;border-width:1px;"
+                                   Orientation="Orientation.Horizontal"></FluentDivider>
+                </div>
+                <FluentGrid Spacing="2" AdaptiveRendering="true">
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("goodreceptpoform"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.BoxArrowUp())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Good Receipt PO</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("goodreturn"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.BoxArrowLeft())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Good Return</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                </FluentGrid>
+                <!-- #endregion -->
+                <!-- #region Inventory Transaction -->
+                <div style="margin-top:10px">
+                    <span>
+                        <FluentIcon Value="@(new Icons.Regular.Size20.CubeAdd())" />
+                        Inventory Transaction
+                    </span>
+                    <FluentDivider Style="height: 10px;border-width:1px;"
+                                   Orientation="Orientation.Horizontal"></FluentDivider>
+                </div>
+                <FluentGrid Spacing="2" AdaptiveRendering="true">
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("inventorytransfer"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.Cube())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Inventory Transfer</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("inventorycounting"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.BookAdd())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Inventory Counting</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                </FluentGrid>
+                <!-- #endregion -->
+                <!-- #region name -->
+                <div style="margin-top:10px">
+                    <span>
+                        <FluentIcon Value="@(new Icons.Regular.Size20.Production())" />
+                        Production
+                    </span>
+                    <FluentDivider Style="height: 10px;border-width:1px;"
+                                   Orientation="Orientation.Horizontal"></FluentDivider>
+                </div>
+                <FluentGrid Spacing="2" AdaptiveRendering="true" Style="padding-bottom: 5px">
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("issueforproduction"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Issue For Production</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("ReturnFromComponent"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Return Component</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("ReceiptsFinishedGoods"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Receipt FG</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="@(e => OnNavigate("ProductionProcess"))"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.DocumentBulletListArrowLeft())" />
+                            <FluentLabel Style="font-size:12px; text-align: center;">Production Process</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                </FluentGrid>
+                <!-- #endregion -->
+
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>
+
+
+@code {
+    private string? _searchValue;
+    private void OnSearch()
+    {
+        // if (!string.IsNullOrWhiteSpace(_searchValue))
+        // {
+        //     // You can also call an API here if the list is not local.
+        //     var results = searchData
+        //         .Where(str => str.Contains(_searchValue, StringComparison.OrdinalIgnoreCase))
+        //         .Select(str => str)
+        //         .ToList();
+
+        //     _searchResults = results.Any() ? results : DefaultResults();
+        // }
+        // else
+        // {
+        //     _searchResults = DefaultResults();
+        // }
+    }
+    private void OnNavigate(string url)
+    {
+        NavigationManager.NavigateTo(url);
+    }
+}

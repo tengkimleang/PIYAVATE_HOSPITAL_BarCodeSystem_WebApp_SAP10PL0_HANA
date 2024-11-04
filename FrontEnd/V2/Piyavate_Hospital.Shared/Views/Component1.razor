@@ -1,0 +1,20 @@
+﻿@using Piyavate_Hospital.Shared.Services
+@inject IFormFactor FormFactor
+
+<div class="my-component">
+    <p>You are running on:</p>
+
+    <h3>@factor</h3>
+    <h3>@platform</h3>
+
+    <em>This component is defined in the <strong>MyApp.Shared</strong> library.</em>
+</div>
+<FluentCard>
+    <h2>Hello World!</h2>
+    <FluentButton Appearance="@Appearance.Accent">Click Me</FluentButton>
+</FluentCard>
+
+@code {
+    private string factor => FormFactor.GetFormFactor();
+    private string platform => FormFactor.GetPlatform();
+}

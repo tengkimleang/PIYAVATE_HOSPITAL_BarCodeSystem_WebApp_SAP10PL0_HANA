@@ -1,0 +1,10 @@
+@page "/InventoryCounting/Mobile/Add"
+@using Piyavate_Hospital.Shared.Views.InventoryCounting.MobileAppScreen.Add
+@rendermode InteractiveWebAssembly
+<PageTitle>Create Inventory Counting</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <AddInventoryCountingMobile Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

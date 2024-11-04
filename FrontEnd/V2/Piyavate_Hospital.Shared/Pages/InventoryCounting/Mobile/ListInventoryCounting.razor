@@ -1,0 +1,10 @@
+@page "/InventoryCounting/Mobile/ListInventoryCounting"
+@using Piyavate_Hospital.Shared.Views.InventoryCounting.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Inventory Counting</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearch Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

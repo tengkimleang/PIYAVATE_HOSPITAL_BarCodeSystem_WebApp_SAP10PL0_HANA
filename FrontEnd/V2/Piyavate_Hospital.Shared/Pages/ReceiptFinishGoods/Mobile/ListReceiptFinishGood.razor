@@ -1,0 +1,10 @@
+﻿@page "/ReceiptFinishGoods/Mobile/ListReceiptFinishGood"
+@using Piyavate_Hospital.Shared.Views.ReceiptFromProduction.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Receipt Finished Good</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearch Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

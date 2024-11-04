@@ -1,0 +1,113 @@
+@inherits MvvmComponentBase<InventoryCountingViewModel>
+
+@if (_isView == false)
+{
+<FluentLayout Style="margin-top: 0;">
+
+    <FluentHeader Style="background-color: transparent;padding: 0;z-index: 0;margin-top:1rem;">
+        <FluentBreadcrumb>
+            <FluentBreadcrumbItem>
+                @_stringDisplay
+                <FluentIcon Value="@(new Icons.Filled.Size20.BookAdd())" Color="@Color.Neutral" Slot="start" />
+            </FluentBreadcrumbItem>
+        </FluentBreadcrumb>
+        <FluentSpacer />
+        &nbsp;&nbsp;
+        <FluentButton OnClick="OpenListDataAsyncAsync" IconEnd="@(new Icons.Filled.Size24.Search())">
+            Search
+        </FluentButton>
+        &nbsp;&nbsp;
+        <FluentButton OnClick="(e) => OnSaveTransaction()" IconEnd="@(new Icons.Filled.Size24.Save())">
+            Save
+        </FluentButton>
+        &nbsp;&nbsp;
+        <FluentButton OnClick="@((e) => OnSaveTransaction("print"))" IconEnd="@(new Icons.Filled.Size24.PrintAdd())">
+            @_saveWord Print
+        </FluentButton>
+    </FluentHeader>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content" Style="height:90% !important;">
+            <div class="content">
+                <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@ViewModel.InventoryCountingHeader.Series" Label="DocNum" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@ViewModel.InventoryCountingHeader.CreateDate.ToShortDateString()" Label="Create Date" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@ViewModel.InventoryCountingHeader.CreateTime.ToString()" Label="Create Time" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@ViewModel.InventoryCountingHeader.Ref2" Label="Ref 2" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="6" xl="6">
+                        <FluentAutocomplete Required
+                                            TOption="GetInventoryCountingList"
+                                            Width="100%"
+                                            Placeholder="Document Number"
+                                            OnOptionsSearch="OnSearch"
+                                            MaximumOptionsSearch="1"
+                                            Label="Document Number"
+                                            Virtualize="true"
+                                            Items="ViewModel.GetInventoryCountingLists"
+                                            MaximumSelectedOptions="1"
+                                            OptionText="@(item => $"{item.Series}")"
+                                            @bind-SelectedOptions="@SelectedProductionOrder"
+                                            ValueChanged="UpdateItemDetails"/>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                        <FluentTextField Value="@ViewModel.InventoryCountingHeader.InventoryCountingType" Label="Counting Type" style="width: 100%;" ReadOnly></FluentTextField>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12" sm="12" lg="12" xl="12" Justify="JustifyContent.FlexEnd">
+                        <FluentButton IconEnd="@(new Icons.Filled.Size24.Add())" OnClick="async (e) => await OpenDialogAsync(new()).ConfigureAwait(false)">
+                            Add Line
+                        </FluentButton>
+                    </FluentGridItem>
+                    <FluentGridItem xs="12">
+                        <div class="grid" style="width: 100%; overflow:auto;">
+                            <FluentDataGrid TGridItem=@InventoryCountingLine
+                                            ResizableColumns="true"
+                                            GridTemplateColumns="0.5fr 1.7fr 1.5fr 1.5fr 1fr 1.5fr"
+                                            Style=@_dataGrid
+                                            Items="ViewModel.InventoryCountingHeader.Lines?.AsQueryable()">
+                                <PropertyColumn Title="No ." Property="@(c => c.LineNum)" Sortable="true" Tooltip="true" />
+                                <TemplateColumn Tooltip="true" Title="Action">
+                                    <FluentButton Appearance="Appearance.Accent" OnClick="(e) => DeleteLine(ViewModel.InventoryCountingHeader.Lines!.IndexOf(context))" IconEnd="@(new Icons.Regular.Size24.Delete())">
+                                        Delete
+                                    </FluentButton>
+                                    <FluentButton OnClick="(e) => OpenDialogAsync(context)" IconEnd="@(new Icons.Regular.Size24.Edit().WithColor(Color.Info))">
+                                        Edit
+                                    </FluentButton>
+                                </TemplateColumn>
+                                <PropertyColumn Title="Item Code" Property="@(c => c.ItemCode)" Tooltip="true" />
+                                <PropertyColumn Title="Item Name" Property="@(c => c.ItemName)" Tooltip="true" />
+                                <PropertyColumn Title="Whs Name" Property="@(c => c.WhsCode)" Tooltip="true" />
+                                <PropertyColumn Title="Qty in Whs" Property="@(c => c.Qty)" Tooltip="true" />
+                                <PropertyColumn Title="Qty Counted" Property="@(c => c.QtyCounted)" Tooltip="true" />
+                            </FluentDataGrid>
+                        </div>
+                    </FluentGridItem>
+                </FluentGrid>
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>
+}
+else
+{
+<ViewInventoryCountingForm AddNew="OnView"
+                           Search="OpenListDataAsyncAsync"
+                           OnViewBatchOrSerial="OnGetBatchOrSerial"
+                           Title="Inventory Counting"
+                           GetDetailInventoryCountingHeaderByDocNums="ViewModel.GetDetailInventoryCountingHeaderByDocNums.FirstOrDefault()"
+                           GetDetailInventoryCountingLineByDocNums="ViewModel.GetDetailInventoryCountingLineByDocNums" />
+}
+
+<FluentOverlay @bind-Visible=@_visible
+               Opacity="0.4"
+               FullScreen="true"
+               OnClose="OnCloseOverlay"
+               PreventScroll=true>
+    <FluentProgressRing />
+</FluentOverlay>

@@ -1,0 +1,10 @@
+﻿@page "/ReturnRequest/Mobile/ListDeliveryOrder"
+@using Piyavate_Hospital.Shared.Views.ReturnRequest.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Delivery Order</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearchDeliveryOrderReturnRequest Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

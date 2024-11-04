@@ -1,0 +1,8 @@
+﻿<FluentMenuButton Text="Print"
+                  OnMenuChanged="HandleOnMenuChanged">
+    @* <FluentMenuItem Id="0078D4">Raw Material</FluentMenuItem> *@
+    @foreach(var item in GetLayouts)
+    {
+        <FluentMenuItem Id="@item.Code">@item.Name</FluentMenuItem>
+    }
+</FluentMenuButton>

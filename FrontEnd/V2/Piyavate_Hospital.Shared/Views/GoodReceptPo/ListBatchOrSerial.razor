@@ -1,0 +1,48 @@
+﻿@using Piyavate_Hospital.Shared.Models.Gets
+@rendermode InteractiveWebAssembly
+@implements IDialogContentComponent<Dictionary<string, object>>
+<style>
+    .fluent-toast-provider {
+        z-index: 10050 !important;
+    }
+</style>
+@* Header *@
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.AddCircle())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+@* Footer *@
+<FluentDialogFooter>
+</FluentDialogFooter>
+@* Body *@
+<FluentDialogBody Style="overflow-y:scroll;">
+    <FluentLayout Style="margin-top: 0px;">
+        <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+            <FluentBodyContent Class="body-content">
+                <div class="content">
+                    <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                        <FluentGridItem xs="12" sm="12" lg="12" xl="12" Style="overflow: auto;">
+                            <FluentDataGrid TGridItem=@GetBatchOrSerial
+                                            Items="GetListData.AsQueryable()"
+                                            ResizableColumns="true"
+                                            GridTemplateColumns="1fr 1fr 0.5fr 2fr 1fr 1fr"
+                                            Style=@dataGrid>
+                                <PropertyColumn Title="Type" Property="@(c => c.Type)" Tooltip="true"/>
+                                <PropertyColumn Title="ItemCode" Property="@(c => c.ItemCode)" Tooltip="true"/>
+                                <PropertyColumn Title="Qty" Property="@(c => c.Qty)" Tooltip="true"/>
+                                <PropertyColumn Title="SerialBatch" Property="@(c => c.SerialBatch)" Tooltip="true"/>
+                                <PropertyColumn Title="MfrSerialNo" Property="@(c => c.MfrSerialNo)" Tooltip="true"/>
+                                <PropertyColumn Title="Expire Date" Property="@(c => c.ExpDate)" Tooltip="true"/>
+                                <PropertyColumn Title="Mrf Date" Property="@(c => c.MrfDate)" Tooltip="true"/>
+                            </FluentDataGrid>
+                        </FluentGridItem>
+                    </FluentGrid>
+                </div>
+            </FluentBodyContent>
+        </FluentStack>
+    </FluentLayout>
+</FluentDialogBody>

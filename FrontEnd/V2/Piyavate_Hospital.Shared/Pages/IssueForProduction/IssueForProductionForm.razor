@@ -1,0 +1,21 @@
+﻿@page "/issueforproduction"
+@using Piyavate_Hospital.Shared.Views.IssueForProduction.MobileAppScreen
+@rendermode InteractiveWebAssembly
+<PageTitle>Issue For Production</PageTitle>
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <IssueForProductionDashboard/>
+            }
+            else
+            {
+                <IssueForProductionDefault Token="@(anotherName.User.FindFirst("token")?.Value)"/>
+            }
+        }
+    </Authorized>
+</AuthorizeView>

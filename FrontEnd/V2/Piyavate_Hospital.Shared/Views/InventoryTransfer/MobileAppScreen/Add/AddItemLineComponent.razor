@@ -1,0 +1,238 @@
+﻿@if (_isBackFromBatch is false)
+{
+    <SectionContent SectionName="Is-BackButton">
+        <FluentButton IconEnd="@(new Icons.Regular.Size20.ArrowCircleLeft())"
+                      Title="Back"
+                      OnClick="@(e => IsViewDetail())"
+                      Class="margin-xs"/>
+        @(new MarkupString($@"&nbsp;&nbsp;Add Line"))
+    </SectionContent>
+    <FluentLayout Style="margin-top: 0;">
+        <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+            <FluentBodyContent Class="body-content" Style="overflow: auto">
+                <div class="content">
+
+                    <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                        <FluentGridItem xs="12" sm="4" lg="6" xl="6">
+                            <FluentAutocomplete Required
+                                                TOption="Items"
+                                                Width="100%"
+                                                Placeholder="Item Master Data"
+                                                OnOptionsSearch="OnSearch"
+                                                MaximumOptionsSearch="1"
+                                                Label="Item Code"
+                                                Virtualize="true"
+                                                Items="Item"
+                                                MaximumSelectedOptions="1"
+                                                OptionText="@(item => $"{item.ItemCode} - {item.ItemName}")"
+                                                @bind-SelectedOptions="@_selectedItem"
+                                                ValueChanged="@(e => UpdateItemDetails(e ?? ""))"/>
+                        </FluentGridItem>
+                        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
+                            <FluentNumberField @bind-Value="@DataResult.Qty" Label="Qty" style="width: 100%;">
+                            </FluentNumberField>
+                        </FluentGridItem>
+                    </FluentGrid>
+                    @if (_isItemBatch)
+                    {
+                        <FluentButton Style="margin-top:20px" OnClick="@(e => AddLineToBatch(null))" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))">
+                            Add Batch
+                        </FluentButton>
+                        <div class="grid" style="width: 100%;height: 450px; overflow-x:auto;">
+                            <!-- #region For Each CardBox -->
+                            <div class="pull-up-demo">
+                                <FluentPullToRefresh Id="main-menu"
+                                                     Direction="@PullDirection.Up"
+                                                     ShowStaticTip="false"
+                                                     TipHeight="30"
+                                                     DragDistance="75">
+                                    <PullingTemplate>
+                                        Pull to refresh
+                                    </PullingTemplate>
+                                    <ReleaseTemplate>
+                                        Release to update
+                                    </ReleaseTemplate>
+                                    <CompletedTemplate>
+                                        Update completed
+                                    </CompletedTemplate>
+                                    <ChildContent>
+                                        <div class="pull-content">
+                                            @foreach (var obj in _batchReceiptPo)
+                                            {
+                                                <FluentCard MinimalStyle="true"
+                                                            Style="width: 100%; margin-bottom: 10px;"
+                                                            @onclick="@(e => AddLineToBatch(obj))">
+                                                    <FluentGrid Spacing="1" AdaptiveRendering="true">
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Batch Code</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Qty</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">@obj.BatchCode</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">@obj.Qty</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Mfr Date</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Expire Date</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">
+                                                                @(obj.ManfectureDate.HasValue ? obj.ManfectureDate.Value.ToString("dd/MM/yyyy") : "")
+                                                            </FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">
+                                                                @(obj.ExpDate.HasValue ? obj.ExpDate.Value.ToString("dd/MM/yyyy") : "")
+                                                            </FluentLabel>
+                                                        </FluentGridItem>
+                                                    </FluentGrid>
+                                                </FluentCard>
+                                            }
+                                        </div>
+                                    </ChildContent>
+                                    <LoadingTemplate>
+                                        <FluentProgress Width="150px;"/>
+                                    </LoadingTemplate>
+                                </FluentPullToRefresh>
+                            </div>
+                            <!-- #endregion -->
+                        </div>
+                    }
+                    @if (_isItemSerial)
+                    {
+                        <FluentButton Style="margin-top:20px" OnClick="@(e => AddLineToSerial(null))" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))">
+                            Add Serial
+                        </FluentButton>
+                        <div class="grid" style="width: 100%; overflow-x:auto;">
+                            <!-- #region For Each CardBox -->
+                            <div class="pull-up-demo">
+                                <FluentPullToRefresh Id="main-menu"
+                                                     Direction="@PullDirection.Up"
+                                                     ShowStaticTip="false"
+                                                     TipHeight="30"
+                                                     DragDistance="75">
+                                    <PullingTemplate>
+                                        Pull to refresh
+                                    </PullingTemplate>
+                                    <ReleaseTemplate>
+                                        Release to update
+                                    </ReleaseTemplate>
+                                    <CompletedTemplate>
+                                        Update completed
+                                    </CompletedTemplate>
+                                    <ChildContent>
+                                        <div class="pull-content">
+                                            @foreach (var obj in _serialReceiptPo)
+                                            {
+                                                <FluentCard MinimalStyle="true"
+                                                            Style="width: 100%; margin-bottom: 10px;"
+                                                            @onclick="@(e => AddLineToSerial(obj))">
+                                                    <FluentGrid Spacing="1" AdaptiveRendering="true">
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Serial Code</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Qty</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">@obj.SerialCode</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">@obj.Qty</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Mfr Date</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Subject">Expire Date</FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">
+                                                                @(obj.MfrDate.HasValue ? obj.MfrDate.Value.ToString("dd/MM/yyyy") : "")
+                                                            </FluentLabel>
+                                                        </FluentGridItem>
+                                                        <FluentGridItem xs="6" sm="6">
+                                                            <FluentLabel Typo="Typography.Body">
+                                                                @(obj.ExpDate.HasValue ? obj.ExpDate.Value.ToString("dd/MM/yyyy") : "")
+                                                            </FluentLabel>
+                                                        </FluentGridItem>
+                                                    </FluentGrid>
+                                                </FluentCard>
+                                            }
+                                        </div>
+                                    </ChildContent>
+                                    <LoadingTemplate>
+                                        <FluentProgress Width="150px;"/>
+                                    </LoadingTemplate>
+                                </FluentPullToRefresh>
+                            </div>
+                            <!-- #endregion -->
+                        </div>
+                    }
+                    <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+                        @if (DataResult.LineNum == 0)
+                        {
+                            <FluentGridItem xs="12">
+                                <FluentButton Style="width:100%;color:white;"
+                                              OnClick="@(e => OnConfirmLine())"
+                                              IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Lightweight))"
+                                              BackgroundColor="var(--bs-green)">
+                                    Add Item
+                                </FluentButton>
+                            </FluentGridItem>
+                        }
+                        else
+                        {
+                            <FluentGridItem xs="6">
+                                <FluentButton Style="width:100%;color:white;"
+                                              OnClick="@(e => OnConfirmLine())"
+                                              IconEnd="@(new Icons.Regular.Size24.Edit().WithColor(Color.Lightweight))"
+                                              BackgroundColor="var(--bs-green)">
+                                    Update
+                                </FluentButton>
+                            </FluentGridItem>
+                            <FluentGridItem xs="6">
+                                <FluentButton Style="width:100%;color:white;"
+                                              OnClick="@(e => OnDeleteLineItem(DataResult.LineNum))"
+                                              IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Lightweight))"
+                                              BackgroundColor="var(--bs-red)">
+                                    Delete
+                                </FluentButton>
+                            </FluentGridItem>
+                        }
+                    </FluentGrid>
+                </div>
+            </FluentBodyContent>
+        </FluentStack>
+    </FluentLayout>
+}
+else
+{
+    @if (_isItemBatch)
+    {
+        <AddBatchLine IsViewDetail="OnAddItemLineBack"
+                      SaveBatch="OnAddBatchLine"
+                      SerialBatchDeliveryOrders="_serialBatchDeliveryOrders"
+                      IsUpdate="_isUpdate"
+                      Index="_indexOfLineBatch"
+                      SelectedBatch="_getBatchOrSerials"
+                      DeleteBatch="OnDeleteBatchLine"/>
+    }
+
+    @if (_isItemSerial)
+    {
+        <AddSerialLine IsViewDetail="OnAddItemLineBack"
+                       SaveSerial="OnAddSerialLine"
+                       SerialBatchDeliveryOrders="_serialBatchDeliveryOrders"
+                       IsUpdate="_isUpdate"
+                       Index="_indexOfLineSerial"
+                       SelectedSerial="_getBatchOrSerials"
+                       DeleteSerial="OnDeleteSerialLine"/>
+    }
+}

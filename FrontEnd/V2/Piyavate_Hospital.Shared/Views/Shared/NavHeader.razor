@@ -1,0 +1,36 @@
+﻿@rendermode InteractiveWebAssembly
+@if (isXs == false)
+{
+    <img src='_content/Tri_Wall.Shared/images/logo.png'
+         width='42px'
+         height='32px'
+         style='filter: brightness(0) invert(1);'
+         class="margin-xs"/>
+    @(new MarkupString($@"&nbsp;&nbsp;Tri-Wall"))
+    <div class="profile-menu-container">
+        <ProfileMenu/>
+    </div>
+}
+else
+{
+    <SectionOutlet SectionName="Is-BackButton" />
+    <div class="profile-menu-container">
+        <ProfileMenu/>
+    </div>
+}
+<FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize"
+            AdaptiveRendering="true">
+</FluentGrid>
+
+<SectionContent SectionName="Is-BackButton">
+    <div class="margin-xs"></div>
+    @(new MarkupString($@"&nbsp;&nbsp;Home"))
+</SectionContent>
+@code {
+    private bool isXs = false;
+    private void UpdateGridSize(GridItemSize size)
+    {
+        isXs = size == GridItemSize.Xs;
+    }
+
+}

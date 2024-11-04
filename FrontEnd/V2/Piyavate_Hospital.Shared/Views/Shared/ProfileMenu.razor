@@ -1,0 +1,18 @@
+﻿@rendermode InteractiveWebAssembly
+<FluentProfileMenu Image="_content/Tri_Wall.Shared/12345.jpg"
+                   Status="@PresenceStatus.Available" HeaderLabel="Tri-Wall" Initials="BG" FullName="Bill Gates"
+                   EMail="bill.gates@microsoft.com" OnHeaderButtonClick="OnSignOut"
+                   FooterLink="" />
+                   @* Style="min-width: 330px;" *@
+                   
+@code{
+    [Inject] CookieAuthenticationSateProvider AuthState { get; set; } = default!;
+
+    async Task OnSignOut()
+    {
+        Console.WriteLine("Hello");
+        await AuthState.LogOut();
+        NavigationManager.NavigateTo("/");
+    }
+
+}

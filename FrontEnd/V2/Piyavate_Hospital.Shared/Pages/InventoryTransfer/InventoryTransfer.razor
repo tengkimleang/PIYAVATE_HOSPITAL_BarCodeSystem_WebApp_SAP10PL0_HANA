@@ -1,0 +1,23 @@
+﻿@page "/inventorytransfer"
+@using Piyavate_Hospital.Shared.Views.InventoryTransfer.MobileAppScreen
+@inherits MvvmComponentBase<InventoryTransferViewModel>
+@rendermode InteractiveWebAssembly
+@* @attribute [StreamRendering] *@
+<PageTitle>Inventory Transfer</PageTitle>
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <FluentGrid Spacing="2" OnBreakpointEnter="@UpdateGridSize" AdaptiveRendering="true">
+        </FluentGrid>
+        @if (_init)
+        {
+            @if (_isXs)
+            {
+                <InventoryTransferDashboard/>
+            }
+            else
+            {
+                <InventoryTransferDefault Token="@(anotherName.User.FindFirst("token")?.Value)" ViewModel="ViewModel"/>
+            }
+        }
+    </Authorized>
+</AuthorizeView>

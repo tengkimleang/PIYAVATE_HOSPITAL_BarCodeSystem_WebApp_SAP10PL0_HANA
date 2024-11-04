@@ -1,0 +1,10 @@
+@page "/IssueForProduction/Mobile/ListIssueForProduction"
+@using Piyavate_Hospital.Shared.Views.IssueForProduction.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Issue For Production</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearch Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

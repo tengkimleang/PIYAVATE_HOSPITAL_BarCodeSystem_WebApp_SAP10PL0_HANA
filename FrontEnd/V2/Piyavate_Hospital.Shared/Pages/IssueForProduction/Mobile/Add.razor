@@ -1,0 +1,10 @@
+@page "/IssueForProduction/Mobile/Add"
+@using Piyavate_Hospital.Shared.Views.IssueForProduction.MobileAppScreen.Add
+@rendermode InteractiveWebAssembly
+<PageTitle>Create Issue For Production</PageTitle>
+
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <AddIssueForProductionMobile Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

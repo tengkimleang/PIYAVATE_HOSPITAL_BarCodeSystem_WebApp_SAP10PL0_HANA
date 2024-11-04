@@ -1,0 +1,57 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.JSInterop
+@using Piyavate_Hospital.Shared.Views.Shared
+@using Piyavate_Hospital.Shared.Views
+@using Piyavate_Hospital.Shared.ViewModels
+@using static InteractiveRenderSettings
+@using Piyavate_Hospital.Shared.Models.GoodReceiptPo
+@using CommunityToolkit.Mvvm
+@using Piyavate_Hospital.Shared.Models
+@using Piyavate_Hospital.Shared.Shared
+@using Piyavate_Hospital.Shared.Services
+@using System.Collections.ObjectModel
+@using Piyavate_Hospital.Shared.Models.DeliveryOrder
+@using Piyavate_Hospital.Shared.Models.Gets
+@using Piyavate_Hospital.Shared.Models.ReturnComponentProduction
+@using Piyavate_Hospital.Shared.Models.InventoryTransfer
+@using Piyavate_Hospital.Shared.Models.IssueForProduction
+@using Piyavate_Hospital.Shared.Models.InventoryCounting
+@using Piyavate_Hospital.Shared.Views.InventoryCounting
+@using Piyavate_Hospital.Shared.Views.Home
+@using Piyavate_Hospital.Shared.Views.DeliveryOrder
+@using Piyavate_Hospital.Shared.Views.DeliveryOrder.MobileAppScreen
+@using Microsoft.AspNetCore.Components.Sections
+@using Piyavate_Hospital.Shared.Views.DeliveryOrder.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.Shared.Component
+@using Microsoft.AspNetCore.Components.Authorization;
+@using Piyavate_Hospital.Shared.Models.ProductionProcess
+@using Piyavate_Hospital.Shared.Models.ReceiptFinishGood
+@using Piyavate_Hospital.Shared.Views.Return
+@using Piyavate_Hospital.Shared.Views.GoodReturn
+@using Piyavate_Hospital.Shared.Views.GoodReturn.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.GoodReceptPo
+@using Piyavate_Hospital.Shared.Views.GoodReceptPo.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.Return.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.ReturnRequest
+@using Piyavate_Hospital.Shared.Views.ReturnRequest.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.InventoryTransfer
+@using Piyavate_Hospital.Shared.Views.InventoryTransfer.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.InventoryCounting.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.IssueForProduction
+@using Piyavate_Hospital.Shared.Views.IssueForProduction.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.ReturnComponent
+@using Piyavate_Hospital.Shared.Views.ReturnComponent.MobileAppScreen.View
+@using Piyavate_Hospital.Shared.Views.ReceiptFromProduction
+@using System.Globalization
+@using Piyavate_Hospital.Shared.Views.ReceiptFromProduction.MobileAppScreen.View
+
+@inject IToastService ToastService
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime

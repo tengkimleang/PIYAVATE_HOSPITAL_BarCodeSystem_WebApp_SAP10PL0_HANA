@@ -1,0 +1,9 @@
+@page "/GoodReturn/Mobile/ListGoodReturn"
+@using Piyavate_Hospital.Shared.Views.GoodReturn.MobileAppScreen.List
+@rendermode InteractiveWebAssembly
+<PageTitle>List Good Return</PageTitle>
+<AuthorizeView Context="anotherName">
+    <Authorized>
+        <ListSearch Token="@anotherName.User.FindFirst("token")?.Value" />
+    </Authorized>
+</AuthorizeView>

@@ -1,0 +1,36 @@
+@rendermode InteractiveWebAssembly
+<FluentLayout Style="margin-top: 0;">
+    <SectionContent SectionName="Is-BackButton">
+        <BackButtonAction />
+        @(new MarkupString($@"&nbsp;&nbsp;Issue Production"))
+    </SectionContent>
+    <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100%">
+        <FluentBodyContent Class="body-content" Style="height:90% !important;margin-top: 10px;">
+            <div class="content-xs">
+                <FluentGrid Spacing="2" AdaptiveRendering="true" Style="margin-bottom: 10px;margin-top: 10px">
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="OnClickList"
+                                    Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.Search())"/>
+                            <FluentLabel Style="font-size:12px; text-align: center;">Search</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                    @* <FluentGridItem xs="4"> *@
+                    @*     <FluentCard @onclick="OnClickListSearchSalesOrder" *@
+                    @*         Style="display: flex; flex-direction: column; align-items: center; justify-content: center;"> *@
+                    @*         <FluentIcon Value="@(new Icons.Regular.Size20.DocumentCopy())"/> *@
+                    @*         <FluentLabel Style="font-size:12px; text-align: center;">Copy From</FluentLabel> *@
+                    @*     </FluentCard> *@
+                    @* </FluentGridItem> *@
+                    <FluentGridItem xs="4">
+                        <FluentCard @onclick="OnClickAddDeliveryOrderMobile"
+                            Style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <FluentIcon Value="@(new Icons.Regular.Size20.AddSquare())"/>
+                            <FluentLabel Style="font-size:12px; text-align: center;">Add New</FluentLabel>
+                        </FluentCard>
+                    </FluentGridItem>
+                </FluentGrid>
+            </div>
+        </FluentBodyContent>
+    </FluentStack>
+</FluentLayout>
