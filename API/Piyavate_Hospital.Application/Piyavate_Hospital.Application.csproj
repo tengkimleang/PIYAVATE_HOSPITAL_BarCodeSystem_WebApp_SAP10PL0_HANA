@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="FluentValidation" Version="11.9.2" />
+	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
+	<PackageReference Include="MediatR" Version="12.3.0" />
+	<PackageReference Include="Throw" Version="1.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Piyavate_Hospital.Domain\Piyavate_Hospital.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SAPBusinessOneSDK">
+      <HintPath>..\Piyavate_Hospital.SapSdk\SAPBusinessOneSDK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+	
+</Project>
