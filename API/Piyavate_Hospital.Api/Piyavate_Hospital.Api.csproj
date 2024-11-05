@@ -29,4 +29,13 @@
     <Content Remove="wwwroot\Layouts\Report\MaterialsPhase2-RouteStage-Sheet.rdl" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="publish\web.config" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.Development.json" />
+    <_ContentIncludedByDefault Remove="publish\appsettings.json" />
+    <_ContentIncludedByDefault Remove="publish\Piyavate_Hospital.Api.deps.json" />
+    <_ContentIncludedByDefault Remove="publish\Piyavate_Hospital.Api.runtimeconfig.json" />
+    <_ContentIncludedByDefault Remove="publish\Piyavate_Hospital.Api.staticwebassets.endpoints.json" />
+  </ItemGroup>
+
 </Project>

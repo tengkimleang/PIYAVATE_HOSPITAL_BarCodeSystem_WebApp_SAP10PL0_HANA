@@ -135,23 +135,23 @@
             </TemplateColumn>
             @if (displayNoneOrShow)
             {
-                <TemplateColumn Tooltip="true" Title="DocNum">
-                    @if (context.OnSelectedType.FirstOrDefault()?.Id == 2)
-                    {
-                        <FluentAutocomplete Required
-                                            TOption="GetProductionOrder"
-                                            Width="100%"
-                                            Placeholder="Document Number"
-                                            OnOptionsSearch="OnSearchDocNum"
-                                            MaximumOptionsSearch="1"
-                                            Virtualize="true"
-                                            Items="_selectedProductionOrder"
-                                            MaximumSelectedOptions="1"
-                                            OptionText="@(item => $"{item.DocNum}")"
-                                            @bind-SelectedOptions="@context.OnSelectedProductionOrder"
-                                            ValueChanged="@((e) => OnSelectedDocument(e??"", _batchReceiptPo.IndexOf(context)))"/>
-                    }
-                </TemplateColumn>
+                @* <TemplateColumn Tooltip="true" Title="DocNum"> *@
+                @*     @if (context.OnSelectedType.FirstOrDefault()?.Id == 2) *@
+                @*     { *@
+                @*         <FluentAutocomplete Required *@
+                @*                             TOption="GetProductionOrder" *@
+                @*                             Width="100%" *@
+                @*                             Placeholder="Document Number" *@
+                @*                             OnOptionsSearch="OnSearchDocNum" *@
+                @*                             MaximumOptionsSearch="1" *@
+                @*                             Virtualize="true" *@
+                @*                             Items="_selectedProductionOrder" *@
+                @*                             MaximumSelectedOptions="1" *@
+                @*                             OptionText="@(item => $"{item.DocNum}")" *@
+                @*                             @bind-SelectedOptions="@context.OnSelectedProductionOrder" *@
+                @*                             ValueChanged="@((e) => OnSelectedDocument(e??"", _batchReceiptPo.IndexOf(context)))"/> *@
+                @*     } *@
+                @* </TemplateColumn> *@
                 <TemplateColumn Tooltip="true" Title="Qty Lost">
                     @if (context.OnSelectedType.FirstOrDefault()?.Id == 2)
                     {
@@ -160,14 +160,16 @@
                 </TemplateColumn>
             }
             <TemplateColumn Tooltip="true" Title="Qty">
-                @if (context.OnSelectedType.FirstOrDefault()?.Id == 2)
-                {
-                    <FluentNumberField @bind-Value="@context.QtyManual" Placeholder="Qty Manual" TValue="double"/>
-                }
-                else
-                {
-                    <FluentNumberField @bind-Value=@context.Qty Placeholder="Qty" TValue="double"/>
-                }
+                @* @if (context.OnSelectedType.FirstOrDefault()?.Id == 2) *@
+                @* { *@
+                @*     <FluentNumberField @bind-Value="@context.QtyManual" Placeholder="Qty Manual" TValue="double"/> *@
+                @* } *@
+                @* else *@
+                @* { *@
+                @*     <FluentNumberField @bind-Value=@context.Qty Placeholder="Qty" TValue="double"/> *@
+                @* } *@
+                <FluentNumberField @bind-Value=@context.Qty Placeholder="Qty" TValue="double"/>
+                
             </TemplateColumn>
             <TemplateColumn Tooltip="true" Title="Qty Available">
                 <FluentNumberField ReadOnly Value="@context.QtyAvailable" Placeholder="Qty"></FluentNumberField>
@@ -233,48 +235,48 @@
     </div>
 }
 
-@if (IsItemNone)
-{
-    <FluentButton Style="margin-top:20px" OnClick="AddLineToBatchOrSerial" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))">
-        Add Line
-    </FluentButton>
-    <div class="grid" style="width: 100%; overflow-x:auto;">
-        <FluentDataGrid TGridItem=@ItemNoneReturnComponentProduction ResizableColumns="true"
-                        GridTemplateColumns="1fr 1fr 0.5fr 1fr 1fr 1fr 1fr"
-                        Items="_productionOrderNumber.AsQueryable()"
-                        Style=@dataGrid>
-            <TemplateColumn Tooltip="true" Title="Action">
-                <FluentButton Style="color:#BC2F32" OnClick="(e) => DeleteLineFromBatchOrSerial(_productionOrderNumber.IndexOf(context))" IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Error))">
-                    Delete
-                </FluentButton>
-            </TemplateColumn>
-            <TemplateColumn Tooltip="true" Title="DocNum">
-                <FluentAutocomplete Required
-                                    TOption="GetProductionOrder"
-                                    Width="100%"
-                                    Placeholder="Serial Code"
-                                    OnOptionsSearch="OnSearchDocNum"
-                                    MaximumOptionsSearch="1"
-                                    Virtualize="true"
-                                    Items="_selectedProductionOrder"
-                                    MaximumSelectedOptions="1"
-                                    OptionText="@(item => $"{item.DocNum}")"
-                                    @bind-SelectedOptions="@context.OnSelectedProductionOrder"
-                                    ValueChanged="@((e) => OnSelectedDocument(e??"", _productionOrderNumber.IndexOf(context)))"/>
-            </TemplateColumn>
-            <TemplateColumn Tooltip="true" Title="Qty">
-                <FluentNumberField @bind-Value=@context.Qty Placeholder="Qty">
-                </FluentNumberField>
-            </TemplateColumn>
-            <TemplateColumn Tooltip="true" Title="Qty Lost">
-                <FluentNumberField @bind-Value=@context.QtyLost
-                                                                                                       @onchange="@(e => OnChangeQtyManualItemNone(e, context))"
-                                   Placeholder="Qty"
-                                   TValue="double"/>
-            </TemplateColumn>
-        </FluentDataGrid>
-    </div>
-}
+@* @if (IsItemNone) *@
+@* { *@
+@*     <FluentButton Style="margin-top:20px" OnClick="AddLineToBatchOrSerial" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))"> *@
+@*         Add Line *@
+@*     </FluentButton> *@
+@*     <div class="grid" style="width: 100%; overflow-x:auto;"> *@
+@*         <FluentDataGrid TGridItem=@ItemNoneReturnComponentProduction ResizableColumns="true" *@
+@*                         GridTemplateColumns="1fr 1fr 0.5fr 1fr 1fr 1fr 1fr" *@
+@*                         Items="_productionOrderNumber.AsQueryable()" *@
+@*                         Style=@dataGrid> *@
+@*             <TemplateColumn Tooltip="true" Title="Action"> *@
+@*                 <FluentButton Style="color:#BC2F32" OnClick="(e) => DeleteLineFromBatchOrSerial(_productionOrderNumber.IndexOf(context))" IconEnd="@(new Icons.Regular.Size24.Delete().WithColor(Color.Error))"> *@
+@*                     Delete *@
+@*                 </FluentButton> *@
+@*             </TemplateColumn> *@
+@*             <TemplateColumn Tooltip="true" Title="DocNum"> *@
+@*                 <FluentAutocomplete Required *@
+@*                                     TOption="GetProductionOrder" *@
+@*                                     Width="100%" *@
+@*                                     Placeholder="Serial Code" *@
+@*                                     OnOptionsSearch="OnSearchDocNum" *@
+@*                                     MaximumOptionsSearch="1" *@
+@*                                     Virtualize="true" *@
+@*                                     Items="_selectedProductionOrder" *@
+@*                                     MaximumSelectedOptions="1" *@
+@*                                     OptionText="@(item => $"{item.DocNum}")" *@
+@*                                     @bind-SelectedOptions="@context.OnSelectedProductionOrder" *@
+@*                                     ValueChanged="@((e) => OnSelectedDocument(e??"", _productionOrderNumber.IndexOf(context)))"/> *@
+@*             </TemplateColumn> *@
+@*             <TemplateColumn Tooltip="true" Title="Qty"> *@
+@*                 <FluentNumberField @bind-Value=@context.Qty Placeholder="Qty"> *@
+@*                 </FluentNumberField> *@
+@*             </TemplateColumn> *@
+@*             <TemplateColumn Tooltip="true" Title="Qty Lost"> *@
+@*                 <FluentNumberField @bind-Value=@context.QtyLost *@
+@*                                                                                                        @onchange="@(e => OnChangeQtyManualItemNone(e, context))" *@
+@*                                    Placeholder="Qty" *@
+@*                                    TValue="double"/> *@
+@*             </TemplateColumn> *@
+@*         </FluentDataGrid> *@
+@*     </div> *@
+@* } *@
 </div>
 </FluentBodyContent>
 </FluentStack>

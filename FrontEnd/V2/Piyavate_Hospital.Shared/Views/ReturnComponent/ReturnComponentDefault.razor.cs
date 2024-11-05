@@ -398,6 +398,7 @@ public partial class ReturnComponentDefault
                     Price = line.Price,
                     WhsCode = line.WhsCode,
                     UomName = "Auto None",
+                    ManageItem = "N"
                 });
             }
 

@@ -226,6 +226,7 @@ public partial class AddReturnComponentMobile
                 }
             }
 
+            Console.WriteLine(JsonSerializer.Serialize(ViewModel.ReceiptFromProductionOrderForm));
             var result = await Validator!.ValidateAsync(ViewModel.ReceiptFromProductionOrderForm).ConfigureAwait(false);
             if (!result.IsValid)
             {
@@ -342,6 +343,7 @@ public partial class AddReturnComponentMobile
                         Price = line.Price,
                         WhsCode = line.WhsCode,
                         UomName = "Manual None",
+                        ManageItem = "N"
                     });
                 }
             }
@@ -376,6 +378,7 @@ public partial class AddReturnComponentMobile
                     Price = line.Price,
                     WhsCode = line.WhsCode,
                     UomName = "Auto None",
+                    ManageItem = "N"
                 });
             }
 

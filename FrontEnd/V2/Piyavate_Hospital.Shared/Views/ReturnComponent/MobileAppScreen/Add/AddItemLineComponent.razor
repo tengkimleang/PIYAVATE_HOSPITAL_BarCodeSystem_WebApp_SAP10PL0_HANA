@@ -73,77 +73,77 @@
             </FluentNumberField>
         </FluentGridItem>
     </FluentGrid>
-    @if (_isItemNone)
-    {
-        <FluentButton Style="margin-top:20px" OnClick="@(e => AddLineToBatch(null))" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))">
-            Add Line
-        </FluentButton>
-        <div class="grid" style="width: 100%;height: 450px; overflow-x:auto;">
-            <!-- #region For Each CardBox -->
-            <div class="pull-up-demo">
-                <FluentPullToRefresh Id="main-menu"
-                                     Direction="@PullDirection.Up"
-                                     ShowStaticTip="false"
-                                     TipHeight="30"
-                                     DragDistance="75">
-                    <PullingTemplate>
-                        Pull to refresh
-                    </PullingTemplate>
-                    <ReleaseTemplate>
-                        Release to update
-                    </ReleaseTemplate>
-                    <CompletedTemplate>
-                        Update completed
-                    </CompletedTemplate>
-                    <ChildContent>
-                        <div class="pull-content">
-                            @foreach (var obj in ProductionOrderNumber)
-                            {
-                                <FluentCard MinimalStyle="true"
-                                            Style="width: 100%; margin-bottom: 10px;"
-                                            @onclick="@(e => AddLineToNone(obj))">
-                                    <FluentGrid Spacing="1" AdaptiveRendering="true">
-                                        <FluentGridItem xs="6" sm="6">
-                                            <FluentLabel Typo="Typography.Subject">DocNum</FluentLabel>
-                                        </FluentGridItem>
-                                        <FluentGridItem xs="6" sm="6">
-                                            <FluentLabel Typo="Typography.Subject">Qty</FluentLabel>
-                                        </FluentGridItem>
-                                        <FluentGridItem xs="6" sm="6">
-                                            <FluentLabel Typo="Typography.Body">
-                                                @obj.OnSelectedProductionOrder.FirstOrDefault()?.DocNum
-                                            </FluentLabel>
-                                        </FluentGridItem>
-                                        <FluentGridItem xs="6" sm="6">
-                                            <FluentLabel Typo="Typography.Body">@obj.Qty</FluentLabel>
-                                        </FluentGridItem>
-                                        <FluentGridItem xs="6" sm="6">
-                                            <FluentLabel Typo="Typography.Subject">Qty Lost</FluentLabel>
-                                        </FluentGridItem>
-                                        <FluentGridItem xs="6" sm="6">
-                                        </FluentGridItem>
-                                        <FluentGridItem xs="6" sm="6">
-                                            <FluentLabel Typo="Typography.Body">
-                                                @obj.QtyLost
-                                            </FluentLabel>
-                                        </FluentGridItem>
-                                        <FluentGridItem xs="6" sm="6">
-                                            <FluentLabel Typo="Typography.Body">
-                                            </FluentLabel>
-                                        </FluentGridItem>
-                                    </FluentGrid>
-                                </FluentCard>
-                            }
-                        </div>
-                    </ChildContent>
-                    <LoadingTemplate>
-                        <FluentProgress Width="150px;"/>
-                    </LoadingTemplate>
-                </FluentPullToRefresh>
-            </div>
-            <!-- #endregion -->
-        </div>
-    }
+    @* @if (_isItemNone) *@
+    @* { *@
+    @*     <FluentButton Style="margin-top:20px" OnClick="@(e => AddLineToBatch(null))" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))"> *@
+    @*         Add Line *@
+    @*     </FluentButton> *@
+    @*     <div class="grid" style="width: 100%;height: 450px; overflow-x:auto;"> *@
+    @*         <!-- #region For Each CardBox --> *@
+    @*         <div class="pull-up-demo"> *@
+    @*             <FluentPullToRefresh Id="main-menu" *@
+    @*                                  Direction="@PullDirection.Up" *@
+    @*                                  ShowStaticTip="false" *@
+    @*                                  TipHeight="30" *@
+    @*                                  DragDistance="75"> *@
+    @*                 <PullingTemplate> *@
+    @*                     Pull to refresh *@
+    @*                 </PullingTemplate> *@
+    @*                 <ReleaseTemplate> *@
+    @*                     Release to update *@
+    @*                 </ReleaseTemplate> *@
+    @*                 <CompletedTemplate> *@
+    @*                     Update completed *@
+    @*                 </CompletedTemplate> *@
+    @*                 <ChildContent> *@
+    @*                     <div class="pull-content"> *@
+    @*                         @foreach (var obj in ProductionOrderNumber) *@
+    @*                         { *@
+    @*                             <FluentCard MinimalStyle="true" *@
+    @*                                         Style="width: 100%; margin-bottom: 10px;" *@
+    @*                                         @onclick="@(e => AddLineToNone(obj))"> *@
+    @*                                 <FluentGrid Spacing="1" AdaptiveRendering="true"> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                         <FluentLabel Typo="Typography.Subject">DocNum</FluentLabel> *@
+    @*                                     </FluentGridItem> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                         <FluentLabel Typo="Typography.Subject">Qty</FluentLabel> *@
+    @*                                     </FluentGridItem> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                         <FluentLabel Typo="Typography.Body"> *@
+    @*                                             @obj.OnSelectedProductionOrder.FirstOrDefault()?.DocNum *@
+    @*                                         </FluentLabel> *@
+    @*                                     </FluentGridItem> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                         <FluentLabel Typo="Typography.Body">@obj.Qty</FluentLabel> *@
+    @*                                     </FluentGridItem> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                         <FluentLabel Typo="Typography.Subject">Qty Lost</FluentLabel> *@
+    @*                                     </FluentGridItem> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                     </FluentGridItem> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                         <FluentLabel Typo="Typography.Body"> *@
+    @*                                             @obj.QtyLost *@
+    @*                                         </FluentLabel> *@
+    @*                                     </FluentGridItem> *@
+    @*                                     <FluentGridItem xs="6" sm="6"> *@
+    @*                                         <FluentLabel Typo="Typography.Body"> *@
+    @*                                         </FluentLabel> *@
+    @*                                     </FluentGridItem> *@
+    @*                                 </FluentGrid> *@
+    @*                             </FluentCard> *@
+    @*                         } *@
+    @*                     </div> *@
+    @*                 </ChildContent> *@
+    @*                 <LoadingTemplate> *@
+    @*                     <FluentProgress Width="150px;"/> *@
+    @*                 </LoadingTemplate> *@
+    @*             </FluentPullToRefresh> *@
+    @*         </div> *@
+    @*         <!-- #endregion --> *@
+    @*     </div> *@
+    @* } *@
     @if (_isItemBatch)
     {
         <FluentButton Style="margin-top:20px" OnClick="@(e => AddLineToBatch(null))" IconEnd="@(new Icons.Regular.Size24.AddCircle().WithColor(Color.Success))">
