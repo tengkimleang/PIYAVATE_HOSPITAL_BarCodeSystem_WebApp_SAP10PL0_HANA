@@ -64,14 +64,14 @@
                                 @bind-SelectedOptions="@_selectedWarehouses"
                                 ValueChanged="@(e => UpdateWarehouses(e ?? ""))"/>
         </FluentGridItem>
-        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
-            <FluentNumberField ReadOnly="true" @bind-Value="@DataResult.QtyLost" Label="Total Lost" style="width: 100%;">
-            </FluentNumberField>
-        </FluentGridItem>
-        <FluentGridItem xs="12" sm="4" lg="3" xl="3">
-            <FluentNumberField ReadOnly="true" @bind-Value="@DataResult.QtyManual" Label="Total Lost Manual" style="width: 100%;">
-            </FluentNumberField>
-        </FluentGridItem>
+        @* <FluentGridItem xs="12" sm="4" lg="3" xl="3"> *@
+        @*     <FluentNumberField ReadOnly="true" @bind-Value="@DataResult.QtyLost" Label="Total Lost" style="width: 100%;"> *@
+        @*     </FluentNumberField> *@
+        @* </FluentGridItem> *@
+        @* <FluentGridItem xs="12" sm="4" lg="3" xl="3"> *@
+        @*     <FluentNumberField ReadOnly="true" @bind-Value="@DataResult.QtyManual" Label="Total Lost Manual" style="width: 100%;"> *@
+        @*     </FluentNumberField> *@
+        @* </FluentGridItem> *@
     </FluentGrid>
     @* @if (_isItemNone) *@
     @* { *@

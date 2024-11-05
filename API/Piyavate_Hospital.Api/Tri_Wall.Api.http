@@ -1,4 +1,4 @@
-﻿@API_HostAddress = http://localhost:5253
+﻿@API_HostAddress = http://1.10.143.138:8429/Piyavate/API
 # @API_HostAddress = http://192.168.10.107:8429/ApiTriWall/ http://192.168.20.2:8082
 
 

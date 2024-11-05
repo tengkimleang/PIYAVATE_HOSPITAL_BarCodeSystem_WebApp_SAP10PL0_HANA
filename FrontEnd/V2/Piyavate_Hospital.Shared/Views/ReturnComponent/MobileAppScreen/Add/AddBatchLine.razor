@@ -41,50 +41,56 @@
                                             @bind-SelectedOptions="@BatchReturnComponentProduction.OnSelectedType"
                                             ValueChanged="@(e => OnSelectedType(e))"/>
                     </FluentGridItem>
-                    @if (DisplayNoneOrShow)
-                    {
-                        @if (BatchReturnComponentProduction.OnSelectedType.FirstOrDefault()?.Name == "Manual")
-                        {
-                            <FluentGridItem xs="12" sm="4" lg="3" xl="3">
-                                <FluentAutocomplete Required
-                                                    TOption="GetProductionOrder"
-                                                    Width="100%"
-                                                    Placeholder="Search DocNum"
-                                                    OnOptionsSearch="OnSearchDocNum"
-                                                    MaximumOptionsSearch="1"
-                                                    Virtualize="true"
-                                                    Items="SelectedProductionOrder"
-                                                    MaximumSelectedOptions="1"
-                                                    OptionText="@(item => $"{item.DocNum}")"
-                                                    @bind-SelectedOptions="@BatchReturnComponentProduction.OnSelectedProductionOrder"
-                                                    ValueChanged="@((e) => OnSelectedDocument(e))"/>
-                            </FluentGridItem>
-                            <FluentGridItem xs="12">
-                                <FluentNumberField @bind-Value=@BatchReturnComponentProduction.QtyLost 
-                                                   @onchange="@(e => OnChangeQtyManual(e, BatchReturnComponentProduction))"
-                                                   Label="Qty Lost"
-                                                   Placeholder="Qty" TValue="double"/>
-                            </FluentGridItem>
-                        }
-                    }
-                    @if (BatchReturnComponentProduction.OnSelectedType.FirstOrDefault()?.Name == "Manual")
-                    {
-                        <FluentGridItem xs="12">
-                            <FluentNumberField Label="Qty"
-                                               @bind-Value="@BatchReturnComponentProduction.QtyManual"
-                                               style="width: 100%;">
-                            </FluentNumberField>
-                        </FluentGridItem>
-                    }
-                    else
-                    {
-                        <FluentGridItem xs="12">
-                            <FluentNumberField Label="Qty"
-                                               @bind-Value="@BatchReturnComponentProduction.Qty"
-                                               style="width: 100%;">
-                            </FluentNumberField>
-                        </FluentGridItem>
-                    }
+                    @* @if (DisplayNoneOrShow) *@
+                    @* { *@
+                    @*     @if (BatchReturnComponentProduction.OnSelectedType.FirstOrDefault()?.Name == "Manual") *@
+                    @*     { *@
+                    @*         <FluentGridItem xs="12" sm="4" lg="3" xl="3"> *@
+                    @*             <FluentAutocomplete Required *@
+                    @*                                 TOption="GetProductionOrder" *@
+                    @*                                 Width="100%" *@
+                    @*                                 Placeholder="Search DocNum" *@
+                    @*                                 OnOptionsSearch="OnSearchDocNum" *@
+                    @*                                 MaximumOptionsSearch="1" *@
+                    @*                                 Virtualize="true" *@
+                    @*                                 Items="SelectedProductionOrder" *@
+                    @*                                 MaximumSelectedOptions="1" *@
+                    @*                                 OptionText="@(item => $"{item.DocNum}")" *@
+                    @*                                 @bind-SelectedOptions="@BatchReturnComponentProduction.OnSelectedProductionOrder" *@
+                    @*                                 ValueChanged="@((e) => OnSelectedDocument(e))"/> *@
+                    @*         </FluentGridItem> *@
+                    @*         <FluentGridItem xs="12"> *@
+                    @*             <FluentNumberField @bind-Value=@BatchReturnComponentProduction.QtyLost  *@
+                    @*                                @onchange="@(e => OnChangeQtyManual(e, BatchReturnComponentProduction))" *@
+                    @*                                Label="Qty Lost" *@
+                    @*                                Placeholder="Qty" TValue="double"/> *@
+                    @*         </FluentGridItem> *@
+                    @*     } *@
+                    @* } *@
+                    <FluentGridItem xs="12">
+                        <FluentNumberField Label="Qty"
+                                           @bind-Value="@BatchReturnComponentProduction.Qty"
+                                           style="width: 100%;">
+                        </FluentNumberField>
+                    </FluentGridItem>
+                    @* @if (BatchReturnComponentProduction.OnSelectedType.FirstOrDefault()?.Name == "Manual") *@
+                    @* { *@
+                    @*     <FluentGridItem xs="12"> *@
+                    @*         <FluentNumberField Label="Qty" *@
+                    @*                            @bind-Value="@BatchReturnComponentProduction.QtyManual" *@
+                    @*                            style="width: 100%;"> *@
+                    @*         </FluentNumberField> *@
+                    @*     </FluentGridItem> *@
+                    @* } *@
+                    @* else *@
+                    @* { *@
+                    @*     <FluentGridItem xs="12"> *@
+                    @*         <FluentNumberField Label="Qty" *@
+                    @*                            @bind-Value="@BatchReturnComponentProduction.Qty" *@
+                    @*                            style="width: 100%;"> *@
+                    @*         </FluentNumberField> *@
+                    @*     </FluentGridItem> *@
+                    @* } *@
                     
                     <FluentGridItem xs="12">
                         <FluentTextField Value="@SelectedBatch.FirstOrDefault()?.Qty"
