@@ -7,7 +7,6 @@
     <RootNamespace>Tri_Wall.API</RootNamespace>
     <InvariantGlobalization>true</InvariantGlobalization>
     <!-- <PublishAot>true</PublishAot> -->
-    <UserSecretsId>100107f4-8afc-4b6a-8c69-e173ece68b04</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
