@@ -21,10 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Piyavate_Hospital.Script", 
 		API\Piyavate_Hospital.Script\Hana\Layout\ReceiptFG&ReturnComponent\_USP_CALL_FINISHED_GOODS_OIGN_LAYOUT_BARCODE.sql = API\Piyavate_Hospital.Script\Hana\Layout\ReceiptFG&ReturnComponent\_USP_CALL_FINISHED_GOODS_OIGN_LAYOUT_BARCODE.sql
 		API\Piyavate_Hospital.Script\Hana\Layout\ReceiptFG&ReturnComponent\_USP_CALL_MATERIALS_PHASE2_OIGN_LAYOUT_BARCODE.sql = API\Piyavate_Hospital.Script\Hana\Layout\ReceiptFG&ReturnComponent\_USP_CALL_MATERIALS_PHASE2_OIGN_LAYOUT_BARCODE.sql
 		API\Piyavate_Hospital.Script\Hana\Layout\ReceiptFG&ReturnComponent\_USP_CALL_WORK_IN_PROCESS_OIGN_LAYOUT_BARCODE.sql = API\Piyavate_Hospital.Script\Hana\Layout\ReceiptFG&ReturnComponent\_USP_CALL_WORK_IN_PROCESS_OIGN_LAYOUT_BARCODE.sql
-		API\Piyavate_Hospital.Script\Hana\_USP_CALLTRANS_EWTRANSACTION.sql = API\Piyavate_Hospital.Script\Hana\_USP_CALLTRANS_EWTRANSACTION.sql
 		API\Piyavate_Hospital.Script\SQL\USP_CALLTRANSCATION_POSKOFI.sql = API\Piyavate_Hospital.Script\SQL\USP_CALLTRANSCATION_POSKOFI.sql
 		API\Piyavate_Hospital.Script\SQL\USP_CALLTRANSCATION_POSKOFI_REAKSMEY.sql = API\Piyavate_Hospital.Script\SQL\USP_CALLTRANSCATION_POSKOFI_REAKSMEY.sql
 		API\Piyavate_Hospital.Script\SQL\USP_KOFI_BARCODE_PRINTING.sql = API\Piyavate_Hospital.Script\SQL\USP_KOFI_BARCODE_PRINTING.sql
+		API\Piyavate_Hospital.Script\Hana\_USP_CALLTRANS_TRANSACTION.sql = API\Piyavate_Hospital.Script\Hana\_USP_CALLTRANS_TRANSACTION.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{67BA38F5-5CE6-4409-99AF-E7C590EEF6A2}"

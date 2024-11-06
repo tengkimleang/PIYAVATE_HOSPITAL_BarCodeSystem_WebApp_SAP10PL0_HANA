@@ -14,7 +14,7 @@ namespace Piyavate_Hospital.Application.Authorize
         {
             var dt = await dataProviderRepository.Query(new DataProvider
             {
-                StoreName = "_USP_CALLTRANS_EWTRANSACTION",
+                StoreName = "_USP_CALLTRANS_TRANSACTION",
                 DBType = "JwtCheckAccount",
                 Par1 = request.Account,
                 Par2 = request.Password

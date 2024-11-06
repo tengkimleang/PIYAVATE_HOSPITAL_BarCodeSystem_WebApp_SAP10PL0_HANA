@@ -1,4 +1,4 @@
-﻿@API_HostAddress = http://1.10.143.138:8429/Piyavate/API
+﻿@API_HostAddress=http://1.10.143.138:8429/Piyavate/API
 # @API_HostAddress = http://192.168.10.107:8429/ApiTriWall/ http://192.168.20.2:8082
 
 
@@ -609,6 +609,22 @@ Content-Type: application/json
 {
     "Account": "admin",
     "Password": "1234"
+}
+
+###
+
+POST {{API_HostAddress}}/getQuery
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImp0aSI6ImMzMmU5Yjk3LTA5YTYtNDQ2ZS1hNzY3LTI1MTc3OGQ0Y2VhMyIsImlkIjoiYWRtaW4xMC8xMC8yMDI0IDA4OjU3OjM2IiwibmJmIjoxNzI4NTUwNjU2LCJleHAiOjE3MjkxNTU0NTYsImlhdCI6MTcyODU1MDY1Nn0.LDkCBkie3VRThQ2KOxsDHz6AOGa3DlpeCWlJ5KiNlUo
+
+{
+  "storeName": "_USP_CALLTRANS_EWTRANSACTION",
+  "dbType": "LayoutPrinter",
+  "par1": "GOODRECEIPTPO",
+  "par2": "",
+  "par3": "",
+  "par4": "",
+  "par5": ""
 }
 
 ###

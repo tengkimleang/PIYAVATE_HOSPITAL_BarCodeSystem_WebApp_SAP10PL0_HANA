@@ -1,4 +1,4 @@
-ALTER PROCEDURE "TRIWALL_TRAINKEY"."_USP_CALLTRANS_EWTRANSACTION"(
+ALTER PROCEDURE "PIYAVATE_BATTLE_TRAINING"."_USP_CALLTRANS_TRANSACTION"(
 	in DTYPE NVARCHAR(250)
 	,in par1 NVARCHAR(250)
 	,in par2 NVARCHAR(250)
@@ -42,11 +42,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OPOR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."POR1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OUBR" AS D ON D."Code"=A."Branch"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OPOR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."POR1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OUBR" AS D ON D."Code"=A."Branch"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE 
 				A."DocNum"=:par2 
 			And B."LineStatus"='O';
@@ -59,7 +59,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"NumAtCard" AS "VendorRefNo"
 			,TO_VARCHAR("DocDate",'dd-MMM-yyyy') AS "PostingDate"
 			,"DocTotal" AS "DocTotal" 
-		FROM TRIWALL_TRAINKEY."OPDN" 
+		FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 		WHERE 
 				"Series"=Case When :par1='' Then "Series" Else :par1 End 
 			AND "DocNum" LIKE '%' || CASE WHEN :par2='-1' THEN '' ELSE :par2 END || '%'
@@ -69,7 +69,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GET_Good_Reciept_Count' THEN
 		SELECT 
 			COUNT("DocNum") AS "Count" 
-		FROM TRIWALL_TRAINKEY."OPDN" 
+		FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 		WHERE 
 				"Series"=Case When :par1='' Then "Series" Else :par1 End 
 			AND "DocNum" LIKE '%'|| CASE WHEN :par2='-1' THEN '' ELSE :par2 END ||'%'
@@ -85,9 +85,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
 			,A."DocEntry" AS "DocEntry"
-		FROM TRIWALL_TRAINKEY."OPDN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."OPDN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GET_PurchaseOrder_Header_Detail_By_DocNum' THEN
@@ -99,9 +99,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."OPOR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."OPOR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GET_GoodReceipt_PO_Line_Detail_By_DocNum' THEN
@@ -123,10 +123,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OPDN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."PDN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OPDN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."PDN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 	
 	ELSE IF :DTYPE='GetBatchSerialGoodReceipt' THEN
@@ -139,9 +139,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=20 
 				--And C."Status"<>0
@@ -156,9 +156,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=20
 		)AS A;
@@ -169,8 +169,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."LotNumber" AS "LotNo"
 			,B."ExpDate" AS "ExpDate"
 			,B."Quantity" AS "Qty"
-		FROM TRIWALL_TRAINKEY."SRI1" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+		FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
 		WHERE A."BaseNum"=:par1 AND B."DistNumber"=:par2 AND A."BaseType"=20
 		UNION ALL
 		SELECT 
@@ -178,8 +178,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."LotNumber"
 			,B."ExpDate"
 			,A."Quantity"
-		FROM TRIWALL_TRAINKEY."IBT1" AS A 
-		LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+		FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
 		WHERE A."BaseNum"=:par1 AND B."DistNumber"=:par2  AND A."BaseType"=20;
 	ELSE IF :DTYPE='GET_SALE_ORDER' THEN
 		SELECT 
@@ -189,7 +189,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"NumAtCard" AS "VendorRefNo"
 			,TO_VARCHAR("DocDate",'dd-MM-yyyy') AS "PostingDate"
 			,"DocTotal" AS "DocTotal" 	
-		FROM TRIWALL_TRAINKEY."ORDR" 
+		FROM PIYAVATE_BATTLE_TRAINING."ORDR" 
 		WHERE 
 			"Series"=Case When :par1='-1' Then "Series" Else :par1 End  
 			AND "DocNum" LIKE '%'|| :par2 ||'%' 
@@ -200,7 +200,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GET_SALE_ORDER_Count' THEN
 		SELECT 
 			COUNT("DocNum") AS "Count" 
-		FROM TRIWALL_TRAINKEY."ORDR" 
+		FROM PIYAVATE_BATTLE_TRAINING."ORDR" 
 		WHERE 
 			"Series"=Case When :par1='-1' Then "Series" Else :par1 End  
 			AND "DocNum" LIKE '%'|| :par2 || '%' 
@@ -234,11 +234,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 END AS "ManageItem"
 			,A."DocStatus" AS "Status"
 			,E."CodeBars" AS "BarCode"
-		FROM TRIWALL_TRAINKEY."ORDR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."RDR1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ORDR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."RDR1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
 		--LEFT JOIN OUBR AS D ON D.Code=A.Branch
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE 
 			A."CardCode"=CASE WHEN :par1='' THEN A."CardCode" ELSE :par1 END 
 			AND A."DocNum"=:par2 
@@ -252,7 +252,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"DocTotal" AS "DocTotal" 
 			,"NumAtCard" AS "VendorRefNo"
 			,TO_VARCHAR("DocDate",'dd-MM-yyyy') AS "PostingDate"
-		FROM TRIWALL_TRAINKEY."ODLN" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 		WHERE 
 			"Series"=case when :par1='' Then "Series" Else :par1 End 
 			AND "DocStatus"='O'
@@ -266,7 +266,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GET_Reutrn_Count' THEN
 		SELECT 
 			COUNT("DocNum") AS "Count" 
-		FROM TRIWALL_TRAINKEY."ODLN" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 		WHERE 
 			"Series"=case when :par1='' Then "Series" Else :par1 End 
 			AND "DocStatus"='O'
@@ -303,11 +303,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ODLN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."DLN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OUBR" AS D ON D."Code"=A."Branch"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OUBR" AS D ON D."Code"=A."Branch"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE 
 			A."DocNum"=:par2 
 			AND B."LineStatus"= 'O';
@@ -317,8 +317,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		IF :par3='S' THEN
 			DECLARE DocEntry INT;
 			CREATE LOCAL TEMPORARY TABLE #TMPDLN(ItemCode NVARCHAR(255),"U_OutSerial" NVARCHAR(255));
-			SELECT "DocEntry" INTO DocEntry From TRIWALL_TRAINKEY."ODLN" Where "DocNum"=:par1;
-			SELECT "ItemCode",''/*"U_OutSerial"*/ FROM TRIWALL_TRAINKEY."DLN1" WHERE "DocEntry"=:DocEntry INTO #TMPDLN;
+			SELECT "DocEntry" INTO DocEntry From PIYAVATE_BATTLE_TRAINING."ODLN" Where "DocNum"=:par1;
+			SELECT "ItemCode",''/*"U_OutSerial"*/ FROM PIYAVATE_BATTLE_TRAINING."DLN1" WHERE "DocEntry"=:DocEntry INTO #TMPDLN;
 
 			SELECT 
 				 B."DistNumber" AS "SerialBatch"
@@ -328,30 +328,30 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,B."SysNumber" AS "SysNumber"
 				,B."ItemCode" AS "ItemCode"
 				
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C ON C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C ON C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE 
 				A."BaseNum"=:par1 AND A."ItemCode"=:par2 AND A."BaseType"=15 And C."Status"<>0 
 				AND B."DistNumber" 
 					NOT IN (
 						SELECT 
 							B."DistNumber"
-						FROM TRIWALL_TRAINKEY."SRI1" A
-						LEFT JOIN TRIWALL_TRAINKEY."OSRN" B ON A."ItemCode"=B."ItemCode" And A."SysSerial"=B."SysNumber"
-						LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C ON C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+						FROM PIYAVATE_BATTLE_TRAINING."SRI1" A
+						LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" B ON A."ItemCode"=B."ItemCode" And A."SysSerial"=B."SysNumber"
+						LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C ON C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 						WHERE  
 							A."BaseType"=16 
 							And  C."Status"<>0 
 							And  A."ItemCode"=:par2 
-							ANd A."BsDocEntry"=(Select "DocEntry" From TRIWALL_TRAINKEY."ODLN" WHERE "DocNum"=:par1)
+							ANd A."BsDocEntry"=(Select "DocEntry" From PIYAVATE_BATTLE_TRAINING."ODLN" WHERE "DocNum"=:par1)
 					);
 			DROP TABLE #TMPDLN;		
 		ELSE IF :par3='B' THEN
 			Declare DocEntry1 INT;
 			create local temporary table #TMPDLN1("ItemCode" NVARCHAR(255),"U_OutSerial" NVARCHAR(255));
-			Select "DocEntry" INTO DocEntry1 From TRIWALL_TRAINKEY."ODLN" Where "DocNum"=:par1;
-			SELECT "ItemCode",''/*"U_OutSerial"*/ FROM TRIWALL_TRAINKEY."DLN1" WHERE "DocEntry"=:DocEntry1 INTO #TMPDLN1;
+			Select "DocEntry" INTO DocEntry1 From PIYAVATE_BATTLE_TRAINING."ODLN" Where "DocNum"=:par1;
+			SELECT "ItemCode",''/*"U_OutSerial"*/ FROM PIYAVATE_BATTLE_TRAINING."DLN1" WHERE "DocEntry"=:DocEntry1 INTO #TMPDLN1;
 
 			SELECT * FROM (
 				SELECT 
@@ -363,7 +363,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					IFNULL(
 						(SELECT 
 							SUM(Z."Quantity") 
-						 FROM TRIWALL_TRAINKEY."IBT1" Z 
+						 FROM PIYAVATE_BATTLE_TRAINING."IBT1" Z 
 						 WHERE 
 							 "BaseType"=16 
 							 AND Z."BatchNum"=A."BatchNum" 
@@ -373,8 +373,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 						),0) AS "Qty"
 					,B."SysNumber" AS "SysNumber"
 					,B."ItemCode" AS "ItemCode"
-				FROM TRIWALL_TRAINKEY."IBT1" AS A 
-				LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+				FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
 				WHERE A."BaseNum"=:par1 AND A."ItemCode"=:par2 AND A."BaseType"=15
 			)A wHERE "Qty"<>0 ;
 			DROP TABLE #TMPDLN1;
@@ -387,8 +387,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."LotNumber" AS "LotNo"
 			,B."ExpDate" AS "ExpDate"
 			,B."Quantity" AS "Qty"
-		FROM TRIWALL_TRAINKEY."SRI1" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+		FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
 		WHERE A."BaseNum"=:par1 AND B."DistNumber"=:par2 AND A."BaseType"=15
 		UNION ALL
 		SELECT 
@@ -396,8 +396,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."LotNumber"
 			,B."ExpDate"
 			,A."Quantity"
-		FROM TRIWALL_TRAINKEY."IBT1" AS A 
-		LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON B."ItemCode"=A."ItemCode" AND B."DistNumber"=A."BatchNum"
+		FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON B."ItemCode"=A."ItemCode" AND B."DistNumber"=A."BatchNum"
 		WHERE A."BaseNum"=:par1 AND B."DistNumber"=:par2  AND A."BaseType"=15;
 	ELSE IF :DTYPE='BatchOrSerial' THEN
 		IF :par1='S' THEN
@@ -409,12 +409,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(T5."InDate",'dd-MM-yyyy') AS "AdmissionDate"
 				,IFNULL(TO_VARCHAR(T4."ExpDate",'dd-MM-yyyy'),'') AS "ExpDate"
 				,IFNULL(T4."LotNumber",'') AS "LotNumber"
-			FROM TRIWALL_TRAINKEY."OIBQ" T0
-			INNER JOIN TRIWALL_TRAINKEY."OBIN" T1 on T0."BinAbs" = T1."AbsEntry" AND T0."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBBQ" T2 on T0."BinAbs" = T2."BinAbs" AND T0."ItemCode" = T2."ItemCode" AND T2."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" AND T0."ItemCode" = T3."ItemCode" AND T3."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" AND T2."ItemCode" = T4."ItemCode"
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSRN" T5 on T3."SnBMDAbs" = T5."AbsEntry" AND T3."ItemCode" = T5."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."OIBQ" T0
+			INNER JOIN PIYAVATE_BATTLE_TRAINING."OBIN" T1 on T0."BinAbs" = T1."AbsEntry" AND T0."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBBQ" T2 on T0."BinAbs" = T2."BinAbs" AND T0."ItemCode" = T2."ItemCode" AND T2."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" AND T0."ItemCode" = T3."ItemCode" AND T3."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" AND T2."ItemCode" = T4."ItemCode"
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSRN" T5 on T3."SnBMDAbs" = T5."AbsEntry" AND T3."ItemCode" = T5."ItemCode"
 			WHERE
 				T1."AbsEntry" >= 0
 				AND (T3."AbsEntry" is not null)
@@ -422,8 +422,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					(
 						SELECT 
 							U0."ItemCode" 
-						FROM TRIWALL_TRAINKEY."OITM" U0 
-						INNER JOIN TRIWALL_TRAINKEY."OITB" U1 ON U0."ItmsGrpCod" = U1."ItmsGrpCod"
+						FROM PIYAVATE_BATTLE_TRAINING."OITM" U0 
+						INNER JOIN PIYAVATE_BATTLE_TRAINING."OITB" U1 ON U0."ItmsGrpCod" = U1."ItmsGrpCod"
 						WHERE U0."ItemCode" IS NOT NULL ))
 				AND T1."WhsCode" IN	(SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par3,','))
 				AND T0."ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par2,','));
@@ -438,8 +438,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,A."InDate" AS "AdmissionDate"
 				,IFNULL(TO_VARCHAR(A."ExpDate",'dd-MM-yyyy'),'') AS "ExpDate"
 				,IFNULL(A."LotNumber",'') AS "LotNumber"
-			FROM TRIWALL_TRAINKEY."OBTN" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."OBTN" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber"
 			WHERE 
 				A."ItemCode"=:par2 
 				AND B."Quantity" !=0 
@@ -460,8 +460,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE 
 			 	LEFT(A."Time",2)+':'+RIGHT(A."Time",2) 
 			 END AS "CountTime" 
-		FROM TRIWALL_TRAINKEY."OINC" AS A 
-		LEFT JOIN TRIWALL_TRAINKEY."INC8" AS B ON A."DocEntry"=B."DocEntry" 
+		FROM PIYAVATE_BATTLE_TRAINING."OINC" AS A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."INC8" AS B ON A."DocEntry"=B."DocEntry" 
 		WHERE 
 			"Series"=:par1 
 			AND B."CounterId"=:par3 
@@ -492,29 +492,29 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				'N'
 			 END AS "ManageItem"
 			,A."DocEntry" AS "DocEntry"
-		FROM TRIWALL_TRAINKEY."OINC" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."INC1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OINC" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."INC1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		LEFT JOIN (
 			SELECT 
 				 INC9."DocEntry"
 				,INC8."CounterId"
 				,"TotalQty" 
-			FROM TRIWALL_TRAINKEY."INC9" 
-			LEFT JOIN TRIWALL_TRAINKEY."INC8" ON INC8."CounterNum"=INC9."CounterNum" AND INC8."DocEntry"=INC9."DocEntry"
+			FROM PIYAVATE_BATTLE_TRAINING."INC9" 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."INC8" ON INC8."CounterNum"=INC9."CounterNum" AND INC8."DocEntry"=INC9."DocEntry"
 		)As F ON A."DocEntry"=F."DocEntry" AND F."CounterId"=:par2
 		WHERE  A."DocNum"=:par1;
 	ELSE IF :DTYPE='Number_of_Individual_Counter' THEN
 		SELECT 
 			 "CounterId" AS "CounterNum"
 			,"CounteName" AS "CounterName" 
-		FROM TRIWALL_TRAINKEY."INC8" 
+		FROM PIYAVATE_BATTLE_TRAINING."INC8" 
 		WHERE "DocEntry"=:par1;
 	ELSE IF :DTYPE='Number_of_Multiple_Counter' THEN
 		SELECT 
 			 IFNULL("CounterNum",0) AS "TeamCounterNum"
 			,IFNULL("CounteName",'') AS "TeamCounterName" 
-		FROM TRIWALL_TRAINKEY."INC4" 
+		FROM PIYAVATE_BATTLE_TRAINING."INC4" 
 		WHERE "DocEntry"=:par1;
 	ELSE IF :DTYPE='SERIES' THEN
 		IF :par1='59' THEN
@@ -523,11 +523,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."OIGN" 
+				  FROM PIYAVATE_BATTLE_TRAINING."OIGN" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=59 
@@ -539,11 +539,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."OIGE" 
+				  FROM PIYAVATE_BATTLE_TRAINING."OIGE" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=60 
@@ -555,11 +555,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."OPOR" 
+				  FROM PIYAVATE_BATTLE_TRAINING."OPOR" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum" 
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				B."Indicator"=YEAR(CURRENT_DATE) 
 				AND B."ObjectCode"=22 
@@ -571,11 +571,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."OPDN" 
+				  FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=20 
@@ -587,11 +587,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."ORPD" 
+				  FROM PIYAVATE_BATTLE_TRAINING."ORPD" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=21 
@@ -602,8 +602,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 "Series" AS "Code"
 				,"SeriesName"
 				,B."NextNumber" As "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE B."Indicator"=YEAR(CURRENT_DATE) AND 
 				B."ObjectCode"=17 AND "SubNum"=MONTH(CURRENT_DATE)
 				And B."Indicator"<>'Default';
@@ -613,11 +613,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."ODLN" 
+				  FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=15 
@@ -629,11 +629,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."ORDN" 
+				  FROM PIYAVATE_BATTLE_TRAINING."ORDN" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=16 
@@ -647,11 +647,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,B."BPLId" As "Branch"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."OWTQ" 
+				  FROM PIYAVATE_BATTLE_TRAINING."OWTQ" 
 				  WHERE "Series"=B."Series"
 				 ) AS DocNum 
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON B."Indicator"=A."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON B."Indicator"=A."Indicator"
 			WHERE 
 				B."Indicator"=YEAR(CURRENT_DATE) 
 				AND B."ObjectCode"=1250000001 
@@ -664,11 +664,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."OWTR" 
+				  FROM PIYAVATE_BATTLE_TRAINING."OWTR" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=67 
@@ -682,11 +682,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,C."BPLName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") As "DocNum"	
-				  FROM TRIWALL_TRAINKEY."OINC" WHERE "Series"=B."Series"
+				  FROM PIYAVATE_BATTLE_TRAINING."OINC" WHERE "Series"=B."Series"
 				 )AS "DocNum" 
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
-			LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS C ON C."BPLId"=B."BPLId"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS C ON C."BPLId"=B."BPLId"
 			WHERE 
 				B."Indicator"=YEAR(CURRENT_DATE) 
 				AND B."ObjectCode"=1470000065 
@@ -697,8 +697,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 "Series" AS "Code"
 				,"SeriesName"
 				,"NextNumber" As "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				B."Indicator"=YEAR(CURRENT_DATE) 
 				AND B."ObjectCode"=202 
@@ -709,7 +709,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 "Series" AS "Code"
 				,"SeriesName"
 				,A."NextNumber" As "DocNum"
-			FROM TRIWALL_TRAINKEY."NNM1"  A 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1"  A 
 			WHERE 
 				A."Indicator"=YEAR(CURRENT_DATE)
 				AND A."ObjectCode"=13 
@@ -720,11 +720,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."ORIN" 
+				  FROM PIYAVATE_BATTLE_TRAINING."ORIN" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")=14 
@@ -735,7 +735,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 "Series" AS "Code"
 				,"SeriesName"
 				,A."NextNumber" As "DocNum"
-			FROM TRIWALL_TRAINKEY."NNM1" A 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1" A 
 			WHERE 
 				A."Indicator"=YEAR(CURRENT_DATE) 
 				AND A."ObjectCode"=67 
@@ -746,11 +746,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"SeriesName"
 				,(SELECT 
 					IFNULL(MAX("DocNum")+1,B."InitialNum") 
-				  FROM TRIWALL_TRAINKEY."ORDN" 
+				  FROM PIYAVATE_BATTLE_TRAINING."ORDN" 
 				  WHERE "Series"=B."Series"
 				 )AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OFPR" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS B ON A."Indicator"=B."Indicator"
+			FROM PIYAVATE_BATTLE_TRAINING."OFPR" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS B ON A."Indicator"=B."Indicator"
 			WHERE 
 				A."Category"=YEAR(CURRENT_DATE)
 				AND TO_VARCHAR(B."ObjectCode")='234000031' 
@@ -778,12 +778,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"ItemName" AS "ItemName"
 			,(SELECT 
 				"Price" 
-			  FROM TRIWALL_TRAINKEY."ITM1" 
+			  FROM PIYAVATE_BATTLE_TRAINING."ITM1" 
 			  WHERE 
 			  	"PriceList"=1 
 			  	AND "ItemCode"=OITM."ItemCode"
 			 ) AS "PriceUnit"
-		FROM TRIWALL_TRAINKEY."OITM" 
+		FROM PIYAVATE_BATTLE_TRAINING."OITM" 
 		WHERE "CodeBars"=:par1;
 	ELSE IF :DTYPE='GetVendor' THEN
 		SELECT  
@@ -791,20 +791,20 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardName" As "VendorName"
 			,"Phone1" As "PhoneNumber"
 			,"CntctPrsn" as "ContactID"
-		FROM TRIWALL_TRAINKEY."OCRD" 
+		FROM PIYAVATE_BATTLE_TRAINING."OCRD" 
 		WHERE "CardType"='S';
 	ELSE IF :DTYPE='GetBranch' THEN
 		SELECT 
 			 "BPLId" AS "BranchID"
 			,"BPLName" AS "BranchName"
-		FROM TRIWALL_TRAINKEY."OBPL" 
+		FROM PIYAVATE_BATTLE_TRAINING."OBPL" 
 		WHERE "Disabled"!='Y';
 	ELSE IF :DTYPE='GetContactPersonByCardCode' THEN
 		SELECT  
 			"CntctCode" AS "ContactID"
 			,"Name" As "ContactName"
 			,"CardCode" AS "CardCode"
-		FROM TRIWALL_TRAINKEY."OCPR" 
+		FROM PIYAVATE_BATTLE_TRAINING."OCPR" 
 		WHERE "CardCode"=CASE WHEN :par1='' THEN "CardCode" ELSE :par1 END;
 	ELSE IF :DTYPE='GetItem' THEN
 		SELECT  
@@ -816,8 +816,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 WHEN A."ManBtchNum"='Y' THEN
 			 	'B'
 			 ELSE 'N' END AS "ItemType"	
-		FROM TRIWALL_TRAINKEY."OITM" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS B ON B."ItemCode"=A."ItemCode" AND B."PriceList"=1;
+		FROM PIYAVATE_BATTLE_TRAINING."OITM" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS B ON B."ItemCode"=A."ItemCode" AND B."PriceList"=1;
 	ELSE IF :DTYPE='GennerateBatchOrSerial' THEN
 		SELECT 
 			  :par1
@@ -832,8 +832,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 "WhsCode" AS "Code"
 			,"WhsName" AS "Name" 
 			,A0."BPLName" AS "BranchName"
-		FROM TRIWALL_TRAINKEY."OWHS" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS A0 ON A0."BPLId"=A."BPLid"
+		FROM PIYAVATE_BATTLE_TRAINING."OWHS" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS A0 ON A0."BPLId"=A."BPLid"
 		WHERE "Inactive"='N';
 	ELSE IF :DTYPE='GetTransferRequest' THEN
 		SELECT 
@@ -841,7 +841,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardCode" AS "CardCode"
 			,"CardName" AS "CardName"
 			,"DocTotal" AS "DocTotal" 
-		FROM TRIWALL_TRAINKEY."OPOR" 
+		FROM PIYAVATE_BATTLE_TRAINING."OPOR" 
 		WHERE 
 			"Series"=CASE WHEN :par1=0 THEN "Series" ELSE :par1 END 
 			AND "DocNum" LIKE '%' || :par2 || '%';
@@ -852,7 +852,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"BPLName" AS "Branch"
 			,"Filler" AS "FromWarehouse"
 			,"ToWhsCode" AS "ToWarehouse" 
-		FROM TRIWALL_TRAINKEY."OWTQ" 
+		FROM PIYAVATE_BATTLE_TRAINING."OWTQ" 
 		WHERE 
 			"DocStatus"='O' 
 			AND "Series"=:par1 
@@ -882,9 +882,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."WhsCode"
 			,IFNULL(C."ManBtchNum",'')+IFNULL(C."ManSerNum",'') As "ManItem"
 			,A."BPLName" As "Branch"
-		FROM TRIWALL_TRAINKEY."OWTQ" A
-		LEFT JOIN TRIWALL_TRAINKEY."WTQ1" B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" C ON B."ItemCode"=C."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OWTQ" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."WTQ1" B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" C ON B."ItemCode"=C."ItemCode"
 		WHERE 
 			A."DocStatus"='O' 
 			AND A."DocNum" IN(:par1) 
@@ -913,21 +913,21 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					,F."BPLName" AS "BranchName"
 					,A."Warehouse"
 					,A."Uom"
-				FROM TRIWALL_TRAINKEY."OWOR" AS A
-				LEFT JOIN TRIWALL_TRAINKEY."OITM" AS C ON C."ItemCode"=A."ItemCode"
-				LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
-				LEFT JOIN TRIWALL_TRAINKEY."OWHS" AS E ON E."WhsCode"=A."Warehouse"
-				LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS F ON E."BPLid"=F."BPLId"
+				FROM PIYAVATE_BATTLE_TRAINING."OWOR" AS A
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS C ON C."ItemCode"=A."ItemCode"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" AS E ON E."WhsCode"=A."Warehouse"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS F ON E."BPLid"=F."BPLId"
 				WHERE --A."Series"=CASE WHEN :par1='-1' THEN A."Series" ELSE :par1 END 
 					  --AND 
 					  A."Status"='R'
 					  AND A."DocEntry" NOT IN (SELECT 
 					  								"BaseEntry" 
-					  							FROM TRIWALL_TRAINKEY."IGN1" 
+					  							FROM PIYAVATE_BATTLE_TRAINING."IGN1" 
 					  							WHERE "BaseType"=202)
 					  AND (SELECT 
 					  			COUNT(*) 	
-					  	   FROM TRIWALL_TRAINKEY."WOR1" AS T0 
+					  	   FROM PIYAVATE_BATTLE_TRAINING."WOR1" AS T0 
 					  	   WHERE "DocEntry"=A."DocEntry" AND "IssuedQty"<"BaseQty")!=0
 					  --AND A."DocEntry" LIKE '%'|| :par1 ||'%'
 			)A 
@@ -957,16 +957,16 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					,A."Warehouse"
 					,A."Uom"
 					,G."QtyIssue"
-				FROM TRIWALL_TRAINKEY."OWOR" AS A
-				LEFT JOIN TRIWALL_TRAINKEY."OITM" AS C ON C."ItemCode"=A."ItemCode"
-				LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
-				LEFT JOIN TRIWALL_TRAINKEY."OWHS" AS E ON E."WhsCode"=A."Warehouse"
-				LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS F ON E."BPLid"=F."BPLId"
+				FROM PIYAVATE_BATTLE_TRAINING."OWOR" AS A
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS C ON C."ItemCode"=A."ItemCode"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" AS E ON E."WhsCode"=A."Warehouse"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS F ON E."BPLid"=F."BPLId"
 				LEFT JOIN (
 					SELECT 
 						 "DocEntry" AS "DocEntry"
 						,SUM("IssuedQty") AS "QtyIssue"
-					FROM TRIWALL_TRAINKEY."WOR1"
+					FROM PIYAVATE_BATTLE_TRAINING."WOR1"
 					GROUP BY "DocEntry"
 				) AS G ON G."DocEntry"=A."DocEntry"
 				WHERE --A."Series"=CASE WHEN :par1='-1' THEN A."Series" ELSE :par1 END 
@@ -974,7 +974,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					  A."Status"='R'
 					  AND A."DocEntry" NOT IN (SELECT 
 					  								"BaseEntry" 
-					  							FROM TRIWALL_TRAINKEY."IGN1" 
+					  							FROM PIYAVATE_BATTLE_TRAINING."IGN1" 
 					  							WHERE "BaseType"=202)
 					  AND G."QtyIssue"<>0
 					  --AND "DocNum" LIKE '%'|| :par2 ||'%'
@@ -1005,16 +1005,16 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					,A."Warehouse"
 					,A."Uom"
 					,G."QtyIssue"
-				FROM TRIWALL_TRAINKEY."OWOR" AS A
-				LEFT JOIN TRIWALL_TRAINKEY."OITM" AS C ON C."ItemCode"=A."ItemCode"
-				LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
-				LEFT JOIN TRIWALL_TRAINKEY."OWHS" AS E ON E."WhsCode"=A."Warehouse"
-				LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS F ON E."BPLid"=F."BPLId"
+				FROM PIYAVATE_BATTLE_TRAINING."OWOR" AS A
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS C ON C."ItemCode"=A."ItemCode"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" AS E ON E."WhsCode"=A."Warehouse"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS F ON E."BPLid"=F."BPLId"
 				LEFT JOIN (
 					SELECT 
 						 "DocEntry" AS "DocEntry"
 						,SUM("IssuedQty") AS "QtyIssue"
-					FROM TRIWALL_TRAINKEY."WOR1"
+					FROM PIYAVATE_BATTLE_TRAINING."WOR1"
 					GROUP BY "DocEntry"
 				) AS G ON G."DocEntry"=A."DocEntry"
 				WHERE --A."Series"=CASE WHEN :par1='-1' THEN A."Series" ELSE :par1 END 
@@ -1048,16 +1048,16 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					,A."Warehouse"
 					,A."Uom"
 					,G."QtyIssue"
-				FROM TRIWALL_TRAINKEY."OWOR" AS A
-				LEFT JOIN TRIWALL_TRAINKEY."OITM" AS C ON C."ItemCode"=A."ItemCode"
-				LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
-				LEFT JOIN TRIWALL_TRAINKEY."OWHS" AS E ON E."WhsCode"=A."Warehouse"
-				LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS F ON E."BPLid"=F."BPLId"
+				FROM PIYAVATE_BATTLE_TRAINING."OWOR" AS A
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS C ON C."ItemCode"=A."ItemCode"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" AS E ON E."WhsCode"=A."Warehouse"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS F ON E."BPLid"=F."BPLId"
 				LEFT JOIN (
 					SELECT 
 						 "DocEntry" AS "DocEntry"
 						,SUM("IssuedQty") AS "QtyIssue"
-					FROM TRIWALL_TRAINKEY."WOR1"
+					FROM PIYAVATE_BATTLE_TRAINING."WOR1"
 					GROUP BY "DocEntry"
 				) AS G ON G."DocEntry"=A."DocEntry"
 				WHERE --A."Series"=CASE WHEN :par1='-1' THEN A."Series" ELSE :par1 END 
@@ -1078,17 +1078,17 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			SELECT 
 				 A."DocEntry" AS "DocEntry"
 				,A."PlannedQty"-A."CmpltQty" AS "Qty"
-			FROM TRIWALL_TRAINKEY."OWOR" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" AS C ON C."ItemCode"=A."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
-			LEFT JOIN TRIWALL_TRAINKEY."OWHS" AS E ON E."WhsCode"=A."Warehouse"
-			LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS F ON E."BPLid"=F."BPLId"
+			FROM PIYAVATE_BATTLE_TRAINING."OWOR" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS C ON C."ItemCode"=A."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" AS E ON E."WhsCode"=A."Warehouse"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS F ON E."BPLid"=F."BPLId"
 			WHERE 
 				A."Series"=CASE WHEN :par1='-1' THEN A."Series" ELSE :par1 END 
 				AND A."Status"='R'
 				AND A."DocEntry" NOT IN (SELECT 
 											"BaseEntry" 
-										 FROM TRIWALL_TRAINKEY."IGN1" 
+										 FROM PIYAVATE_BATTLE_TRAINING."IGN1" 
 										 WHERE "BaseType"=202)
 				AND "DocNum" LIKE '%'|| :par2 ||'%'
 		)A WHERE A."Qty"<>0;
@@ -1110,14 +1110,14 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,F."BPLName" AS "BranchName"
 				,A."Warehouse"
 				,A."Uom"
-			FROM TRIWALL_TRAINKEY."OWOR" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" AS C ON C."ItemCode"=A."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
-			LEFT JOIN TRIWALL_TRAINKEY."OWHS" AS E ON E."WhsCode"=A."Warehouse"
-			LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS F ON E."BPLid"=F."BPLId"
+			FROM PIYAVATE_BATTLE_TRAINING."OWOR" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS C ON C."ItemCode"=A."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS D ON A."ItemCode"=D."ItemCode" AND "PriceList"=1
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" AS E ON E."WhsCode"=A."Warehouse"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS F ON E."BPLid"=F."BPLId"
 			WHERE 
 				A."Series"=CASE WHEN :par1='-1' THEN A."Series" ELSE :par1 END 
-				AND A."DocEntry" NOT IN (SELECT "BaseEntry" FROM TRIWALL_TRAINKEY."IGN1" WHERE "BaseType"=202)
+				AND A."DocEntry" NOT IN (SELECT "BaseEntry" FROM PIYAVATE_BATTLE_TRAINING."IGN1" WHERE "BaseType"=202)
 				AND A."Status"='P'
 				--AND A."U_WebID" IS NOT NULL
 				AND "DocNum" LIKE '%'|| :par2 ||'%'
@@ -1137,19 +1137,19 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(T5."InDate",'dd-MMM-yyyy') AS "AdmissionDate"
 				,T5."MnfSerial" As "MfrNo"
 				,'Available' As "SerialStatus"
-			FROM TRIWALL_TRAINKEY."OIBQ" T0
-			INNER JOIN TRIWALL_TRAINKEY."OBIN" T1 ON T0."BinAbs"=T1."AbsEntry" AND T0."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBBQ" T2 ON T2."BinAbs"=T0."BinAbs" AND T2."ItemCode"=T0."ItemCode" AND T2."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSBQ" T3 ON T3."BinAbs"=T0."BinAbs" AND T3."ItemCode"=T0."ItemCode" AND T3."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBTN" T4 ON T2."SnBMDAbs"=T4."AbsEntry" AND T2."ItemCode"=T4."ItemCode"
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSRN" T5 ON T3."SnBMDAbs"=T5."AbsEntry" AND T3."ItemCode"=T5."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."OIBQ" T0
+			INNER JOIN PIYAVATE_BATTLE_TRAINING."OBIN" T1 ON T0."BinAbs"=T1."AbsEntry" AND T0."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBBQ" T2 ON T2."BinAbs"=T0."BinAbs" AND T2."ItemCode"=T0."ItemCode" AND T2."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSBQ" T3 ON T3."BinAbs"=T0."BinAbs" AND T3."ItemCode"=T0."ItemCode" AND T3."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBTN" T4 ON T2."SnBMDAbs"=T4."AbsEntry" AND T2."ItemCode"=T4."ItemCode"
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSRN" T5 ON T3."SnBMDAbs"=T5."AbsEntry" AND T3."ItemCode"=T5."ItemCode"
 			WHERE
 				T1."AbsEntry" >= 0
 				AND (T3."AbsEntry" IS NOT NULL)
 				AND T0."ItemCode" IN (SELECT 
 										U0."ItemCode" 
-									  FROM TRIWALL_TRAINKEY."OITM" U0 
-									  INNER JOIN TRIWALL_TRAINKEY."OITB" U1 on U0."ItmsGrpCod" = U1."ItmsGrpCod"
+									  FROM PIYAVATE_BATTLE_TRAINING."OITM" U0 
+									  INNER JOIN PIYAVATE_BATTLE_TRAINING."OITB" U1 on U0."ItmsGrpCod" = U1."ItmsGrpCod"
 									  WHERE U0."ItemCode" IS NOT NULL 
 									 )
 				AND T0."ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par2,','))
@@ -1167,9 +1167,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,B."InDate" As "AdmissionDate"
 				,B."MnfSerial"
 				,'UnAvailable' As "SerialStatus"
-			FROM TRIWALL_TRAINKEY."OSRQ" A 
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber" AND A."MdAbsEntry"=B."AbsEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OWHS" C ON C."WhsCode"=A."WhsCode" 
+			FROM PIYAVATE_BATTLE_TRAINING."OSRQ" A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber" AND A."MdAbsEntry"=B."AbsEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" C ON C."WhsCode"=A."WhsCode" 
 			WHERE 
 				A."Quantity"<>0 
 				AND A."ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par2,','))
@@ -1183,7 +1183,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 "ItemCode"
 			,'100.38' AS "Price"
 			,'*'|| "CodeBars" ||'*' AS "CodeBars" 
-		FROM TRIWALL_TRAINKEY."OITM" 
+		FROM PIYAVATE_BATTLE_TRAINING."OITM" 
 		WHERE IFNULL("CodeBars",'')<>'';
 	ELSE IF :DTYPE='GETLayouts' THEN
 		/*SELECT 
@@ -1228,12 +1228,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,TO_DECIMAL(T0."DocTotal",12,2) As "DocTotal"
 			,''/*U_docDraft*/ As "PONumber"
 			,T0."BPLName"
-		FROM TRIWALL_TRAINKEY."ODRF" T0
-		INNER JOIN TRIWALL_TRAINKEY."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
-		LEFT JOIN TRIWALL_TRAINKEY."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" T4 ON T4."ItemCode"=T1."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" T5 ON T5."Series"=T0."Series" And T5."ObjectCode"=20
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" T0
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" T4 ON T4."ItemCode"=T1."ItemCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" T5 ON T5."Series"=T0."Series" And T5."ObjectCode"=20
 		WHERE T0."ObjType"=20  And T0."DocEntry"=:par1;
 	ELSE IF :DTYPE='Delivery_Print' THEN
 		SELECT  
@@ -1246,65 +1246,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,D1."ItemCode"
 			,D1."Dscription" AS Description
 			,D1."Quantity" As Qty
-		FROM TRIWALL_TRAINKEY."ODLN" AS D0 
-		LEFT JOIN TRIWALL_TRAINKEY."DLN1" D1 ON D0."DocEntry"=D1."DocEntry"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS D0 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" D1 ON D0."DocEntry"=D1."DocEntry"
 		WHERE D0."DocEntry"=:par1;
-	ELSE IF :DTYPE='Return_Delivery_Print' THEN
-		SELECT 
-			 ROW_NUMBER() OVER(ORDER BY "DocNum") As "No"
-			,T0."DocEntry"
-			,T5."SeriesName"
-			,T0."CardCode"
-			,T0."CardName"
-			,T0."DocNum"
-			,T0."DocTotal"
-			,TO_VARCHAR(T0."DocDate",'dd-MMM-yyyy') As "DocDate"
-			,T0."DocDueDate"
-			,T0."NumAtCard"
-			,T0."Comments"
-			,T0."BPLName" As "Branch"
-			,T1."ItemCode"
-			,T1."Dscription" As "Description"
-			,Cast(T1."Quantity" As INT) AS "Qty"
-			,Cast(T1."Price" As Numeric(9,2)) As "Price"
-			,Cast(T1."LineTotal" As Numeric(9,2)) As "LineTotal"
-			,T1."DiscPrcnt"
-			,T1."BaseEntry"
-			,T1."BaseLine"
-			,T1."UomCode"
-			,T6."Phone1"
-			,T6."Phone2"
-			,T0."Address2" As "BillTo"
-			,T0."Address" As "ShipTo"
-			,T1."WhsCode"
-			,CASE WHEN T4."ManBtchNum"='Y' THEN 
-				'B' 
-			 ELSE 
-			 	CASE WHEN T4."ManSerNum"='Y' THEN 
-			 		'S' 
-			 	ELSE 
-			 		'N' 
-			 	END 
-			 END As "ItemType"
-			,T4."CodeBars"
-			,Cast(T0."DocTotal" As Numeric(9,2)) As "DocTotal"
-			,''/*"U_docDraft"*/ As "PONumber"
-			,T0."BPLName"
-			,C."ItmsGrpNam" As "Brand"
-			,''/*T0."U_docDraft"*/ As "BaseNum"
-			,'' As "SerialBatch"
-			,T1."BaseLine" As "BaseLinNum"
-			,''/*T0."U_DeliCon"*/ As "DeliveryCondition"
-		FROM TRIWALL_TRAINKEY."ODRF" T0
-		INNER JOIN TRIWALL_TRAINKEY."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
-		LEFT JOIN TRIWALL_TRAINKEY."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" T4 ON T4."ItemCode"=T1."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" T5 ON T5."Series"=T0."Series" And T5."ObjectCode"=16
-		LEFT JOIN TRIWALL_TRAINKEY."OCRD" T6 ON T6."CardCode"=T0."CardCode"
-		LEFT JOIN TRIWALL_TRAINKEY."KPPT" B On T1."ItemCode"=B."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITG" C ON C."ItmsTypCod"=B."ItmsTypCod"
-		WHERE T0."ObjType"=16 and T1."DocEntry"=:par1;
 	ELSE IF :DTYPE='Credit_Memo_Print' THEN
 		SELECT 
 			 ROW_NUMBER() OVER(ORDER BY "DocNum") As "No"
@@ -1346,51 +1290,14 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,TO_DECIMAL(T0."DocTotal",12,2) As "DocTotal"
 			,''/*U_docDraft*/ As "PONumber"
 			,T0."BPLName"
-		FROM TRIWALL_TRAINKEY."ODRF" T0
-		INNER JOIN TRIWALL_TRAINKEY."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
-		LEFT JOIN TRIWALL_TRAINKEY."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" T4 ON T4."ItemCode"=T1."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" T5 ON T5."Series"=T0."Series" And T5."ObjectCode"=14
-		LEFT JOIN TRIWALL_TRAINKEY."OCRD" T6 ON T6."CardCode"=T0."CardCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" T0
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" T4 ON T4."ItemCode"=T1."ItemCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" T5 ON T5."Series"=T0."Series" And T5."ObjectCode"=14
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCRD" T6 ON T6."CardCode"=T0."CardCode"
 		WHERE T0."ObjType"=14 and T1."DocEntry"=:par1;
-	ELSE IF :DTYPE='Goods_Return' THEN
-		SELECT 
-			ROW_NUMBER() Over(Order by "BaseLinNum") AS "No"
-			,C."ItmsGrpNam" AS "Brand"
-			,A.* 
-		FROM(
-			SELECT	
-				 A."CardCode"
-				,A."CardName"
-				,A."DocDate"
-				,A."BaseNum"
-				,A."ItemCode" AS "ItemCode"	
-				,B."DistNumber" AS "SerialBatch"
-				,1 AS "Qty"
-				,A."BaseLinNum"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."RPD1" C ON C."DocEntry"=A."BaseEntry" And C."VisOrder"=A."BaseLinNum"
-			LEFT JOIN TRIWALL_TRAINKEY."ORPD" D ON D."DocEntry"=C."DocEntry"
-			WHERE A."BaseType"=21 and d."DocEntry"=19
-			UNION All
-			SELECT 
-				 G0."CardCode"
-				,G0."CardName"
-				,G0."DocDate"
-				,G1."BaseDocNum" AS "BaseNum"
-				, G1."ItemCode"
-				,'' AS "SerialBacth"
-				, G1."Quantity" AS "Qty"
-				, G1."VisOrder" AS "BaseLinNum"
-			FROM TRIWALL_TRAINKEY."ORPD" AS  G0
-			LEFT JOIN TRIWALL_TRAINKEY."RPD1" G1 ON G1."DocEntry"=G0."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" G2 ON G1."ItemCode"=G2."ItemCode"
-			WHERE G0."DocEntry"=:par1 AND "ManSerNum"<>'Y'
-		) AS A
-		LEFT JOIN TRIWALL_TRAINKEY."KPPT" B ON A."ItemCode"=B."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITG" C ON C."ItmsTypCod"=B."ItmsTypCod";
 	ELSE IF :DTYPE='Draft' THEN
 		IF :par1='20' THEN
 			SELECT 
@@ -1401,10 +1308,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,T0."DocTotal"
 				,T0."NumAtCard"
 				,T0."BPLName" 
-			FROM TRIWALL_TRAINKEY."ODRF" T0
-			INNER JOIN TRIWALL_TRAINKEY."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
-			LEFT JOIN TRIWALL_TRAINKEY."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
+			FROM PIYAVATE_BATTLE_TRAINING."ODRF" T0
+			INNER JOIN PIYAVATE_BATTLE_TRAINING."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
 			WHERE T0."ObjType"=20 And T0."DocStatus"='O';
 		IF :par1='20Line' THEN
 			SELECT 
@@ -1437,12 +1344,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 	END 
 				 END As "ItemType"
 				,T4."CodeBars"
-			FROM TRIWALL_TRAINKEY."ODRF" T0
-			INNER JOIN TRIWALL_TRAINKEY."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
-			LEFT JOIN TRIWALL_TRAINKEY."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" T4 ON T4."ItemCode"=T1."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" T5 ON T5."Series"=T0."Series" AND T5."ObjectCode"=20
+			FROM PIYAVATE_BATTLE_TRAINING."ODRF" T0
+			INNER JOIN PIYAVATE_BATTLE_TRAINING."DRF1" T1 ON T0."DocEntry"=T1."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."DRF16" T2 ON T1."DocEntry"=T2."AbsEntry" AND T1."LineNum"=T2."LineNum"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."ODBN" T3 ON T2."ObjId"=T3."ObjType" AND T2."ObjAbs"=T3."AbsEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" T4 ON T4."ItemCode"=T1."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" T5 ON T5."Series"=T0."Series" AND T5."ObjectCode"=20
 			WHERE T0."ObjType"=20 AND T0."DocStatus"='O'  AND T0."DocNum"=:par2;
 		END IF;
 		END IF;
@@ -1467,10 +1374,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."DocTotal"
 			,''/*A."U_docDraft"*/ AS "DocDraft"
 			,A."DocEntry"
-			FROM TRIWALL_TRAINKEY."OINV" A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" B ON A."Series"=B."Series" AND B."ObjectCode"=13
-			LEFT JOIN TRIWALL_TRAINKEY."INV1" C ON A."DocEntry"=C."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" D ON D."ItemCode"=C."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."OINV" A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" B ON A."Series"=B."Series" AND B."ObjectCode"=13
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."INV1" C ON A."DocEntry"=C."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" D ON D."ItemCode"=C."ItemCode"
 			WHERE 
 				A."Series"=CASE WHEN :par1='' THEN A."Series"  WHEN :par1='All' THEN A."Series" ELSE :par1 END 
 				AND "DocNum" LIKE '%' || :par2 || '%'
@@ -1487,10 +1394,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		FROM (
 			SELECT DISTINCT 
 				"DocNum" AS "DocNum"
-			FROM TRIWALL_TRAINKEY."OINV" A 
-			LEFT JOIN TRIWALL_TRAINKEY."NNM1" B ON A."Series"=B."Series" And B."ObjectCode"=13
-			LEFT JOIN TRIWALL_TRAINKEY."INV1" C ON A."DocEntry"=C."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" D ON D."ItemCode"=C."ItemCode"	 
+			FROM PIYAVATE_BATTLE_TRAINING."OINV" A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" B ON A."Series"=B."Series" And B."ObjectCode"=13
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."INV1" C ON A."DocEntry"=C."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" D ON D."ItemCode"=C."ItemCode"	 
 			WHERE 
 				A."Series"=CASE WHEN :par1='' THEN A."Series"  WHEN :par1='All' THEN A."Series" ELSE :par1 END 
 				AND "DocNum" LIKE '%' || :par2 || '%'
@@ -1534,10 +1441,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 	END 
 			 END As "ManItem"
 			,IFNULL(B."Comments",'') As "Comments"
-		FROM TRIWALL_TRAINKEY."INV1" A 
-		LEFT JOIN TRIWALL_TRAINKEY."OINV" B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" C ON C."Series"=B."Series" And C."ObjectCode"=13
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" D ON D."ItemCode"=A."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."INV1" A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OINV" B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" C ON C."Series"=B."Series" And C."ObjectCode"=13
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" D ON D."ItemCode"=A."ItemCode"
 		WHERE 
 			B."DocType"='I' 
 			AND B."DocStatus"='O' 
@@ -1558,10 +1465,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"AdmissionDate" DATE
 			,"OnHandQty" INT
 		);
-		SELECT "DocEntry" INTO AREntry FROM TRIWALL_TRAINKEY."OINV" WHERE "DocNum"=:par1;
+		SELECT "DocEntry" INTO AREntry FROM PIYAVATE_BATTLE_TRAINING."OINV" WHERE "DocNum"=:par1;
 		SELECT 
 			/*IFNULL("U_OutSerial",'')*/'' INTO U_Serial 
-		FROM TRIWALL_TRAINKEY."INV1" 
+		FROM PIYAVATE_BATTLE_TRAINING."INV1" 
 		WHERE "DocEntry"=:AREntry And "ItemCode"=:par2;
 		SELECT 
 			 B."ItemCode"
@@ -1574,11 +1481,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,CASE WHEN B."BaseType"=15 THEN C."SysSerial" ELSE D."SysNumber" END AS "SysSerial"
 			,CASE WHEN B."BaseType"=15 THEN C."InDate" ELSE D."InDate" END AS "AdmissionDate"
 			,CASE WHEN IFNULL(C."OnHandQty",0)>0 THEN C."OnHandQty" ELSE IFNULL(D."OnHandQty",0) END AS "OnHandQty"
-		FROM TRIWALL_TRAINKEY."OINV" A
-		LEFT JOIN TRIWALL_TRAINKEY."INV1" B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."DLN1" T0 ON T0."DocEntry"=B."BaseEntry" And T0."LineNum"=B."BaseLine"
-		LEFT JOIN TRIWALL_TRAINKEY."ODLN" T1 ON T0."DocEntry"=T1."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" I ON I."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OINV" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."INV1" B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" T0 ON T0."DocEntry"=B."BaseEntry" And T0."LineNum"=B."BaseLine"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ODLN" T1 ON T0."DocEntry"=T1."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" I ON I."ItemCode"=B."ItemCode"
 		LEFT JOIN (
 			SELECT 
 				 T0."BaseNum"
@@ -1593,9 +1500,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,T0."SysSerial"
 				,TO_VARCHAR(T1."CreateDate",'dd-MM-yyyy') As "InDate"
 				,T2."OnHandQty"
-			FROM TRIWALL_TRAINKEY."SRI1" T0
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" T1 ON T0."ItemCode"=T1."ItemCode" And T0."SysSerial"=T1."SysNumber"
-			LEFT JOIN TRIWALL_TRAINKEY."OSBQ" T2 ON T2."SnBMDAbs"=T1."AbsEntry" And T2."ItemCode"=T1."ItemCode" 
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" T0
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" T1 ON T0."ItemCode"=T1."ItemCode" And T0."SysSerial"=T1."SysNumber"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSBQ" T2 ON T2."SnBMDAbs"=T1."AbsEntry" And T2."ItemCode"=T1."ItemCode" 
 			WHERE T0."BaseType"=15
 		)C ON C."BaseNum"=T1."DocNum" And B."ItemCode"=C."ItemCode"
 		LEFT JOIN (
@@ -1612,9 +1519,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,T1."SysNumber"
 				,TO_VARCHAR(T1."CreateDate",'dd-MMM-yyyy') As "InDate"
 				,T2."OnHandQty"
-			FROM TRIWALL_TRAINKEY."SRI1" T0
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" T1 ON T0."ItemCode"=T1."ItemCode" And T0."SysSerial"=T1."SysNumber"
-			LEFT JOIN TRIWALL_TRAINKEY."OSBQ" T2 ON T2."SnBMDAbs"=T1."AbsEntry" And T2."ItemCode"=T1."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" T0
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" T1 ON T0."ItemCode"=T1."ItemCode" And T0."SysSerial"=T1."SysNumber"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSBQ" T2 ON T2."SnBMDAbs"=T1."AbsEntry" And T2."ItemCode"=T1."ItemCode"
 			WHERE T0."BaseType"=13
 		)D ON D."BaseNum"=A."DocNum" And B."ItemCode"=D."ItemCode"
 		WHERE 
@@ -1632,10 +1539,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		DECLARE NumberDO INT;
 		SELECT TOP 1 
 			T1."DocNum" INTO NumberDO
-		FROM TRIWALL_TRAINKEY."OINV" A
-		LEFT JOIN TRIWALL_TRAINKEY."INV1" B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."DLN1" T0 ON T0."DocEntry"=B."BaseEntry" AND T0."LineNum"=B."BaseLine"
-		LEFT JOIN TRIWALL_TRAINKEY."ODLN" T1 ON T0."DocEntry"=T1."DocEntry"
+		FROM PIYAVATE_BATTLE_TRAINING."OINV" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."INV1" B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" T0 ON T0."DocEntry"=B."BaseEntry" AND T0."LineNum"=B."BaseLine"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ODLN" T1 ON T0."DocEntry"=T1."DocEntry"
 		WHERE A."DocNum"=:par1 AND A."DocStatus"='O';
 		SELECT DISTINCT * FROM (
 			SELECT 
@@ -1648,11 +1555,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,CASE WHEN B."BaseType"=15 THEN C."MnfDate" ELSE D."MnfDate" END AS "MnfDate"
 				,CASE WHEN B."BaseType"=15 THEN C."SysNumber" ELSE D."SysNumber" END AS "SysNumber"
 				,CASE WHEN B."BaseType"=15 THEN C."InDate" ELSE D."InDate" END AS "AdmissionDate"
-			FROM TRIWALL_TRAINKEY."OINV" A
-			LEFT JOIN TRIWALL_TRAINKEY."INV1" B ON A."DocEntry"=B."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."DLN1" T0 ON T0."DocEntry"=B."BaseEntry" And T0."LineNum"=B."BaseLine"
-			LEFT JOIN TRIWALL_TRAINKEY."ODLN" T1 ON T0."DocEntry"=T1."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" I ON I."ItemCode"=B."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."OINV" A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."INV1" B ON A."DocEntry"=B."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" T0 ON T0."DocEntry"=B."BaseEntry" And T0."LineNum"=B."BaseLine"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."ODLN" T1 ON T0."DocEntry"=T1."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" I ON I."ItemCode"=B."ItemCode"
 			LEFT JOIN (
 				SELECT * FROM (
 					SELECT 
@@ -1667,7 +1574,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 						 IFNULL(
 						 	(SELECT 
 						 		SUM("Quantity") 
-						 	 FROM TRIWALL_TRAINKEY."IBT1" C 
+						 	 FROM PIYAVATE_BATTLE_TRAINING."IBT1" C 
 						 	 WHERE 
 						 	 	C."BsDocType"=15 
 						 	 	AND C."BsDocEntry"=T0."BaseEntry" 
@@ -1678,13 +1585,13 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 						IFNULL(
 							(SELECT 
 								SUM(D."Quantity") 
-							 FROM TRIWALL_TRAINKEY."IBT1" D 
+							 FROM PIYAVATE_BATTLE_TRAINING."IBT1" D 
 							 WHERE 
 							 	D."BaseType"=14 
 							 	AND D."BatchNum"=T0."BatchNum" 
 							 	AND "BaseEntry"=(SELECT DISTINCT 
 							 						D1."TrgetEntry" 
-							 					FROM TRIWALL_TRAINKEY."INV1" D1 
+							 					FROM PIYAVATE_BATTLE_TRAINING."INV1" D1 
 							 					WHERE 
 							 						D1."BaseEntry"=T0."BaseEntry" 
 							 						AND D1."BaseLine"=T0."BaseLinNum")
@@ -1694,9 +1601,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 						,T0."BatchNum"
 						,TO_VARCHAR(T1."CreateDate",'dd-MM-yyyy') AS "InDate"
 						,T1."SysNumber"
-					FROM TRIWALL_TRAINKEY."IBT1" T0
-					LEFT JOIN TRIWALL_TRAINKEY."OBTN" T1 ON T0."ItemCode"=T1."ItemCode" AND T0."BatchNum"=T1."DistNumber"
-					LEFT JOIN TRIWALL_TRAINKEY."OBTQ" T2 ON T2."ItemCode"=T1."ItemCode" AND T2."SysNumber"=T1."SysNumber"
+					FROM PIYAVATE_BATTLE_TRAINING."IBT1" T0
+					LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" T1 ON T0."ItemCode"=T1."ItemCode" AND T0."BatchNum"=T1."DistNumber"
+					LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" T2 ON T2."ItemCode"=T1."ItemCode" AND T2."SysNumber"=T1."SysNumber"
 					WHERE 
 						T0."BaseType" IN(15) 
 						AND T0."BaseNum"=:NumberDO 
@@ -1716,21 +1623,21 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					 IFNULL(
 					 	(SELECT 
 					 		SUM("Quantity") 
-					 	 FROM TRIWALL_TRAINKEY."IBT1" C 
+					 	 FROM PIYAVATE_BATTLE_TRAINING."IBT1" C 
 					 	 WHERE 
 					 	 	C."BaseType"=14 
 					 	 	AND C."BatchNum"=T0."BatchNum" 
 					 	 	AND C."BaseEntry"=(SELECT DISTINCT 
 					 	 						C1."TrgetEntry" 
-					 	 					 FROM TRIWALL_TRAINKEY."INV1" C1 WHERE C1."DocEntry"=T0."BaseEntry")
+					 	 					 FROM PIYAVATE_BATTLE_TRAINING."INV1" C1 WHERE C1."DocEntry"=T0."BaseEntry")
 					 ),0) As "Qty"
 					,T1."MnfSerial"
 					,T1."MnfDate"
 					,T1."SysNumber"
 					,TO_VARCHAR(T1."CreateDate",'dd-MMM-yyyy') As "InDate"
-				FROM TRIWALL_TRAINKEY."IBT1" T0
-				LEFT JOIN TRIWALL_TRAINKEY."OBTN" T1 ON T0."ItemCode"=T1."ItemCode" AND T0."BatchNum"=T1."DistNumber"
-				LEFT JOIN TRIWALL_TRAINKEY."OBTQ" T2 ON T2."ItemCode"=T1."ItemCode" AND T2."SysNumber"=T1."SysNumber" 
+				FROM PIYAVATE_BATTLE_TRAINING."IBT1" T0
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" T1 ON T0."ItemCode"=T1."ItemCode" AND T0."BatchNum"=T1."DistNumber"
+				LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" T2 ON T2."ItemCode"=T1."ItemCode" AND T2."SysNumber"=T1."SysNumber" 
 				WHERE 
 					T0."BaseType"=13 
 					AND T0."BaseNum"=:par1 
@@ -1746,39 +1653,39 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			
 			SELECT 
 				"DocEntry" INTO POEntry 
-			FROM TRIWALL_TRAINKEY."OPOR" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPOR" 
 			WHERE TO_VARCHAR("DocNum")=:par2;
 			
-			/*UPDATE TRIWALL_TRAINKEY."POR1" 
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."POR1" 
 				SET "U_oDraftStatus"=:par4 
 			WHERE 
 				"DocEntry"=:POEntry 
 				AND "LineNum"=:par5;*/ -- Update PO Line Status
 
-			/*UPDATE TRIWALL_TRAINKEY."POR1"
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."POR1"
 				SET "U_ODraftQty"=CAST(:par3 AS NUMERIC) 
 				WHERE "DocEntry"=:POEntry AND "LineNum"=:par5;*/
 
 			SELECT 
 				COUNT("ItemCode") INTO _Close 
-			FROM TRIWALL_TRAINKEY."POR1" 
+			FROM PIYAVATE_BATTLE_TRAINING."POR1" 
 			WHERE 
 				"DocEntry"=:POEntry;
 				/*AND IFNULL("U_oDraftStatus",'')<>'C'*/--Check status for update Document Header PO
 
 			IF :_Close>0 THEN
-				/*UPDATE TRIWALL_TRAINKEY."OPOR" 
+				/*UPDATE PIYAVATE_BATTLE_TRAINING."OPOR" 
 					SET "U_docDraft"='' 
 				WHERE "DocEntry"=CAST(:POEntry AS INT);*/
 			END IF;
 			IF :_Close=0 THEN
-				/*UPDATE TRIWALL_TRAINKEY."OPOR" 
+				/*UPDATE PIYAVATE_BATTLE_TRAINING."OPOR" 
 					SET "U_docDraft"='oDraft' 
 				WHERE "DocEntry"=CAST(:POEntry AS INT);*/
 			END IF;
 			SELECT 
 				"DocNum" 
-			FROM TRIWALL_TRAINKEY."OPOR" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPOR" 
 			WHERE "DocNum"=:par2;
 		
 		IF :par1='15' THEN
@@ -1788,22 +1695,22 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			DECLARE Qty1 INT;
 			SELECT 
 				"DocEntry" INTO POEntry16 
-			FROM TRIWALL_TRAINKEY."ODLN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 			WHERE TO_VARCHAR("DocNum")=:par2;
 
 			SELECT 
 				/*IFNULL("U_ODraftQty",0)*/0 INTO Qty1 
-			FROM TRIWALL_TRAINKEY."DLN1" 
+			FROM PIYAVATE_BATTLE_TRAINING."DLN1" 
 			WHERE 
 				"DocEntry"=:POEntry16 
 				And "VisOrder"=:par5;
 
-			/*UPDATE TRIWALL_TRAINKEY."DLN1" 
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."DLN1" 
 				SET "U_oDraftStatus"=:par4 
 			WHERE 
 				"DocEntry"=:POEntry16 
 				And "VisOrder"=:par5;*/ -- Update PO Line Status
-			/*UPDATE TRIWALL_TRAINKEY."DLN1"
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."DLN1"
 				SET "U_ODraftQty"=(CAST(:par3 AS NUMERIC)+CAST(:Qty1 AS NUMERIC))
 			WHERE 
 				"DocEntry"=:POEntry16 
@@ -1811,25 +1718,25 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 
 			SELECT 
 				COUNT("ItemCode") INTO Close16 
-			FROM TRIWALL_TRAINKEY."DLN1" 
+			FROM PIYAVATE_BATTLE_TRAINING."DLN1" 
 			Where 
 				"DocEntry"=:POEntry16;
 				/*AND IFNULL("U_oDraftStatus",'')<>'C'*/ --Check status for update Document Header PO
 			IF :Close16>0 THEN
-				/*UPDATE TRIWALL_TRAINKEY."ODLN" 
+				/*UPDATE PIYAVATE_BATTLE_TRAINING."ODLN" 
 					SET "U_docDraft"='' 
 				WHERE TO_VARCHAR("DocEntry")=:POEntry16;*/
 			END IF;
 			
 			IF :Close16=0 THEN
-				/*UPDATE TRIWALL_TRAINKEY."ODLN" 
+				/*UPDATE PIYAVATE_BATTLE_TRAINING."ODLN" 
 					SET "U_docDraft"='oDraft' 
 				WHERE TO_VARCHAR("DocEntry")=:POEntry16;*/
 			END IF;
 			
 			SELECT 
 				"DocNum" 
-			FROM TRIWALL_TRAINKEY."ODLN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 			WHERE "DocNum"=:par2;
 			
 		IF :par1='13' THEN
@@ -1839,46 +1746,46 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			Declare Qty13 INT;
 			SELECT 
 				"DocEntry" INTO POEntry13 
-			FROM TRIWALL_TRAINKEY."OINV" 
+			FROM PIYAVATE_BATTLE_TRAINING."OINV" 
 			WHERE TO_VARCHAR("DocNum")=:par2;
 
 			SELECT 
 				/*IFNULL("U_ODraftQty",0)*/ 0 INTO Qty13 
-			FROM TRIWALL_TRAINKEY."INV1" 
+			FROM PIYAVATE_BATTLE_TRAINING."INV1" 
 			WHERE 
 				"DocEntry"=:POEntry13 
 				AND "VisOrder"=:par5;
 				
-			/*UPDATE TRIWALL_TRAINKEY."INV1" 
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."INV1" 
 				SET "U_oDraftStatus"=:par4 
 			WHERE "DocEntry"=:POEntry13 AND "VisOrder"=:par5;*/ -- Update PO Line Status
 
-			/*UPDATE TRIWALL_TRAINKEY."INV1"	
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."INV1"	
 				SET "U_ODraftQty"=(CAST(:par3 AS NUMERIC)+Cast(@Qty13 AS NUMERIC))
 			WHERE "DocEntry"=:POEntry13 AND "VisOrder"=:par5;*/
 
 			SELECT 
 				COUNT("ItemCode") INTO Close13 
-			FROM TRIWALL_TRAINKEY."INV1" 
+			FROM PIYAVATE_BATTLE_TRAINING."INV1" 
 			WHERE 
 				"DocEntry"=:POEntry13 
 				/*AND IFNULL("U_oDraftStatus",'')<>'C'*/;--Check status for update Document Header PO
 			
 			IF :Close13>0 THEN
-				/*UPDATE TRIWALL_TRAINKEY."OINV" 
+				/*UPDATE PIYAVATE_BATTLE_TRAINING."OINV" 
 					SET "U_docDraft"='' 
 				WHERE "DocEntry"=:POEntry13;*/
 			END IF;
 			
 			IF :Close13=0 THEN
-				/*UPDATE TRIWALL_TRAINKEY."OINV" 
+				/*UPDATE PIYAVATE_BATTLE_TRAINING."OINV" 
 					SET "U_docDraft"='oDraft' 
 				WHERE "DocEntry"=:POEntry13;*/
 			END IF;
 			
 			SELECT 
 				"DocNum" 
-			FROM TRIWALL_TRAINKEY."OINV" 
+			FROM PIYAVATE_BATTLE_TRAINING."OINV" 
 			WHERE "DocNum"=:par2;
 		
 		IF :par1='SNB' THEN
@@ -1889,17 +1796,17 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 
 			SELECT 
 				"DocEntry" INTO POEntrySN 
-			FROM TRIWALL_TRAINKEY."ODLN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 			WHERE "DocNum"=:par2;
 			
 			SELECT 
 				IFNULL(''|| Cast(/*"U_OutSerial"*/'' As nvarchar(5000)),'') INTO OutSerial 
-			FROM TRIWALL_TRAINKEY."DLN1" 
+			FROM PIYAVATE_BATTLE_TRAINING."DLN1" 
 			WHERE 
 				"DocEntry"=:POEntrySN 
 				AND "VisOrder"=:par3;
 
-			/*UPDATE TRIWALL_TRAINKEY."DLN1" 
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."DLN1" 
 				SET "U_OutSerial"=CASE WHEN :OutSerial='' THEN ''ELSE :OutSerial||',' END + :par4 
 			WHERE 
 				"DocEntry"=:POEntrySN 
@@ -1913,16 +1820,16 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 
 			SELECT 
 				"DocEntry" INTO POEntrySNAR 
-			FROM TRIWALL_TRAINKEY."OINV" 
+			FROM PIYAVATE_BATTLE_TRAINING."OINV" 
 			WHERE TO_VARCHAR("DocNum")=:par2;
 			
 			SELECT 
 				IFNULL(''||Cast(/*"U_OutSerial"*/ '' As nvarchar(5000)),'') INTO OutSerialAR 
-			FROM TRIWALL_TRAINKEY."INV1" 
+			FROM PIYAVATE_BATTLE_TRAINING."INV1" 
 			WHERE 
 				"DocEntry"=:POEntrySNAR 
 				AND "VisOrder"=:par3;
-			/*UPDATE TRIWALL_TRAINKEY."INV1" 
+			/*UPDATE PIYAVATE_BATTLE_TRAINING."INV1" 
 				SET "U_OutSerial"=CASE WHEN :OutSerialAR='' THEN '' ELSE :OutSerialAR ||',' END || :par4 
 			WHERE "DocEntry"=:POEntrySNAR And "VisOrder"=:par3;*/ -- Update PO Line Status
 			SELECT 'Ok' AS "Ok" FROM DUMMY;
@@ -1935,32 +1842,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		SELECT 
 			 "ItmsTypCod" As "Code"
 			,"ItmsGrpNam" As "Name" 
-		FROM TRIWALL_TRAINKEY."OITG" 
+		FROM PIYAVATE_BATTLE_TRAINING."OITG" 
 		ORDER BY "Code";
-	ELSE IF :DTYPE='GetBarCode' THEN
-		SELECT 
-			 A."ItemCode"
-			,A."ItemName"
-			,C."ItmsGrpNam"
-			,A."CodeBars"
-		FROM TRIWALL_TRAINKEY."OITM" A 
-		LEFT JOIN TRIWALL_TRAINKEY."KPPT" B ON B."ItemCode"=A."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITG" C ON B."ItmsTypCod"=C."ItmsTypCod"
-		WHERE 
-			IFNULL(A."CodeBars",'')<>'' 
-			And C."ItmsTypCod" IN(SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par1,','));
-	ELSE IF :DTYPE='GetItemBarCode' THEN
-		SELECT  
-			 A."ItemCode"
-			,A."ItemName"
-			,C."ItmsGrpNam"
-			,'*'|| A."CodeBars" ||'*' As "BarCode"
-		FROM TRIWALL_TRAINKEY."OITM" A 
-		LEFT JOIN TRIWALL_TRAINKEY."KPPT" B ON A."ItemCode"=B."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITG" C ON B."ItmsTypCod"=C."ItmsTypCod"
-		WHERE 
-			IFNULL(A."CodeBars",'')<>'' 
-			AND A."ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par1,','));
 	ELSE IF :DTYPE='GetItemInventoryTransferBranchToBranch' THEN
 	
 		CREATE LOCAL TEMPORARY TABLE #TMP("WhsCode" NVARCHAR(255));
@@ -1978,7 +1861,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		
 		SELECT 
 			"WhsCode"
-		FROM TRIWALL_TRAINKEY."OWHS" 
+		FROM PIYAVATE_BATTLE_TRAINING."OWHS" 
 		WHERE 
 			TO_VARCHAR("BPLid")=CASE WHEN :par1='' THEN TO_VARCHAR("BPLid") ELSE :par1 END
 		INTO #TMP;
@@ -1986,7 +1869,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		SELECT 
 			 "ItemCode"
 			,SUM("OnHand") AS "OnHand" 
-		FROM TRIWALL_TRAINKEY."OITW" 
+		FROM PIYAVATE_BATTLE_TRAINING."OITW" 
 		WHERE 
 			"OnHand"<>0 
 			AND "WhsCode" IN (SELECT "WhsCode" FROM #TMP) 
@@ -2003,8 +1886,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ItemType"
-		FROM TRIWALL_TRAINKEY."OITM" AS A 
-		LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS B ON A."ItemCode"=B."ItemCode" AND B."PriceList"='1'
+		FROM PIYAVATE_BATTLE_TRAINING."OITM" AS A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS B ON A."ItemCode"=B."ItemCode" AND B."PriceList"='1'
 		RIGHT JOIN #TMP1 AS C ON A."ItemCode"=C."ItemCode"
 		WHERE 
 			A."validFor"='Y' 
@@ -2038,7 +1921,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	
 		SELECT 
 			"WhsCode"  
-		FROM TRIWALL_TRAINKEY."OWHS" 
+		FROM PIYAVATE_BATTLE_TRAINING."OWHS" 
 		WHERE 
 			TO_VARCHAR("BPLid")=CASE WHEN :par1='' THEN TO_VARCHAR("BPLid") Else :par1 End
 		INTO #TMP3;
@@ -2046,7 +1929,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		SELECT 
 			 "ItemCode"
 			,SUM("OnHand") As "OnHand" 
-		FROM TRIWALL_TRAINKEY."OITW" 
+		FROM PIYAVATE_BATTLE_TRAINING."OITW" 
 		WHERE 
 			"OnHand"<>0
 			AND "WhsCode" IN (SELECT "WhsCode" FROM #TMP3) 
@@ -2055,8 +1938,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		SELECT 
 			 A."ItemCode" AS "ItemCode"
 			,IFNULL(CAST(C."OnHand" AS INT),0) AS "QtyinStock"
-		FROM TRIWALL_TRAINKEY."OITM" AS A 
-		LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS B ON A."ItemCode"=B."ItemCode" AND B."PriceList"='1'
+		FROM PIYAVATE_BATTLE_TRAINING."OITM" AS A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS B ON A."ItemCode"=B."ItemCode" AND B."PriceList"='1'
 		RIGHT JOIN #TMP4 C ON A."ItemCode"=C."ItemCode"
 		WHERE 
 			A."validFor"='Y' 
@@ -2082,20 +1965,20 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(T5."InDate",'dd-MM-yyyy') As "AdmissionDate"
 				,IFNULL(TO_VARCHAR(T4."ExpDate",'dd-MM-yyyy'),'') AS "ExpDate"
 				,IFNULL(T4."LotNumber",'') AS "LotNumber"
-			FROM TRIWALL_TRAINKEY."OIBQ" AS T0
-			INNER JOIN TRIWALL_TRAINKEY."OBIN" T1 ON T0."BinAbs" = T1."AbsEntry" AND T0."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBBQ" AS T2 ON T0."BinAbs" = T2."BinAbs" AND T0."ItemCode" = T2."ItemCode" AND T2."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSBQ" AS T3 ON T0."BinAbs" = T3."BinAbs" AND T0."ItemCode" = T3."ItemCode" AND T3."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBTN" AS T4 ON T2."SnBMDAbs" = T4."AbsEntry" AND T2."ItemCode" = T4."ItemCode"
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSRN" AS T5 ON T3."SnBMDAbs" = T5."AbsEntry" and T3."ItemCode" = T5."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."OIBQ" AS T0
+			INNER JOIN PIYAVATE_BATTLE_TRAINING."OBIN" T1 ON T0."BinAbs" = T1."AbsEntry" AND T0."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBBQ" AS T2 ON T0."BinAbs" = T2."BinAbs" AND T0."ItemCode" = T2."ItemCode" AND T2."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSBQ" AS T3 ON T0."BinAbs" = T3."BinAbs" AND T0."ItemCode" = T3."ItemCode" AND T3."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS T4 ON T2."SnBMDAbs" = T4."AbsEntry" AND T2."ItemCode" = T4."ItemCode"
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS T5 ON T3."SnBMDAbs" = T5."AbsEntry" and T3."ItemCode" = T5."ItemCode"
 			WHERE
 				T1."AbsEntry" >= 0 
 				AND (T3."AbsEntry" IS NOT NULL)
 				AND T0."ItemCode" in((
 					SELECT 
 						U0."ItemCode" 
-					FROM TRIWALL_TRAINKEY."OITM" U0 
-					INNER JOIN TRIWALL_TRAINKEY."OITB" U1 ON U0."ItmsGrpCod" = U1."ItmsGrpCod"
+					FROM PIYAVATE_BATTLE_TRAINING."OITM" U0 
+					INNER JOIN PIYAVATE_BATTLE_TRAINING."OITB" U1 ON U0."ItmsGrpCod" = U1."ItmsGrpCod"
 					WHERE U0."ItemCode" IS NOT NULL 
 				))
 				AND T0."ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par2,','));
@@ -2109,8 +1992,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,IFNULL(TO_VARCHAR(A."InDate"),'')AS "AdmissionDate"
 				,IFNULL(TO_VARCHAR(A."ExpDate"),'') AS "ExpDate"
 				,IFNULL(A."LotNumber",'') AS "LotNumber"
-			FROM TRIWALL_TRAINKEY."OBTN" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."OBTN" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber"
 			WHERE 
 				A."ItemCode"=:par2 
 				AND B."Quantity"!=0;
@@ -2121,7 +2004,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 "BPLId" AS "BranchID"
 			,"BPLName" AS "BranchName"
 			,"DfltResWhs" AS "Warehouse"
-		FROM TRIWALL_TRAINKEY."OBPL" 
+		FROM PIYAVATE_BATTLE_TRAINING."OBPL" 
 		WHERE "Disabled"!='Y';
 	ELSE IF :DTYPE='GetInventoryTransferBranchToBranchList' THEN
 		--SELECT 
@@ -2131,9 +2014,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		--	,/*A."U_Approve"*/'' AS Approve
 		--	,/* B.BPLName */'' AS BranchFrom		
 		--	,/*BB."BPLName"*/'' AS BranchTo
-		--FROM TRIWALL_TRAINKEY."@TB_OTRF_B_2_B" AS A
-		--LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B ON B."BPLId"=A."U_BranchFrom"
-		--LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS BB ON BB."BPLId"=A."U_BranchTo"
+		--FROM PIYAVATE_BATTLE_TRAINING."@TB_OTRF_B_2_B" AS A
+		--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B ON B."BPLId"=A."U_BranchFrom"
+		--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS BB ON BB."BPLId"=A."U_BranchTo"
 		--WHERE "Status"='O' AND A."U_Approve"='Pending'
 		--ORDER BY "DocEntry" DESC;
 		/*OFFSET cast(@par3 as int) ROWS
@@ -2142,9 +2025,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GetInventoryTransferBranchToBranchListCount' THEN
 		/*SELECT 
 			 COUNT(A."DocEntry") AS Count
-		FROM TRIWALL_TRAINKEY."@TB_OTRF_B_2_B" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B ON B."BPLId"=A."U_BranchFrom"
-		LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS BB ON BB."BPLId"=A."U_BranchTo"
+		FROM PIYAVATE_BATTLE_TRAINING."@TB_OTRF_B_2_B" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B ON B."BPLId"=A."U_BranchFrom"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS BB ON BB."BPLId"=A."U_BranchTo"
 		WHERE "Status"='O' AND A."U_Approve"='Pending';*/
 		SELECT 'CommingSoon' AS "Test" FROM DUMMY;
 	ELSE IF :DTYPE='GetInventoryTransferBranchToBranchHeaderByDocEntry' THEN
@@ -2156,9 +2039,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."BPLName" AS "BranchFrom"		
 			,BB."BPLName" AS "BranchTo"
 			,A."U_Remarks" AS "Remarks"
-		FROM TRIWALL_TRAINKEY."@TB_OTRF_B_2_B" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B ON B."BPLId"=A."U_BranchFrom"
-		LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS BB ON BB."BPLId"=A."U_BranchTo"
+		FROM PIYAVATE_BATTLE_TRAINING."@TB_OTRF_B_2_B" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B ON B."BPLId"=A."U_BranchFrom"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS BB ON BB."BPLId"=A."U_BranchTo"
 		WHERE "Status"='O' AND A."DocEntry"=:par1;
 		*/
 		SELECT 'CommingSoon' AS "Test" FROM DUMMY;
@@ -2172,7 +2055,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,CAST(A."U_CostingPrice" AS float) AS "CostingPrice"
 			,A."U_ItemType" AS "ItemType"
 			,A."U_Serail_Batch" AS "Serail_Batch"
-		FROM TRIWALL_TRAINKEY."@TB_TRF1_B_2_B" AS A
+		FROM PIYAVATE_BATTLE_TRAINING."@TB_TRF1_B_2_B" AS A
 		WHERE A."DocEntry"=:par1;
 		*/
 		SELECT 'CommingSoon' AS "Test" FROM DUMMY;
@@ -2196,9 +2079,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A1."U_BranchTo" AS "Branchto"
 			,A1."U_BranchFrom" As "BranchFrom"
 			,IFNULL(A1."U_Remarks",'') AS "Remarks"
-		FROM TRIWALL_TRAINKEY."@TB_TRF1_B_2_B" AS A
-		Left JOIN TRIWALL_TRAINKEY."@TB_OTRF_B_2_B" AS A1 ON A1."DocEntry"=A."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON A."U_ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."@TB_TRF1_B_2_B" AS A
+		Left JOIN PIYAVATE_BATTLE_TRAINING."@TB_OTRF_B_2_B" AS A1 ON A1."DocEntry"=A."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON A."U_ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 		*/
 		SELECT 'CommingSoon' AS "Test" FROM DUMMY;
@@ -2210,12 +2093,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,CAST(IFNULL(F."OnHand", 0) AS FLOAT) "OnHand"
 			,E."UomName" AS "Uom"
 			,IFNULL(A."ToWH", '') "Warehouse"
-		FROM TRIWALL_TRAINKEY."OITT" A
-		INNER JOIN TRIWALL_TRAINKEY."OITM" B ON A."Code"=B."ItemCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OWHS" C ON A."ToWH" = C."WhsCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" D ON D."BPLId" = C."BPLid"
-		LEFT JOIN TRIWALL_TRAINKEY."OITW" F ON B."ItemCode" = F."ItemCode" AND F."WhsCode" = C."WhsCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OUOM" E ON E."UomEntry" = B."UgpEntry"
+		FROM PIYAVATE_BATTLE_TRAINING."OITT" A
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."OITM" B ON A."Code"=B."ItemCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" C ON A."ToWH" = C."WhsCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" D ON D."BPLId" = C."BPLid"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITW" F ON B."ItemCode" = F."ItemCode" AND F."WhsCode" = C."WhsCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OUOM" E ON E."UomEntry" = B."UgpEntry"
 		WHERE D."Series" = :par2
 		AND A."TreeType" = 'P';
 		--SELECT * FROM EW_PRD_T2."OWHS"
@@ -2225,24 +2108,24 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."ItemName"
 			,C."UomName" AS "Uom"
 			,A."ToWH" "Warehouse"
-		FROM TRIWALL_TRAINKEY."OITT" A
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" B ON A."Code"=B."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."OUOM" C ON B."UgpEntry" = C."UomEntry"
+		FROM PIYAVATE_BATTLE_TRAINING."OITT" A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" B ON A."Code"=B."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OUOM" C ON B."UgpEntry" = C."UomEntry"
 		WHERE "Code"=:par1;
 	ELSE IF :DTYPE='GetListWarehouses' THEN	
 		SELECT 
 			 "WhsCode" AS "Code"
 			,OBPL."BPLName" "BranchName"
-		FROM TRIWALL_TRAINKEY."OWHS" 
-		LEFT JOIN TRIWALL_TRAINKEY."OBPL" ON OWHS."BPLid" = OBPL."BPLId" 
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" ON NNM1."BPLId" = OBPL."BPLId"
+		FROM PIYAVATE_BATTLE_TRAINING."OWHS" 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" ON OWHS."BPLid" = OBPL."BPLId" 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" ON NNM1."BPLId" = OBPL."BPLId"
 		WHERE NNM1."Series" = :par1
 		Order By "WhsCode";
 	ELSE IF :DTYPE='GetListUsers' THEN
 		SELECT 
 			 "USERID" AS "Id"
 			,IFNULL("U_NAME", "USER_CODE") AS "Name" 
-		FROM TRIWALL_TRAINKEY."OUSR" 
+		FROM PIYAVATE_BATTLE_TRAINING."OUSR" 
 		Order By "U_NAME";
 	ELSE IF :DTYPE='GetItemBOMsDetail' THEN
 		SELECT 
@@ -2258,19 +2141,19 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,C."IssueMthd" "IssueType"
 			,CAST(IFNULL(D."OnHand",0) AS FLOAT) "OnHand"
 			,IFNULL(H."BPLName", '') "Branch"
-		FROM TRIWALL_TRAINKEY."OITT" A
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" B ON A."Code"=B."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."ITT1" C ON C."Father"=A."Code"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" D ON D."ItemCode"=C."Code"
-			LEFT JOIN TRIWALL_TRAINKEY."OITW" F ON D."ItemCode" = F."ItemCode" AND F."WhsCode" = A."ToWH"
+		FROM PIYAVATE_BATTLE_TRAINING."OITT" A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" B ON A."Code"=B."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITT1" C ON C."Father"=A."Code"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" D ON D."ItemCode"=C."Code"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITW" F ON D."ItemCode" = F."ItemCode" AND F."WhsCode" = A."ToWH"
 			LEFT JOIN(
 				SELECT 
 					 "ResCode"
 					,"ResName" 
-				FROM TRIWALL_TRAINKEY."ORSC"
+				FROM PIYAVATE_BATTLE_TRAINING."ORSC"
 			) E ON E."ResCode"=C."Code"
-			LEFT JOIN TRIWALL_TRAINKEY."OWHS" G ON G."WhsCode" = C."Warehouse"
-			LEFT JOIN TRIWALL_TRAINKEY."OBPL" H ON H."BPLId" = G."BPLid"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" G ON G."WhsCode" = C."Warehouse"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" H ON H."BPLId" = G."BPLid"
 		WHERE A."Code"=:par1;
 	ELSE IF :DTYPE='GetAllListGoodReceiptDraf' THEN
 		SELECT 
@@ -2279,7 +2162,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,TO_VARCHAR("DocDate",'dd-MM-yyyy')AS "PostingDate"
 			,"CardCode" AS "VendorCode"
 			,CAST("DocTotal" AS FLOAT)AS "DocTotal"
-		FROM TRIWALL_TRAINKEY."ODRF"
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF"
 		WHERE "DocStatus"='O' /*And "U_docDraft"<>'O'*/ And "ObjType"='20'
 		ORDER BY "DocEntry" DESC;
 		/*OFFSET CAST(:par1 AS INT) ROWS
@@ -2287,7 +2170,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GET_AllList_GoodReceiptDraft_Count' THEN
 		SELECT 
 			COUNT("DocNum") AS "Count" 
-		FROM TRIWALL_TRAINKEY."ODRF" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" 
 		WHERE "DocStatus"='O' /*And "U_docDraft"<>'O'*/ And "ObjType"='20';
 	ELSE IF :DTYPE='GetHeaderGoodReceiptpoDrafbyDocEntry' THEN
 		SELECT DISTINCT
@@ -2302,11 +2185,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(C."Name",'')AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'' )AS "Ref-No"
 			,D."SeriesName" AS "SeriesName"
-		 FROM TRIWALL_TRAINKEY."ODRF" A
-		 LEFT JOIN TRIWALL_TRAINKEY."DRF1" AS B ON B."DocEntry"=A."DocEntry"
-		 LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
-		 LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
-		 LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=20
+		 FROM PIYAVATE_BATTLE_TRAINING."ODRF" A
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."DRF1" AS B ON B."DocEntry"=A."DocEntry"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=20
 		 Where 
 		 	A."DocStatus"='O' 
 		 	--AND A."U_docDraft"<>'O'  
@@ -2330,8 +2213,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."DRF1" A
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."DRF1" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
 		WHERE
 			A."LineStatus"='O' 
 			AND A."ObjType"='20' 
@@ -2343,7 +2226,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardName" AS "CardName"
 			,TO_VARCHAR("DocDate",'dd-MM-yyyy' )AS "PostingDate"
 			,CAST("DocTotal" AS FLOAT)AS "DocTotal"
-		 FROM TRIWALL_TRAINKEY."ODRF"
+		 FROM PIYAVATE_BATTLE_TRAINING."ODRF"
 		 WHERE "DocStatus"='O' and "ObjType"='21'
 		 ORDER BY "DocEntry" DESC;
 		/*OFFSET cast(@par1 as int) ROWS
@@ -2351,7 +2234,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GetListGoodReturnDetail_Count' THEN
 		SELECT 
 			COUNT("DocEntry") AS "Count" 
-		FROM TRIWALL_TRAINKEY."ODRF" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" 
 		WHERE "DocStatus"='O' and "DocStatus"='21';
 	ELSE IF :DTYPE='GetListGoodReturnAddDraft' THEN
 		SELECT 
@@ -2360,7 +2243,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardCode" AS "CardName"
 			,TO_VARCHAR("DocDate",'dd-MM-yyyy' )AS "PostingDate"
 			,CAST("DocTotal" AS FLOAT)AS "DocTotal"
-		 FROM TRIWALL_TRAINKEY."ODRF"
+		 FROM PIYAVATE_BATTLE_TRAINING."ODRF"
 		 WHERE
 		 "DocStatus"='O' 
 		 AND "ObjType"='21';
@@ -2378,10 +2261,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(C."Name",'')AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'' )AS "RefNo"
 			,D."SeriesName" AS "SeriesName"
-		 FROM TRIWALL_TRAINKEY."ODRF" A
-		 LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
-		 LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
-		 LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=21
+		 FROM PIYAVATE_BATTLE_TRAINING."ODRF" A
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=21
 		 WHERE 
 		 	A."ObjType"='21' 
 		 	AND A."DocEntry"=:par1;
@@ -2406,8 +2289,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 WHEN A."LineStatus"='O' THEN
 				'Pandding'
 			 END AS "Type"
-		FROM TRIWALL_TRAINKEY."DRF1" A
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."DRF1" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
 		WHERE 
 			A."ObjType"='21' 
 			AND A."DocEntry"=:par1;
@@ -2418,7 +2301,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardName" AS "VendorName"
 			,CAST("DocTotal" AS FLOAT)AS "DocTotal" 
 			,TO_VARCHAR("DocDate",'dd-MM-yyyy') AS "PostingDate"
-		FROM TRIWALL_TRAINKEY."ODLN" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 		WHERE 
 			"DocStatus"='O'
 			--AND U_WebID<>'' 
@@ -2430,7 +2313,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GetListDelivery_Count' THEN
 		SELECT 
 			COUNT("DocEntry") AS "Count" 
-		FROM TRIWALL_TRAINKEY."ODLN"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN"
 		WHERE 
 			 "DocStatus"='O'
 			--AND U_WebID<>'' 
@@ -2450,10 +2333,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(C."Name",'')AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'' )AS "RefNo"
 			,D."SeriesName" AS "SeriesName"
-		FROM TRIWALL_TRAINKEY."ODLN" A
-		LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=15
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=15
 		WHERE 
 			A."DocStatus"='O' 
 			AND A."ObjType"='15' 
@@ -2479,8 +2362,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,CASE WHEN A."LineStatus"='O' THEN
 				'Complite'
 			 END AS "Type"
-		FROM TRIWALL_TRAINKEY."DLN1" A
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."DLN1" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
 		WHERE 
 			A."ObjType"='15' 
 			AND A."LineStatus"='O' 
@@ -2492,7 +2375,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardName" AS "VendorName"
 			,TO_VARCHAR("DocDate",'dd-MMM-yyyy' )AS "PostingDate"
 			,CAST("DocTotal" AS float)AS "DocTotal" 
-		FROM TRIWALL_TRAINKEY."ODRF"
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF"
 		WHERE 
 			"DocStatus"='O' 
 			AND "ObjType"='16' 
@@ -2504,7 +2387,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GetallListofDeliveryReturn_Count' THEN
 		SELECT 
 			COUNT("DocEntry") AS "Count" 
-		FROM TRIWALL_TRAINKEY."ODRF" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" 
 		Where 
 			"DocStatus"='O' 
 			AND "ObjType"='16'; 
@@ -2523,10 +2406,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,IFNULL(C."Name",'')AS "ContactPerson"
 				,IFNULL(A."NumAtCard",'' )AS "RefNo"
 				,D."SeriesName" AS "SeriesName"
-		 FROM TRIWALL_TRAINKEY."ODRF" A
-		 LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
-		 LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
-		 LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=16
+		 FROM PIYAVATE_BATTLE_TRAINING."ODRF" A
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=16
 		 WHERE 
 		 	A."DocStatus"='O' 
 		 	AND A."ObjType"='16' 
@@ -2551,8 +2434,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,CASE WHEN A."LineStatus"='O' THEN
 				'Complite'
 			 END AS "Type"				
-		FROM TRIWALL_TRAINKEY."DRF1" A
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."DRF1" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
 		WHERE 
 			A."ObjType"='16' 
 			AND A."LineStatus"='O' 
@@ -2564,7 +2447,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardName" AS "VendorName"
 			,CAST("DocTotal" AS float) AS "DocTotal" 
 			,TO_VARCHAR("DocDate",'dd-MMM-yyyy') AS "PostingDate"
-		FROM TRIWALL_TRAINKEY."ODRF"
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF"
 		Where 
 			"ObjType"=14 
 			AND "DocStatus"='O' 
@@ -2575,7 +2458,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	ELSE IF :DTYPE='GetAllListCraditMemo_Count' THEN
 		SELECT 
 			COUNT("DocEntry") AS "Count" 
-		FROM TRIWALL_TRAINKEY."ODRF" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" 
 		Where 
 			"ObjType"=14 
 			AND "DocStatus"='O' 
@@ -2594,10 +2477,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'' )AS "RefNo"
 			,D."SeriesName" AS "SeriesName"
-		 FROM TRIWALL_TRAINKEY."ODRF" A
-		 LEFT JOIN TRIWALL_TRAINKEY."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
-		 LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
-		 LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=14
+		 FROM PIYAVATE_BATTLE_TRAINING."ODRF" A
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBPL" AS B1 ON B1."BPLId"=A."BPLId"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON C."CardCode"=A."CardCode" And C."CntctCode"=A."CntctCode"
+		 LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS D On D."Series"=A."Series" and D."ObjectCode"=14
 		WHERE 
 			A."ObjType"=14
 			AND A."DocStatus"='O' 
@@ -2622,8 +2505,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,CASE WHEN A."LineStatus"='O' THEN
 				'Complite'
 			 END AS "Type"
-		FROM TRIWALL_TRAINKEY."DRF1" A
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."DRF1" A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
 		WHERE 
 			A."LineStatus"='O' 
 			AND A."ObjType"=14 
@@ -2632,47 +2515,47 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		SELECT 
 			 B."UomCode" As "UomGroup"
 			,C."UomCode"
-		FROM TRIWALL_TRAINKEY."UGP1" A 
-		LEFT JOIN TRIWALL_TRAINKEY."OUOM" B ON A."UgpEntry"=B."UomEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OUOM" C ON A."UomEntry"=C."UomEntry";
+		FROM PIYAVATE_BATTLE_TRAINING."UGP1" A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OUOM" B ON A."UgpEntry"=B."UomEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OUOM" C ON A."UomEntry"=C."UomEntry";
 	ELSE IF :DTYPE='GetNextNumber' THEN
 		IF :par1='67' THEN
 			SELECT 
 				"NextNumber" As "DocNum" 
-			FROM TRIWALL_TRAINKEY."NNM1" 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1" 
 			WHERE 
 				"ObjectCode"=67 
 				AND "Series"=:par2;
 		IF :par1='16' THEN
 			SELECT 
 				"NextNumber" As "DocNum" 
-			FROM TRIWALL_TRAINKEY."NNM1" 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1" 
 			WHERE 
 				"ObjectCode"=16 
 				AND "Series"=:par2;
 		IF :par1='15' THEN
 			SELECT 
 				"NextNumber" As "DocNum" 
-			FROM TRIWALL_TRAINKEY."NNM1" 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1" 
 			WHERE 
 				"ObjectCode"=15 
 				AND "Series"=:par2;
 		IF :par1='14' THEN
 			SELECT 
 				"NextNumber" As "DocNum" 
-			FROM TRIWALL_TRAINKEY."NNM1" 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1" 
 			WHERE "ObjectCode"=14 And "Series"=:par2;
 		IF :par1='1470000065' THEN
 			SELECT 
 				"NextNumber" As DocNum 
-			FROM TRIWALL_TRAINKEY."NNM1" 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1" 
 			WHERE 
 				"ObjectCode"=1470000065 
 				AND "Series"=:par2;
 		IF :par1='59' THEN
 			SELECT 
 				"NextNumber" As "DocNum" 
-			FROM TRIWALL_TRAINKEY."NNM1" 
+			FROM PIYAVATE_BATTLE_TRAINING."NNM1" 
 			WHERE 
 				"ObjectCode"=59 
 				AND "Series"=:par2;
@@ -2686,7 +2569,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		SELECT 
 			 "CntctCode"
 			,"Name" 
-		FROM TRIWALL_TRAINKEY."OCPR" 
+		FROM PIYAVATE_BATTLE_TRAINING."OCPR" 
 		WHERE "CardCode"=:par1;
 	ELSE IF :DTYPE='Get_Availble_Serial' THEN
 		SELECT 
@@ -2702,12 +2585,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,TO_VARCHAR(T5."InDate",'dd-MM-yyyy') As "AdmissionDate"
 			,T5."MnfSerial" As "MfrNo"
 		FROM
-			TRIWALL_TRAINKEY."OIBQ" T0
-			INNER JOIN TRIWALL_TRAINKEY."OBIN" T1 ON T0."BinAbs" = T1."AbsEntry" AND T0."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBBQ" T2 ON T0."BinAbs" = T2."BinAbs" AND T0."ItemCode" = T2."ItemCode" AND T2."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" and T0."ItemCode" = T3."ItemCode" and T3."OnHandQty" <> 0
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" and T2."ItemCode" = T4."ItemCode"
-			LEFT OUTER JOIN TRIWALL_TRAINKEY."OSRN" T5 on T3."SnBMDAbs" = T5."AbsEntry" and T3."ItemCode" = T5."ItemCode"
+			PIYAVATE_BATTLE_TRAINING."OIBQ" T0
+			INNER JOIN PIYAVATE_BATTLE_TRAINING."OBIN" T1 ON T0."BinAbs" = T1."AbsEntry" AND T0."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBBQ" T2 ON T0."BinAbs" = T2."BinAbs" AND T0."ItemCode" = T2."ItemCode" AND T2."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" and T0."ItemCode" = T3."ItemCode" and T3."OnHandQty" <> 0
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" and T2."ItemCode" = T4."ItemCode"
+			LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSRN" T5 on T3."SnBMDAbs" = T5."AbsEntry" and T3."ItemCode" = T5."ItemCode"
 		WHERE
 			T1."AbsEntry" >= 0 --and T1.WhsCode >= @WhsCode and T1.WhsCode <= @WhsCode 
 			AND (T3."AbsEntry" IS NOT NULL)
@@ -2715,7 +2598,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				(
 					SELECT 
 						U0."ItemCode" 
-					FROM TRIWALL_TRAINKEY."OITM" U0 INNER JOIN TRIWALL_TRAINKEY."OITB" U1 ON U0."ItmsGrpCod"=U1."ItmsGrpCod"
+					FROM PIYAVATE_BATTLE_TRAINING."OITM" U0 INNER JOIN PIYAVATE_BATTLE_TRAINING."OITB" U1 ON U0."ItmsGrpCod"=U1."ItmsGrpCod"
 					WHERE U0."ItemCode" IS NOT NULL 
 				))  
 			AND T1."WhsCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par1,','))
@@ -2733,9 +2616,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,B."MnfDate"
 			,B."InDate" As "AdmissionDate"
 			,B."MnfSerial"
-		FROM TRIWALL_TRAINKEY."OSRQ" A 
-		LEFT JOIN TRIWALL_TRAINKEY."OSRN" B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber" And A."MdAbsEntry"=B."AbsEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OWHS" C ON C."WhsCode"=A."WhsCode" 
+		FROM PIYAVATE_BATTLE_TRAINING."OSRQ" A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" B ON A."ItemCode"=B."ItemCode" AND A."SysNumber"=B."SysNumber" And A."MdAbsEntry"=B."AbsEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWHS" C ON C."WhsCode"=A."WhsCode" 
 		WHERE 
 			A."Quantity"<>0 
 			AND A."ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par2,',')) 
@@ -2755,12 +2638,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,'' As "MnfDate"
 			,TO_VARCHAR("InDate",'dd-MM-yyyy') As "AdmissionDate"
 			,'' As "MfrNo"
-		FROM TRIWALL_TRAINKEY."OIBT" WHERE "Direction"=0 And "Quantity"<>0 
+		FROM PIYAVATE_BATTLE_TRAINING."OIBT" WHERE "Direction"=0 And "Quantity"<>0 
 		And "WhsCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par1,','))
 		And "ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par2,','));
 	ELSE IF :DTYPE='TrfRequest_Status' THEN
 		/*UPDATE 
-			TRIWALL_TRAINKEY."OWTQ" 
+			PIYAVATE_BATTLE_TRAINING."OWTQ" 
 		SET "U_TrnRequestSts"=:par1 
 		Where "DocNum"=:par2;*/
 		SELECT 'Ok' AS "Ok" FROM DUMMY;
@@ -2778,12 +2661,12 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,TO_VARCHAR(T4."InDate",'dd-MM-yyyy') As "AdmissionDate"
 			,T5."MnfSerial" As "MfrNo"
 			,T3."BaseLinNum" As "DocLine"
-		FROM TRIWALL_TRAINKEY."OWTR" T0 
-		INNER JOIN TRIWALL_TRAINKEY."WTR1" T1 ON T0."DocEntry" = T1."DocEntry" 
-		INNER JOIN TRIWALL_TRAINKEY."OITW" T2 ON T1."ItemCode" = T2."ItemCode" AND T1."WhsCode" = T2."WhsCode" 
-		LEFT JOIN TRIWALL_TRAINKEY."SRI1" T3 ON T3."BaseEntry"=T1."DocEntry" AND T3."BaseLinNum"=T1."LineNum" AND T3."BaseType"='67' 
-		LEFT JOIN TRIWALL_TRAINKEY."OSRI" T4 ON T3."ItemCode"=T4."ItemCode" AND T3."SysSerial" =T4."SysSerial" 
-		LEFT JOIN TRIWALL_TRAINKEY."OSRN" T5 ON T5."ItemCode"=T4."ItemCode" And T4."SysSerial"=T5."SysNumber"
+		FROM PIYAVATE_BATTLE_TRAINING."OWTR" T0 
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."WTR1" T1 ON T0."DocEntry" = T1."DocEntry" 
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."OITW" T2 ON T1."ItemCode" = T2."ItemCode" AND T1."WhsCode" = T2."WhsCode" 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."SRI1" T3 ON T3."BaseEntry"=T1."DocEntry" AND T3."BaseLinNum"=T1."LineNum" AND T3."BaseType"='67' 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" T4 ON T3."ItemCode"=T4."ItemCode" AND T3."SysSerial" =T4."SysSerial" 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" T5 ON T5."ItemCode"=T4."ItemCode" And T4."SysSerial"=T5."SysNumber"
 		WHERE 
 			T3."Direction" = '1' 
 			AND T0."DocNum"=:par1;
@@ -2801,11 +2684,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,TO_VARCHAR(T4."InDate",'dd-MMM-yyyy') As "AdmissionDate"
 			,T4."MnfSerial" As "MfrNo"
 			,T0."DocLine"
-		FROM TRIWALL_TRAINKEY."OITL" T0
-		INNER JOIN TRIWALL_TRAINKEY."ITL1" T1 ON T1."LogEntry" = T0."LogEntry"
-		INNER JOIN TRIWALL_TRAINKEY."OBTN" T4 ON T1."MdAbsEntry"=T4."AbsEntry"
-		INNER JOIN TRIWALL_TRAINKEY."OITM" T2 ON T2."ItemCode" = T0."ItemCode"
-		INNER JOIN TRIWALL_TRAINKEY."OINM" T5 ON T0."ItemCode" =T5."ItemCode" AND T0."LocCode"=T5."Warehouse" AND T0."AppDocNum" = T5."BASE_REF"
+		FROM PIYAVATE_BATTLE_TRAINING."OITL" T0
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."ITL1" T1 ON T1."LogEntry" = T0."LogEntry"
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."OBTN" T4 ON T1."MdAbsEntry"=T4."AbsEntry"
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."OITM" T2 ON T2."ItemCode" = T0."ItemCode"
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."OINM" T5 ON T0."ItemCode" =T5."ItemCode" AND T0."LocCode"=T5."Warehouse" AND T0."AppDocNum" = T5."BASE_REF"
 		WHERE 
 			T0."DocNum"=:par1 
 			AND T0."DocType"=67 
@@ -2818,7 +2701,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"BPLName"
 			,"Filler" As "WhsFrom"
 			,"ToWhsCode" As "WhsTo"
-		FROM TRIWALL_TRAINKEY."OWTR" 
+		FROM PIYAVATE_BATTLE_TRAINING."OWTR" 
 		WHERE 
 			--"U_TrnRequestSts"='C' AND 
 			"Series"=CASE WHEN :par1='' THEN "Series" ELSE :par1 END;
@@ -2849,10 +2732,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				  When C."ManSerNum"='Y' Then 'Serial'
 				  ELSE 'None' End As "ItemType"
 			,C."CodeBars" As "BarCode"
-		FROM TRIWALL_TRAINKEY."OWTR" A
-			LEFT JOIN TRIWALL_TRAINKEY."WTR1" B ON A."DocEntry"=B."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" C ON B."ItemCode"=C."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."OCPR" D ON A."CntctCode"=D."CntctCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OWTR" A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."WTR1" B ON A."DocEntry"=B."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" C ON B."ItemCode"=C."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" D ON A."CntctCode"=D."CntctCode"
 		WHERE --A."U_TrnRequestSts"='C' And
 		A."DocNum" IN(:par1);
 	ELSE IF :DTYPE='GETBATCH_FOR_COUNTING' THEN
@@ -2869,11 +2752,11 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,'' As "MfrNo"
 			,TO_VARCHAR(T4."InDate",'dd-MM-yyyy') As "AdmissionDate"
 			,T0."BinAbs"
-		FROM TRIWALL_TRAINKEY."OIBQ" T0
-		INNER JOIN TRIWALL_TRAINKEY."OBIN" T1 on T0."BinAbs" = T1."AbsEntry" and T0."OnHandQty" <> 0
-		left outer join TRIWALL_TRAINKEY."OBBQ" T2 on T0."BinAbs" = T2."BinAbs" and T0."ItemCode" = T2."ItemCode" and T2."OnHandQty" <> 0
-		left outer join TRIWALL_TRAINKEY."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" and T0."ItemCode" = T3."ItemCode" and T3."OnHandQty" <> 0
-		left outer join TRIWALL_TRAINKEY."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" and T2."ItemCode" = T4."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OIBQ" T0
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."OBIN" T1 on T0."BinAbs" = T1."AbsEntry" and T0."OnHandQty" <> 0
+		left outer join PIYAVATE_BATTLE_TRAINING."OBBQ" T2 on T0."BinAbs" = T2."BinAbs" and T0."ItemCode" = T2."ItemCode" and T2."OnHandQty" <> 0
+		left outer join PIYAVATE_BATTLE_TRAINING."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" and T0."ItemCode" = T3."ItemCode" and T3."OnHandQty" <> 0
+		left outer join PIYAVATE_BATTLE_TRAINING."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" and T2."ItemCode" = T4."ItemCode"
 		WHERE  T1."WhsCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par1,','))
 			And T0."ItemCode" IN (SELECT * FROM LIBRARY:SPLIT_TO_TABLE(:par2,','))
 			And T4."DistNumber"=:par3
@@ -2892,18 +2775,18 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,TO_VARCHAR(T5."MnfDate",'dd-MM-yyyy') As "MnfDate" 
 			,TO_VARCHAR(T5."InDate",'dd-MM-yyyy') As "AdmissionDate"
 			,T5."MnfSerial" As "MfrNo"
-		FROM TRIWALL_TRAINKEY."OIBQ" T0
-		INNER JOIN TRIWALL_TRAINKEY."OBIN" T1 on T0."BinAbs" = T1."AbsEntry" and T0."OnHandQty" <> 0
-		LEFT OUTER JOIN TRIWALL_TRAINKEY."OBBQ" T2 on T0."BinAbs" = T2."BinAbs" and T0."ItemCode" = T2."ItemCode" and T2."OnHandQty" <> 0
-		LEFT OUTER JOIN TRIWALL_TRAINKEY."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" and T0."ItemCode" = T3."ItemCode" and T3."OnHandQty" <> 0
-		LEFT OUTER JOIN TRIWALL_TRAINKEY."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" and T2."ItemCode" = T4."ItemCode"
-		LEFT OUTER JOIN TRIWALL_TRAINKEY."OSRN" T5 on T3."SnBMDAbs" = T5."AbsEntry" and T3."ItemCode" = T5."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OIBQ" T0
+		INNER JOIN PIYAVATE_BATTLE_TRAINING."OBIN" T1 on T0."BinAbs" = T1."AbsEntry" and T0."OnHandQty" <> 0
+		LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBBQ" T2 on T0."BinAbs" = T2."BinAbs" and T0."ItemCode" = T2."ItemCode" and T2."OnHandQty" <> 0
+		LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSBQ" T3 on T0."BinAbs" = T3."BinAbs" and T0."ItemCode" = T3."ItemCode" and T3."OnHandQty" <> 0
+		LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OBTN" T4 on T2."SnBMDAbs" = T4."AbsEntry" and T2."ItemCode" = T4."ItemCode"
+		LEFT OUTER JOIN PIYAVATE_BATTLE_TRAINING."OSRN" T5 on T3."SnBMDAbs" = T5."AbsEntry" and T3."ItemCode" = T5."ItemCode"
 		WHERE
 			T1."AbsEntry" >= 0 --and T1.WhsCode >= @WhsCode and T1.WhsCode <= @WhsCode 
 			AND (T3."AbsEntry" IS NOT NULL)
 			AND T0."ItemCode" IN ((SELECT U0."ItemCode" 
-									FROM TRIWALL_TRAINKEY."OITM" U0 
-									INNER JOIN TRIWALL_TRAINKEY."OITB" U1 ON U0."ItmsGrpCod" = U1."ItmsGrpCod"
+									FROM PIYAVATE_BATTLE_TRAINING."OITM" U0 
+									INNER JOIN PIYAVATE_BATTLE_TRAINING."OITB" U1 ON U0."ItmsGrpCod" = U1."ItmsGrpCod"
 									WHERE U0."ItemCode" IS NOT NULL 
 			))  
 			AND T5."DistNumber"=:par3
@@ -2920,10 +2803,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 					+ IFNULL(IFNULL(A1."Street"+', ',''),'') 
 					+ IFNULL(A2."Name",'') 
 					+ IFNULL(A."Block",'') AS "ShipTo"
-		FROM TRIWALL_TRAINKEY."OCRD" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."CRD1" AS A1 ON A1."CardCode"=A."CardCode" and A1."AdresType"='S'
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS A0 ON A0."CardCode"=A."CardCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OCRY" AS A2 ON A2."Code"=A1."Country"
+		FROM PIYAVATE_BATTLE_TRAINING."OCRD" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."CRD1" AS A1 ON A1."CardCode"=A."CardCode" and A1."AdresType"='S'
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS A0 ON A0."CardCode"=A."CardCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCRY" AS A2 ON A2."Code"=A1."Country"
 		WHERE A."CardType"='C' AND A."validFor"='Y';
 	ELSE IF :DTYPE='GET_ITEM_Inventory_Transfer' THEN
 		SELECT Top 500
@@ -2939,8 +2822,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				END AS "ItemType"
 			,CAST(B."Price" as FLOAT)AS "UnitPrice"
 			,IFNULL(A."InvntryUom",'') AS "UoM"
-		FROM TRIWALL_TRAINKEY."OITM" AS A 
-		LEFT JOIN TRIWALL_TRAINKEY."ITM1" AS B ON A."ItemCode"=B."ItemCode" AND B."PriceList"='1'
+		FROM PIYAVATE_BATTLE_TRAINING."OITM" AS A 
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."ITM1" AS B ON A."ItemCode"=B."ItemCode" AND B."PriceList"='1'
 		WHERE 
 			A."validFor"='Y' 
 			AND A."SellItem"='Y' 
@@ -2957,20 +2840,20 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(A."Comments",'') AS "Remarks"
 			,IFNULL(A."ToBinCode",'') As "ToBinLocation"
 			,A1."UomCode" AS "UoM"
-		FROM TRIWALL_TRAINKEY."OWTR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."WTR1" AS A1 ON A1."DocEntry"=A."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS A0 ON A0."Series"=A."Series";
+		FROM PIYAVATE_BATTLE_TRAINING."OWTR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."WTR1" AS A1 ON A1."DocEntry"=A."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS A0 ON A0."Series"=A."Series";
 	ELSE IF :DTYPE='GetBinLocation' THEN
 		SELECT 
 			 A."WhsCode"
 			,A."BinCode"
-		FROM TRIWALL_TRAINKEY."OBIN" AS A
+		FROM PIYAVATE_BATTLE_TRAINING."OBIN" AS A
 		WHERE A."WhsCode"=:par1;
 	ELSE IF :DTYPE='PriceList' THEN
 		SELECT 
 			 "ListNum" AS "Code"
 			,"ListName" AS "Name" 
-		FROM TRIWALL_TRAINKEY."OPLN";
+		FROM PIYAVATE_BATTLE_TRAINING."OPLN";
 	ELSE IF :DTYPE='GetPermission' THEN
 		/*SELECT 
 			* 
@@ -2987,53 +2870,53 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 		SELECT 
 			 "Code" AS "Code"
 			,CAST("Rate" AS double) AS "Rate"
-		FROM TRIWALL_TRAINKEY."OVTG"
+		FROM PIYAVATE_BATTLE_TRAINING."OVTG"
 		WHERE "Category"='I' AND "Inactive"='N';
 	ELSE IF :DTYPE='GetTaxSale' THEN
 		SELECT 
 			 "Code" AS "Code"
 			,CAST("Rate" AS double) AS "Rate"
-		FROM TRIWALL_TRAINKEY."OVTG"
+		FROM PIYAVATE_BATTLE_TRAINING."OVTG"
 		WHERE "Category"='O' AND "Inactive"='N';
 	ELSE IF :DTYPE='TotalItemCount' THEN
 		IF :par1='GoodReceiptPo' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."OPDN";
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."OPDN";
 		ELSE IF :par1='PurchaseOrder' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."OPOR" WHERE "DocStatus"='O';
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."OPOR" WHERE "DocStatus"='O';
 		ELSE IF :par1='SaleOrder' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."ODRF" WHERE "DocStatus"='O' AND "ObjType"='15';
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ODRF" WHERE "DocStatus"='O' AND "ObjType"='15';
 		ELSE IF :par1='DeliveryOrder' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."ODLN";
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ODLN";
 		ELSE IF :par1='IssueForProduction' THEN
 			SELECT
 				COUNT("DocNum") AS "AllItem" 
-			FROM TRIWALL_TRAINKEY."OIGE" AS A
-			--LEFT JOIN TRIWALL_TRAINKEY."IGE1" AS B ON B."DocEntry"=A."DocEntry" 
-			WHERE (SELECT DISTINCT "BaseType" FROM TRIWALL_TRAINKEY."IGE1" WHERE "DocEntry"=A."DocEntry")='202';
+			FROM PIYAVATE_BATTLE_TRAINING."OIGE" AS A
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."IGE1" AS B ON B."DocEntry"=A."DocEntry" 
+			WHERE (SELECT DISTINCT "BaseType" FROM PIYAVATE_BATTLE_TRAINING."IGE1" WHERE "DocEntry"=A."DocEntry")='202';
 		ELSE IF :par1='ReceiptFromProduction' THEN
-			SELECT COUNT("DocNum") AS "AllItem" FROM TRIWALL_TRAINKEY."OIGN";
+			SELECT COUNT("DocNum") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."OIGN";
 		ELSE IF :par1='InventoryTransfer' THEN
-			SELECT COUNT("DocEntry") AS "AllItem" FROM TRIWALL_TRAINKEY."OWTR";
+			SELECT COUNT("DocEntry") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."OWTR";
 		ELSE IF :par1='SaleOrder' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."ODRF" WHERE "DocStatus"='O' AND "ObjType"='15';
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ODRF" WHERE "DocStatus"='O' AND "ObjType"='15';
 		ELSE IF :par1='DeliveryOrderReturn' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."ODLN" WHERE "DocStatus"='O';
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ODLN" WHERE "DocStatus"='O';
 		ELSE IF :par1='Return' THEN
-			SELECT COUNT("CardCode")  AS "AllItem" FROM TRIWALL_TRAINKEY."ORDN";
+			SELECT COUNT("CardCode")  AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ORDN";
 		ELSE IF :par1='GoodReturn' THEN
-			SELECT COUNT("CardCode")  AS "AllItem" FROM TRIWALL_TRAINKEY."ORPD";
+			SELECT COUNT("CardCode")  AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ORPD";
 		ELSE IF :par1='GoodReceiptPOReturn' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."OPDN" WHERE "DocStatus"='O';
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."OPDN" WHERE "DocStatus"='O';
 		ELSE IF :par1='ARCreditMemo' THEN
-			SELECT COUNT("CardCode")  AS "AllItem" FROM TRIWALL_TRAINKEY."ORIN";
+			SELECT COUNT("CardCode")  AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ORIN";
 		ELSE IF :par1='ARInvoiceOpenStatus' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."OINV" WHERE "DocStatus"='O';
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."OINV" WHERE "DocStatus"='O';
 		ELSE IF :par1='InventoryCounting' THEN
-			SELECT COUNT("DocNum") AS "AllItem" FROM TRIWALL_TRAINKEY."OINC";
+			SELECT COUNT("DocNum") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."OINC";
 		ELSE IF :par1='DeliveryOrderReturnRequest' THEN
-			SELECT COUNT("CardCode") AS "AllItem" FROM TRIWALL_TRAINKEY."ODLN" WHERE "DocStatus"='O';
+			SELECT COUNT("CardCode") AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ODLN" WHERE "DocStatus"='O';
 		ELSE IF :par1='ReturnRequest' THEN
-			SELECT COUNT("CardCode")  AS "AllItem" FROM TRIWALL_TRAINKEY."ORRR";
+			SELECT COUNT("CardCode")  AS "AllItem" FROM PIYAVATE_BATTLE_TRAINING."ORRR";
 		END IF;
 		END IF;
 		END IF;
@@ -3064,7 +2947,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OPDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 			SELECT 
@@ -3074,7 +2957,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OPDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -3094,7 +2977,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OPOR" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPOR" 
 			WHERE "DocStatus"='O'
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
@@ -3105,7 +2988,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OPOR" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPOR" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -3125,8 +3008,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,A."CardCode" AS "VendorCode"
 				,A."Comments" AS "Remarks"
 				,TO_VARCHAR(A."TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OIGE" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."IGE1" AS B ON B."DocEntry"=A."DocEntry" 
+			FROM PIYAVATE_BATTLE_TRAINING."OIGE" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."IGE1" AS B ON B."DocEntry"=A."DocEntry" 
 			WHERE B."BaseType"='202'
 			ORDER BY A."DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
@@ -3137,8 +3020,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,A."CardCode" AS "VendorCode"
 				,A."Comments" AS "Remarks"
 				,TO_VARCHAR(A."TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OIGE" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."IGE1" AS B ON B."DocEntry"=A."DocEntry" 
+			FROM PIYAVATE_BATTLE_TRAINING."OIGE" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."IGE1" AS B ON B."DocEntry"=A."DocEntry" 
 			WHERE A."DocStatus"='O'
 			AND B."BaseType"='202'
 			AND A."DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
@@ -3159,7 +3042,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ODLN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 			SELECT 
@@ -3169,7 +3052,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ODLN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -3187,7 +3070,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ODRF" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODRF" 
 			WHERE "DocStatus"='O' AND "ObjType"='15'
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
@@ -3198,7 +3081,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ODRF" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODRF" 
 			WHERE "DocStatus"='O' AND "ObjType"='15' AND
 			 	"DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -3225,10 +3108,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OPOR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."POR1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OPOR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."POR1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1 AND B."LineStatus"='O';
 		
 	ELSE IF :DTYPE='GetCustomer' THEN
@@ -3237,7 +3120,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardName" As "VendorName"
 			,"Phone1" As "PhoneNumber"
 			,"CntctPrsn" as "ContactID"
-		FROM TRIWALL_TRAINKEY."OCRD" 
+		FROM PIYAVATE_BATTLE_TRAINING."OCRD" 
 		WHERE "CardType"='C';
 	ELSE IF :DTYPE='GetDeliveryOrderLineDetailByDocEntry' THEN
 		SELECT 
@@ -3258,10 +3141,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ODLN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."DLN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetSaleOrderLineDetailByDocEntry' THEN
 	
@@ -3285,10 +3168,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ODRF" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."DRF1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DRF1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1 AND A."ObjType"='15' AND B."LineStatus"='O';
 			
 	ELSE IF :DTYPE='GET_DeliveryOrder_Header_Detail_By_DocNum' THEN
@@ -3300,9 +3183,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode"|| ' - ' || A."CardName" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ODLN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GET_SaleOrder_Header_Detail_By_DocNum' THEN
@@ -3314,9 +3197,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ODRF" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ODRF" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1 AND A."ObjType"='15';
 	ELSE IF :DTYPE='OnGetBatchOrSerialAvailableByItemCode' THEN		
@@ -3329,8 +3212,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."OSRN" AS B
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=B."ItemCode" And C."SysSerial"=B."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."OSRN" AS B
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=B."ItemCode" And C."SysSerial"=B."SysNumber"
 			WHERE B."ItemCode"=:par2 AND C."Status"='0';
 		ELSE IF :par1='B' THEN
 			SELECT 
@@ -3341,8 +3224,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."OBTN" AS B
-			LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=B."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."OBTN" AS B
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=B."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE B."ItemCode"=:par2 AND IFNULL(C."Quantity",0)>0;
 		END IF;
 		END IF;
@@ -3356,9 +3239,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,B."ExpDate" AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."OSRN" AS B
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=B."ItemCode" And C."SysSerial"=B."SysNumber"
-			LEFT JOIN TRIWALL_TRAINKEY."SRI1" AS D ON D."SysSerial"=B."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."OSRN" AS B
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=B."ItemCode" And C."SysSerial"=B."SysNumber"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."SRI1" AS D ON D."SysSerial"=B."SysNumber"
 			WHERE B."ItemCode"=:par2
 				AND D."BsDocType"='202'
 				AND D."BaseType"='60' 
@@ -3373,8 +3256,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,C."ExpDate" AS "ExpDate"
 				,C."MnfDate" AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS B
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS C ON C."ItemCode"=B."ItemCode" and C."DistNumber"=B."BatchNum"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS B
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS C ON C."ItemCode"=B."ItemCode" and C."DistNumber"=B."BatchNum"
 			WHERE 
 				B."ItemCode"=:par2 
 				AND B."BsDocType"='202'
@@ -3382,7 +3265,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				AND B."BsDocEntry"=:par3;
 				--AND B."BsDocEntry"='723';
 				/*AND B."Quantity"<(SELECT T0."Quantity"
-									FROM TRIWALL_TRAINKEY."IBT1" AS T0 
+									FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS T0 
 									WHERE 
 										T0."ItemCode"=B."ItemCode" 
 									AND T0."BaseType"='59' 
@@ -3406,9 +3289,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 WHEN B."ManBtchNum"=''Y'' THEN
 			 	''B''
 			 ELSE ''N'' END AS "ItemType"
-			FROM TRIWALL_TRAINKEY."WOR1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OWOR" AS AA ON AA."DocEntry"=A."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."WOR1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWOR" AS AA ON AA."DocEntry"=A."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
 			WHERE A."DocEntry" IN ('|| '841' ||')  AND A."IssuedQty"=0;'; --AND A."IssueType"=''M''
 		*/
 		execute immediate '
@@ -3425,9 +3308,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 WHEN B."ManBtchNum"=''Y'' THEN
 			 	''B''
 			 ELSE ''N'' END AS "ItemType"
-			FROM TRIWALL_TRAINKEY."WOR1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OWOR" AS AA ON AA."DocEntry"=A."DocEntry"
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
+			FROM PIYAVATE_BATTLE_TRAINING."WOR1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OWOR" AS AA ON AA."DocEntry"=A."DocEntry"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
 			WHERE A."DocEntry" IN ('|| :par1 ||') AND A."IssueType"=''M'' AND A."IssuedQty"=0;';
 	ELSE IF :DTYPE='GET_IssueForProduction_Header_Detail_By_DocNum' THEN
 		SELECT 
@@ -3438,9 +3321,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode"|| ' - ' || A."CardName" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."OIGE" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."OIGE" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetIssueForProductionLineDetailByDocEntry' THEN
@@ -3462,10 +3345,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OIGE" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."IGE1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OIGE" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."IGE1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetBatchSerialIssueForProduction' THEN
 		SELECT ROW_NUMBER() OVER(ORDER BY "ItemCode") AS "LineNum",* FROM (
@@ -3477,9 +3360,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=60 
 				--And C."Status"<>0
@@ -3494,9 +3377,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=60
 		)AS A;
@@ -3518,9 +3401,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 WHEN B."ManBtchNum"=''Y'' THEN
 				 	''B''
 				 ELSE ''N'' END AS "ItemType"
-			FROM TRIWALL_TRAINKEY."IGE1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."WOR1" AS C ON C."ItemCode"=A."ItemCode" AND C."DocEntry"=A."BaseEntry" AND C."LineNum"=A."BaseLine"
+			FROM PIYAVATE_BATTLE_TRAINING."IGE1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."WOR1" AS C ON C."ItemCode"=A."ItemCode" AND C."DocEntry"=A."BaseEntry" AND C."LineNum"=A."BaseLine"
 			WHERE A."BaseEntry" IN ('|| :par1 ||') AND A."BaseType"=''202'';';
 	ELSE IF :DTYPE='ReceiptForProduction' THEN
 	
@@ -3535,8 +3418,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,A."CardCode" AS "VendorCode"
 				,A."Comments" AS "Remarks"
 				,TO_VARCHAR(A."TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OIGN" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."IGN1" AS B ON B."DocEntry"=A."DocEntry" 
+			FROM PIYAVATE_BATTLE_TRAINING."OIGN" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."IGN1" AS B ON B."DocEntry"=A."DocEntry" 
 			WHERE B."BaseType"='202'
 			ORDER BY A."DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
@@ -3547,8 +3430,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,A."CardCode" AS "VendorCode"
 				,A."Comments" AS "Remarks"
 				,TO_VARCHAR(A."TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OIGN" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."IGN1" AS B ON B."DocEntry"=A."DocEntry" 
+			FROM PIYAVATE_BATTLE_TRAINING."OIGN" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."IGN1" AS B ON B."DocEntry"=A."DocEntry" 
 			WHERE A."DocStatus"='O'
 			AND B."BaseType"='202'
 			AND A."DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
@@ -3566,9 +3449,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
 			,A."DocEntry" AS "DocEntry"
-		FROM TRIWALL_TRAINKEY."OIGN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."OIGN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetReceiptForProductionLineDetailByDocEntry' THEN
@@ -3590,10 +3473,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OIGN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."IGN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OIGN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."IGN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetBatchSerialReceiptForProduction' THEN
 		SELECT ROW_NUMBER() OVER(ORDER BY "ItemCode") AS "LineNum",* FROM (
@@ -3605,9 +3488,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=59
 				--And C."Status"<>0
@@ -3622,9 +3505,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=59
 		)AS A;
@@ -3639,7 +3522,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORDN" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 			SELECT 
@@ -3649,7 +3532,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORDN" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN :par3 AND :par4
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -3667,7 +3550,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORPD" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORPD" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 			SELECT 
@@ -3677,7 +3560,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORPD" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORPD" 
 			WHERE --"DocStatus"='O' AND
 			 	"DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -3694,8 +3577,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,B."ExpDate" AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B On A."ItemCode"=B."ItemCode" And A."SysSerial"=B."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B On A."ItemCode"=B."ItemCode" And A."SysSerial"=B."SysNumber"
 			WHERE 
 					A."ItemCode"=:par2 
 				AND A."BaseEntry"=:par3
@@ -3709,8 +3592,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,C."ExpDate" AS "ExpDate"
 				,C."MnfDate" AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS B
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS C ON C."ItemCode"=B."ItemCode" and C."DistNumber"=B."BatchNum"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS B
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS C ON C."ItemCode"=B."ItemCode" and C."DistNumber"=B."BatchNum"
 			WHERE 
 					B."ItemCode"=:par2 
 				AND B."BaseEntry"=:par3
@@ -3729,7 +3612,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardCode" AS "VendorCode"
 			,"Comments" AS "Remarks"
 			,"TaxDate" AS "TaxDate"
-		FROM TRIWALL_TRAINKEY."ODLN" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 		WHERE "DocStatus"='O'
 		ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		
@@ -3745,7 +3628,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardCode" AS "VendorCode"
 			,"Comments" AS "Remarks"
 			,"TaxDate" AS "TaxDate"
-		FROM TRIWALL_TRAINKEY."OPDN" 
+		FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 		WHERE "DocStatus"='O'
 		ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 	
@@ -3758,9 +3641,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode"|| ' - ' || A."CardName" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ORDN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ORDN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GET_Delivery_Order_Header_Detail_By_DocNum_Return' THEN
@@ -3772,9 +3655,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ODLN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GET_Good_Return_Header_Detail_By_DocNum' THEN
@@ -3786,9 +3669,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode"|| ' - ' || A."CardName" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ORPD" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ORPD" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetReturnLineDetailByDocEntry' THEN
@@ -3811,10 +3694,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ORDN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."RDN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ORDN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."RDN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 		
 	ELSE IF :DTYPE='GetGoodReturnLineDetailByDocEntry' THEN
@@ -3837,10 +3720,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ORPD" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."RPD1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ORPD" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."RPD1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 		
 	ELSE IF :DTYPE='GetBatchSerialReturn' THEN
@@ -3855,9 +3738,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=16
 				--And C."Status"<>0
@@ -3872,9 +3755,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=16
 		
@@ -3891,9 +3774,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'dd-MM-yyyy') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=21
 				--And C."Status"<>0
@@ -3908,9 +3791,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'dd-MM-yyyy') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=21
 		
@@ -3935,10 +3818,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ODLN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."DLN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1 AND B."LineStatus"='O';
 	ELSE IF :DTYPE='GetGoodReceiptPOLineForGoodReturnDetailByDocEntry' THEN
 	
@@ -3960,10 +3843,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OPDN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."PDN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OPDN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."PDN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1 AND B."LineStatus"='O';
 		
 	ELSE IF :DTYPE='ReturnDoHeader' THEN
@@ -3979,7 +3862,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,"TaxDate" AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORDN" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 		
@@ -3990,7 +3873,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,"TaxDate" AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORDN" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN :par3 AND :par4
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -4006,7 +3889,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardCode" AS "Vendor"
 			,"Comments" AS "RefInv"
 			,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-		FROM TRIWALL_TRAINKEY."OPDN" 
+		FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 		WHERE "DocEntry"=:par1 AND "DocStatus"='O'
 		ORDER BY "DocEntry";
 	ELSE IF :DTYPE='GoodReceiptPOHeaderByReturn' THEN
@@ -4022,7 +3905,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OPDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 			WHERE "DocStatus"='O'
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
@@ -4034,7 +3917,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OPDN" 
+			FROM PIYAVATE_BATTLE_TRAINING."OPDN" 
 			WHERE "DocStatus"='O' AND
 				"DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -4054,9 +3937,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=15
 				AND A."BaseLinNum"=CASE WHEN :par2='' THEN A."BaseLinNum" ELSE :par2 END
@@ -4072,9 +3955,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=15
 				AND A."BaseLinNum"=CASE WHEN :par2='' THEN A."BaseLinNum" ELSE :par2 END
@@ -4092,9 +3975,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=20
 				AND A."BaseLinNum"=:par2
@@ -4110,9 +3993,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=20
 				AND A."BaseLinNum"=:par2
@@ -4129,7 +4012,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,"TaxDate" AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORIN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORIN" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 			SELECT 
@@ -4139,7 +4022,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,"TaxDate" AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORIN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORIN" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN :par3 AND :par4
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -4158,7 +4041,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardCode" AS "VendorCode"
 			,"Comments" AS "Remarks"
 			,"TaxDate" AS "TaxDate"
-		FROM TRIWALL_TRAINKEY."OINV" 
+		FROM PIYAVATE_BATTLE_TRAINING."OINV" 
 		WHERE "DocStatus"='O'
 		ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 	ELSE IF :DTYPE='GET_AR_Credit_Memo_Header_Detail_By_DocNum' THEN
@@ -4171,9 +4054,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode"|| ' - ' || A."CardName" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ORIN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ORIN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetARCreditMemoLineDetailByDocEntry' THEN
@@ -4196,10 +4079,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ORIN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."RIN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ORIN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."RIN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 		
 	ELSE IF :DTYPE='GetBatchSerialARCreditMemo' THEN
@@ -4214,9 +4097,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=14
 				--And C."Status"<>0
@@ -4231,9 +4114,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=14
 		
@@ -4258,10 +4141,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OINV" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."INV1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OINV" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."INV1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1 AND B."LineStatus"='O';
 	ELSE IF :DTYPE='GetBatchSerialARInvoiceForARCreditMemo' THEN
 	
@@ -4275,18 +4158,18 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=13
 				AND A."BaseLinNum"=:par2
 				AND B."DistNumber" NOT IN (
 					SELECT 
 						T1."DistNumber"
-					FROM TRIWALL_TRAINKEY."SRI1" AS T0
-					LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS T1 ON T0."ItemCode"=T1."ItemCode" AND T1."SysNumber"=T0."SysSerial"
-					LEFT JOIN TRIWALL_TRAINKEY."ORIN" AS T2 ON T0."BaseEntry"=T2."DocEntry"
+					FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS T0
+					LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS T1 ON T0."ItemCode"=T1."ItemCode" AND T1."SysNumber"=T0."SysSerial"
+					LEFT JOIN PIYAVATE_BATTLE_TRAINING."ORIN" AS T2 ON T0."BaseEntry"=T2."DocEntry"
 					 WHERE 	T0."BsDocType"='13' 
 					 		AND T0."BaseType"='14'
 					 		AND T2."CANCELED"='N'
@@ -4303,18 +4186,18 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=13
 				AND A."BaseLinNum"=:par2
 				/*AND B."DistNumber" NOT IN (
 					SELECT 
 						T1."DistNumber"
-					FROM TRIWALL_TRAINKEY."IBT1" AS T0
-					LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS T1 ON T0."ItemCode"=T1."ItemCode" AND T1."DistNumber"=T0."BatchNum"
-					LEFT JOIN TRIWALL_TRAINKEY."ORIN" AS T2 ON T0."BaseEntry"=T2."DocEntry"
+					FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS T0
+					LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS T1 ON T0."ItemCode"=T1."ItemCode" AND T1."DistNumber"=T0."BatchNum"
+					LEFT JOIN PIYAVATE_BATTLE_TRAINING."ORIN" AS T2 ON T0."BaseEntry"=T2."DocEntry"
 					 WHERE 	T0."BsDocType"='13' 
 					 		AND T0."BaseType"='14'
 					 		AND T2."CANCELED"='N'
@@ -4334,7 +4217,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,"TaxDate" AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORIN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORIN" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 		
@@ -4345,7 +4228,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,"TaxDate" AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORIN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORIN" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN :par3 AND :par4
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -4370,7 +4253,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 			 	'Multiple Count'
 			 END AS "InventoryCountingType"
-		FROM TRIWALL_TRAINKEY."OINC"
+		FROM PIYAVATE_BATTLE_TRAINING."OINC"
 		WHERE "Status"='O';
 	ELSE IF :DTYPE='GetInventoryCountingLine' THEN
 		SELECT 
@@ -4390,8 +4273,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."BinEntry" AS "BinEntry"
 			,A."UomCode" AS "Uom"
 			,A."WhsCode" AS "WarehouseCode"
-		FROM TRIWALL_TRAINKEY."INC1" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON A."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."INC1" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON A."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 		
 	ELSE IF :DTYPE='GET_InventoryTransfer_Header_Detail_By_DocNum' THEN
@@ -4406,9 +4289,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
 			,A."Filler" AS "WhsFrom"
 			,A."ToWhsCode" AS "WhsTo"
-		FROM TRIWALL_TRAINKEY."OWTR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."OWTR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 			
@@ -4431,10 +4314,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OWTR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."WTR1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OWTR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."WTR1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetBatchSerialInventoryTransfer' THEN
 	
@@ -4448,9 +4331,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=67
 				--AND A."BaseLinNum"=:par2
@@ -4466,9 +4349,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=67
 				--AND A."BaseLinNum"=:par2
@@ -4486,7 +4369,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OWTR" 
+			FROM PIYAVATE_BATTLE_TRAINING."OWTR" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 			SELECT 
@@ -4496,7 +4379,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OWTR" 
+			FROM PIYAVATE_BATTLE_TRAINING."OWTR" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -4513,7 +4396,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				WHEN LENGTH("Time") = 1 THEN CAST('000' || "Time" AS TIME) 
 				ELSE CAST("Time" AS TIME) END ,5) AS "CreateTime"	
 			,"Ref2" AS "Ref2"
-		FROM TRIWALL_TRAINKEY."OINC"
+		FROM PIYAVATE_BATTLE_TRAINING."OINC"
 		WHERE "DocEntry"=:par1;
 	ELSE IF :DTYPE='GetInventoryCountingLineDetailByDocEntry' THEN
 		SELECT 
@@ -4530,9 +4413,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."OINC" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."INC1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."OINC" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."INC1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetBatchSerialInventoryCounting' THEN
 		SELECT ROW_NUMBER() OVER(ORDER BY "ItemCode") AS "LineNum",* FROM (
@@ -4544,9 +4427,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=1470000065 
 				--And C."Status"<>0
@@ -4561,9 +4444,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'dd-MM-yyyy') AS "ExpDate"
 				,B."MnfDate" AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=1470000065
 		)AS A;
@@ -4584,8 +4467,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 END AS "VendorCode"
 				,A."Ref2" AS "Remarks"
 				,TO_VARCHAR(A."CountDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OINC" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."INC1" AS B ON B."DocEntry"=A."DocEntry" 
+			FROM PIYAVATE_BATTLE_TRAINING."OINC" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."INC1" AS B ON B."DocEntry"=A."DocEntry" 
 			--WHERE B."BaseType"='1470000065'
 			ORDER BY A."DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
@@ -4600,8 +4483,8 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 END AS "VendorCode"
 				,A."Ref2" AS "Remarks"
 				,TO_VARCHAR(A."CountDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."OINC" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."INC1" AS B ON B."DocEntry"=A."DocEntry" 
+			FROM PIYAVATE_BATTLE_TRAINING."OINC" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."INC1" AS B ON B."DocEntry"=A."DocEntry" 
 			WHERE
 			--AND B."BaseType"='1470000065'
 			--AND 
@@ -4619,7 +4502,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ,A."U_STOREPROCEDURE" AS STOREPROCEDURE
 			 ,A."U_PROPERTIES" AS PROPERTIES
 			 ,IFNULL(A."U_LayoutPrintName",'') AS LAYOUTPRINTNAME
-		FROM TRIWALL_TRAINKEY."@TBREPORT" AS A WHERE A."Code"=:par1;
+		FROM PIYAVATE_BATTLE_TRAINING."@TBREPORT" AS A WHERE A."Code"=:par1;
 	ELSE IF :DTYPE='GET_Production_Finished_Good' THEN
 		execute immediate '
 			SELECT  
@@ -4637,9 +4520,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				 WHEN B."ManBtchNum"=''Y'' THEN
 				 	''B''
 				 ELSE ''N'' END AS "ItemType"
-			FROM TRIWALL_TRAINKEY."OWOR" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OITM" AS B ON B."ItemCode"=A."ItemCode"
-			LEFT JOIN TRIWALL_TRAINKEY."OUGP" AS C ON B."UgpEntry"=C."UgpEntry"
+			FROM PIYAVATE_BATTLE_TRAINING."OWOR" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS B ON B."ItemCode"=A."ItemCode"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OUGP" AS C ON B."UgpEntry"=C."UgpEntry"
 			WHERE A."DocEntry" IN ('|| :par1 ||') AND (A."PlannedQty"-A."CmpltQty")<>0;';
 	ELSE IF :DTYPE='GetReturnRequestHeader' THEN
 		IF :par2='' THEN
@@ -4652,7 +4535,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORRR" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORRR" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 		ELSE IF :par2='condition' THEN
 			SELECT 
@@ -4662,7 +4545,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ORRR" 
+			FROM PIYAVATE_BATTLE_TRAINING."ORRR" 
 			WHERE "DocStatus"='O'
 			AND "DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
 			AND "DocNum" LIKE CASE WHEN :par5='' OR :par5='0' THEN "DocNum" ELSE '%'||:par5||'%' END
@@ -4681,7 +4564,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,"CardCode" AS "VendorCode"
 			,"Comments" AS "Remarks"
 			,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-		FROM TRIWALL_TRAINKEY."ODLN" 
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 		WHERE "DocStatus"='O'
 		ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 	ELSE IF :DTYPE='GET_Return_Request_Header_Detail_By_DocNum' THEN
@@ -4693,9 +4576,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode"|| ' - ' || A."CardName" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ORRR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ORRR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetReturnRequestLineDetailByDocEntry' THEN
@@ -4718,10 +4601,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ORRR" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."RRR1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ORRR" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."RRR1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1;
 		
 	ELSE IF :DTYPE='GetBatchSerialReturnRequest' THEN
@@ -4736,9 +4619,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR(B."ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Serial' AS "Type"
-			FROM TRIWALL_TRAINKEY."SRI1" AS A
-			LEFT JOIN TRIWALL_TRAINKEY."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
-			LEFT JOIN TRIWALL_TRAINKEY."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
+			FROM PIYAVATE_BATTLE_TRAINING."SRI1" AS A
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRN" AS B ON A."ItemCode"=B."ItemCode" AND B."SysNumber"=A."SysSerial"
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OSRI" AS C On C."ItemCode"=A."ItemCode" And C."SysSerial"=A."SysSerial"
 			WHERE A."BaseEntry"=:par1 
 				AND A."BaseType"=234000031
 				--And C."Status"<>0
@@ -4753,9 +4636,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,TO_VARCHAR("ExpDate",'yyyy-MM-dd') AS "ExpDate"
 				,TO_VARCHAR(B."MnfDate",'yyyy-MM-dd') AS "MrfDate"
 				,'Batch' AS "Type"
-			FROM TRIWALL_TRAINKEY."IBT1" AS A 
-			LEFT JOIN TRIWALL_TRAINKEY."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
-			--LEFT JOIN TRIWALL_TRAINKEY."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
+			FROM PIYAVATE_BATTLE_TRAINING."IBT1" AS A 
+			LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTN" AS B ON A."ItemCode"=B."ItemCode" AND A."BatchNum"=B."DistNumber"
+			--LEFT JOIN PIYAVATE_BATTLE_TRAINING."OBTQ" AS C ON C."ItemCode"=A."ItemCode" and B."SysNumber"=C."SysNumber"
 			WHERE A."BaseEntry"=:par1
 				AND A."BaseType"=234000031
 		
@@ -4769,9 +4652,9 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			,A."CardCode" AS "Vendor"
 			,IFNULL(C."Name",'') AS "ContactPerson"
 			,IFNULL(A."NumAtCard",'') AS "RefInv"
-		FROM TRIWALL_TRAINKEY."ODLN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."NNM1" AS F ON F."Series"=A."Series"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."NNM1" AS F ON F."Series"=A."Series"
 		WHERE 
 			A."DocEntry"=:par1;
 	ELSE IF :DTYPE='GetDeliveryOrderLineForReturnRequestDetailByDocEntry' THEN
@@ -4794,10 +4677,10 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			 ELSE
 				'N'
 			 END AS "ManageItem"
-		FROM TRIWALL_TRAINKEY."ODLN" AS A
-		LEFT JOIN TRIWALL_TRAINKEY."DLN1" AS B ON A."DocEntry"=B."DocEntry"
-		LEFT JOIN TRIWALL_TRAINKEY."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
-		LEFT JOIN TRIWALL_TRAINKEY."OITM" AS E ON E."ItemCode"=B."ItemCode"
+		FROM PIYAVATE_BATTLE_TRAINING."ODLN" AS A
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."DLN1" AS B ON A."DocEntry"=B."DocEntry"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OCPR" AS C ON A."CardCode"=C."CardCode" AND A."CntctCode"=C."CntctCode"
+		LEFT JOIN PIYAVATE_BATTLE_TRAINING."OITM" AS E ON E."ItemCode"=B."ItemCode"
 		WHERE A."DocEntry"=:par1 AND B."LineStatus"='O';
 	
 	ELSE IF :DTYPE='ReturnRequestDoHeader' THEN
@@ -4813,7 +4696,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,"TaxDate" AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ODLN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 			ORDER BY "DocEntry" LIMIT 10 OFFSET :offset;
 			
 		ELSE IF :par2='condition' THEN
@@ -4825,7 +4708,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 				,"CardCode" AS "VendorCode"
 				,"Comments" AS "Remarks"
 				,TO_VARCHAR("TaxDate",'yyyy-MM-dd') AS "TaxDate"
-			FROM TRIWALL_TRAINKEY."ODLN" 
+			FROM PIYAVATE_BATTLE_TRAINING."ODLN" 
 			WHERE "DocStatus"='O'
 			--AND "DocDate" BETWEEN :par3 AND :par4
 			AND "DocDate" BETWEEN CASE WHEN :par3='' THEN '1999-01-01' ELSE :par3 END AND CASE WHEN :par4='' THEN '2100-01-01' ELSE :par4 END
@@ -4842,7 +4725,7 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 			From DUMMY;
 		END IF;
 	ELSE IF :DTYPE='LayoutPrinter' THEN
-		SELECT "Code","Name" FROM TRIWALL_TRAINKEY."@TBREPORT" WHERE "U_LAYOUTMODULE"=:par1;
+		SELECT "Code","Name" FROM PIYAVATE_BATTLE_TRAINING."@TBREPORT" WHERE "U_LAYOUTMODULE"=:par1;
 	END IF;
 	END IF;
 	END IF;
@@ -4889,10 +4772,6 @@ USING SQLSCRIPT_STRING AS LIBRARY;
 	END IF;
 	END IF;		
 	END IF;		
-	END IF;
-	END IF;
-	END IF;
-	END IF;
 	END IF;
 	END IF;
 	END IF;
