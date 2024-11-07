@@ -5,7 +5,7 @@
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-<!--    <RunAOTCompilation>true</RunAOTCompilation>-->
+    <RunAOTCompilation>true</RunAOTCompilation>
 <!--    <RootNamespace>Piyavate_Hospital.WebApp.Server</RootNamespace>-->
 <!--    <WasmEnableWebcil>false</WasmEnableWebcil>-->
 <!--    <WasmStripILAfterAOT>true</WasmStripILAfterAOT>-->
