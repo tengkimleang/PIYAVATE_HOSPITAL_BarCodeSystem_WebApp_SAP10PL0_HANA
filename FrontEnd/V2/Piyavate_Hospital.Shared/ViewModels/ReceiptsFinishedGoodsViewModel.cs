@@ -53,6 +53,8 @@ public partial class ReceiptsFinishedGoodsViewModel(ApiService apiService) //, I
             (await apiService.GetProductionOrders("GetProductionForFinishGoods",Token)).Data ?? new());
         Warehouses = await CheckingValueT(Warehouses, async () =>
             (await apiService.GetWarehouses(Token)).Data ?? new());
+        ReceiptFromProductionOrderForm = new();
+        IssueProductionLine = new();
         ReceiptFromProductionOrderForm.Series = Series.First().Code;
         await TotalCountReceiptFromProduction();
         IsView = true;

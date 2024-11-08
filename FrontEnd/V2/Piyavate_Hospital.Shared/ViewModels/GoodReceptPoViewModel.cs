@@ -56,6 +56,7 @@ public partial class GoodReceptPoViewModel(ApiService apiService) : ViewModelBas
     {
         Series = await CheckingValueT(Series, async () =>
             (await apiService.GetSeries("20",Token)).Data ?? new());
+        GoodReceiptPoForm = new();
         GoodReceiptPoForm.Series = Series.First().Code;
         Vendors = await CheckingValueT(Vendors, async () =>
             (await apiService.GetVendors(Token)).Data ?? new());

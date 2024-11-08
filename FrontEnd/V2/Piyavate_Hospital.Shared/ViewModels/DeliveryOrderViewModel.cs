@@ -65,6 +65,7 @@ public partial class DeliveryOrderViewModel(
     {
         Series = await CheckingValueT(Series, async () =>
             (await apiService.GetSeries("15", Token)).Data ?? new());
+        DeliveryOrderForm = new();
         DeliveryOrderForm.Series = Series.First().Code;
         Customers = await CheckingValueT(Customers, async () =>
             (await apiService.GetCustomers(Token)).Data ?? new());

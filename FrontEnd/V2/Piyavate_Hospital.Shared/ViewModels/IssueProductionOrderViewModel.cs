@@ -49,6 +49,7 @@ public partial class IssueProductionOrderViewModel(ApiService apiService) : View
     {
         Series = await CheckingValueT(Series, async () =>
             (await apiService.GetSeries("60",Token)).Data ?? new());
+        IssueProductionLine = new();
         IssueProductionForm.Series = Series.First().Code;
         GetProductionOrder = await CheckingValueT(GetProductionOrder, async () =>
             (await apiService.GetProductionOrders("GetForIssueProduction",Token)).Data ?? new());

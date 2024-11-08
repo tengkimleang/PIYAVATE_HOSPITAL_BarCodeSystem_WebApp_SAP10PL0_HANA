@@ -64,6 +64,7 @@ public partial class ReturnViewModel(ApiService apiService) : ViewModelBase //, 
             (await apiService.GetTaxSales(Token)).Data ?? new());
         Warehouses = await CheckingValueT(Warehouses, async () =>
             (await apiService.GetWarehouses(Token)).Data ?? new());
+        DeliveryOrderForm = new();
         DeliveryOrderForm.Series = Series.First().Code;
         IsView = true;
     }

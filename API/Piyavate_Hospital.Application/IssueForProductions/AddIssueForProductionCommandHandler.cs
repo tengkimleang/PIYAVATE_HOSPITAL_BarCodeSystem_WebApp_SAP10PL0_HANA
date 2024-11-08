@@ -32,7 +32,6 @@ public class AddIssueForProductionCommandHandler(IUnitOfWork unitOfWork)
                 oIssueForProduction.Lines.BaseLine = l.BaseLineNum;
                 oIssueForProduction.Lines.BaseType = 202;
                 oIssueForProduction.Lines.WarehouseCode = l.WhsCode;
-
                 switch (l)
                 {
                     case { ManageItem: "S", Serials: not null }:

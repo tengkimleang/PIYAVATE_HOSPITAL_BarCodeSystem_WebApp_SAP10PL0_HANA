@@ -56,6 +56,7 @@ public partial class GoodReturnViewModel(ApiService apiService) : ViewModelBase 
     {
         Series = await CheckingValueT(Series, async () =>
             (await apiService.GetSeries("21",Token)).Data ?? new());
+        GoodReturnForm = new();
         GoodReturnForm.Series = Series.First().Code;
         Vendors = await CheckingValueT(Vendors, async () =>
             (await apiService.GetVendors(Token)).Data ?? new());

@@ -69,6 +69,7 @@ public partial class ArCreditMemoViewModel(ApiService apiService) : ViewModelBas
         TotalItemCount = (await apiService.GetTotalItemCount("ARCreditMemo",Token)).Data ?? new();
         await OnTotalItemCountARCreditMemo();
         await OnTotalItemCountARInvoiceOpenStatus();
+        ARCreditMemoForm = new();
         ARCreditMemoForm.Series = Series.First().Code;
         IsView = true;
     }

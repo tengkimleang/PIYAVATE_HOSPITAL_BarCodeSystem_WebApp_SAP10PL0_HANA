@@ -50,6 +50,7 @@ public partial class InventoryCountingViewModel(ApiService apiService) : ViewMod
         Warehouses = await CheckingValueT(Warehouses, async () =>
             (await apiService.GetWarehouses(Token)).Data ?? new());
         await TotalCountInventoryCounting();
+        InventoryCountingHeader = new();
         IsView = true;
     }
 

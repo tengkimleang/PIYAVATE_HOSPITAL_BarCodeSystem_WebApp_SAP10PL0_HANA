@@ -59,6 +59,7 @@ public partial class InventoryTransferViewModel(ApiService apiService) : ViewMod
     {
         Series = await CheckingValueT(Series, async () =>
                  (await apiService.GetSeries("67",Token)).Data ?? new());
+        InventoryTransferForm = new();
         InventoryTransferForm.Series= Series.First().Code ?? "";
         Items = await CheckingValueT(Items, async () =>
                     (await apiService.GetItems(Token)).Data ?? new());

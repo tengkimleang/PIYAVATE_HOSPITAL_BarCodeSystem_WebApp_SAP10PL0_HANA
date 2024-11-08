@@ -55,6 +55,7 @@ public partial class ReturnRequestViewModel(ApiService apiService) : ViewModelBa
     {
         Series = await CheckingValueT(Series, async () =>
             (await apiService.GetSeries("234000031",Token)).Data ?? new());
+        DeliveryOrderForm = new();
         DeliveryOrderForm.Series = Series.First().Code;
         Customers = await CheckingValueT(Customers, async () =>
             (await apiService.GetCustomers(Token)).Data ?? new());
